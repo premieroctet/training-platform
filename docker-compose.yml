@@ -1,0 +1,25 @@
+version: "3.6"
+
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: training-platform
+      POSTGRES_PASSWORD: training-platform
+      POSTGRES_DB: training-platform
+    ports:
+      - 5454:5432
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+      - "1080:80"
+      - "25:25"
+
+volumes:
+  postgresql:
+  postgresql_data:

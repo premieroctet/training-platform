@@ -1,0 +1,290 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import {
+  MdCheckCircle,
+  MdCancel,
+  MdExtension,
+  MdFaceRetouchingNatural,
+  MdCatchingPokemon,
+} from "react-icons/md";
+
+<!-- Slide démo : presentation de la plateforme et des features -->
+
+<Slides title="presentation" course="training platform demo">
+
+<SlideHeader slideTitle="presentation" />
+
+<ChapterHeading title="training platform" subtitle="by Premier-Octet" />
+
+---
+
+#### ✨ build beautiful slides for your courses ✨
+
+<Flex alignSelf="center" mt="-sm" mb="md">
+  with MDX & ChakraUI
+</Flex>
+
+- 📝 [**MDX**](https://mdxjs.com/mdx/) - import and use React components on the
+  go.
+- 🎨 [**ChakraUI**](https://chakra-ui.com/docs) - theme your courses with a
+  [theme provider](https://chakra-ui.com/docs/theming/customize-theme)
+- 🌈
+  [**Syntax highlighting**](https://github.com/FormidableLabs/prism-react-renderer) -
+  for your code blocks
+- 🌟 [**Icons**](https://chakra-ui.com/docs/media-and-icons/icon) - Use Icons as
+  Components with [React Icons](https://react-icons.github.io/react-icons/)
+  library
+- 🧜‍♀️ [**Mermaid**](https://mermaid-js.github.io/mermaid/#/) - markdownish
+  text-based diagramming tool
+- 🛠 **Highly Hackable** - install and use nearly any ReactJS library you may
+  need!
+- 🚧 **coming soon** : live code editor/renderer
+
+---
+
+#### ✨ Platform to teach & broadcast courses ✨
+
+<Flex alignSelf="center" mt="-sm" mb="md">
+  Powered by NextJS + NextAuth + Prisma.io
+</Flex>
+
+- 🪄 [**Magic Links**](https://next-auth.js.org/providers/email) - NextAuth magic
+  links for your alumnis
+- 👤 **Users** - Add & manage users
+- ⚙️ **Private content** - Set authorized content for each user
+- 🤹 **Controls** - navigate with arrows OR swipe left/right
+- 🎙 **Speaker Mode** - `opt+P` displays next slide, notes & timer
+- 🧦 **Web Socket** - broadcasts your slides to distant users.
+- 🧾 **PDF Export** - generate & download your course as PDFs.
+
+---
+
+<ChapterHeading title="build your slides" />
+
+---
+
+# [MDX Provider](https://mdxjs.com/getting-started/#mdxprovider)
+
+- MDX Provider takes an `component` object that overrides any markdown/html &
+  react tags you want to customize.
+
+```jsx
+// src/components/mdx/MDXProvider.tsx
+
+import React from "react";
+import { MDXProvider } from "@mdx-js/react";
+// import my components ...
+const mdComponents = {
+  h1: (props: any) => <Heading fontSize="2.4em" {...props} />,
+  h2: (props: any) => <Heading fontSize="2em" {...props} />,
+  a: (props: any) => <a target="_blank" {...props}></a>,
+  code: (props: any) => <CodeBlock {...props} />,
+  ChapterHeading,
+  SlideHeader,
+  // ...
+};
+
+export default ({ children }) => (
+  <MDXProvider components={components}>{children}</MDXProvider>
+);
+```
+
+---
+
+<SlideHeader slideTitle="Built-in components" />
+
+#### Built-in components
+
+- the `Slides` component wraps up your mdx to display it as slides : only write
+  mdx slides divided with `---` OR `<hr />`
+
+```jsx
+<Slides title="chapter title" course="course title">
+  // your mdx slides
+</Slides>
+```
+
+<Notes>
+
+the `Slides` component actually breaks VSCode syntax highlighting. We are
+curently investigating how to solve it and improve the experience.
+
+</Notes>
+
+---
+
+<SlideHeader slideTitle="Built-in components" />
+
+- use the `SlideHeader` component on first line to override your slide's header
+  title
+
+```jsx
+---
+
+<SlideHeader slideTitle="my components" />
+
+# lesson n°I
+
+---
+```
+
+<p fontSize="lg" mt="md">
+  by default, the header displays the name of the current chapter (the name of
+  the .mdx file)
+</p>
+
+---
+
+<SlideHeader slideTitle="Built-in components" />
+
+- use the `ChapterHeading` component to display huge fullscreen headings with a
+  custom background.
+
+```jsx
+---
+
+<ChapterHeading title="chapter XI" subtitle="Beauty made in React" imgSrc="/space.jpg" />
+//
+
+---
+```
+
+<p fontSize="lg" mt="md">
+  You can also set-up a default background at "DefaultHeadingBackground.tsx" to
+  display a custom background when no image is specified.
+</p>
+
+---
+
+<ChapterHeading
+  title="nebula.jpg"
+  subtitle="just beautifull"
+  imgSrc={require("../assets/backgrounds/nebula.jpg").default.src}
+/>
+
+---
+
+# Chakra UI ✨
+
+#### use components to easily customize layout
+
+the content of each slide is wrapped in a basic flex column container, but you
+can import and use any component or html tag to build your layout.
+
+[ChakraUI](https://chakra-ui.com/) provides very usefull
+[layout components](https://chakra-ui.com/docs/layout/stack) to create Verical &
+Horizontal layouts : `VStack`, `HStack` & `Stack`
+
+---
+
+### import images from your assets
+
+```js
+// --> in your mdx slides
+
+<Image src={require("./assets/myImage.jpg").default.src} />
+```
+
+_supports jpg, jpeg, png, svg, fig, ico, webp, jp2 and avif images_
+
+---
+
+<Image src={require("./assets/cute.jpg").default.src} />
+
+---
+
+### Syntax Highlight
+
+- using markdown code syntax renders a custom CodeBlock made with
+  [prism-react-renderer](https://github.com/FormidableLabs/prism-react-renderer)
+- syntax highlight: you can specify any language supported by
+  [prism](https://prismjs.com/#supported-languages) like this : ` ```css `
+
+<Flex w="full" justifyContent="center" p="md">
+
+```css
+div {
+  display: flex;
+  color: tomato;
+}
+```
+
+</Flex>
+
+---
+
+### Import and use Icons with React Icons <Icon as={MdFaceRetouchingNatural} color="green.300" /><Icon as={MdCatchingPokemon} color="red.300" />
+
+```jsx
+import { MdExtension } from "react-icons/md";
+
+---
+
+<Icon as={MdExtension} color="blue.300" />
+
+---
+
+```
+
+##### <Icon as={MdExtension} color="blue.300" /><Icon as={MdExtension} color="red.300" /><Icon as={MdExtension} color="orange.300" /><Icon as={MdExtension} color="pink.300" />
+
+visit [react-icons](https://react-icons.github.io/react-icons/icons?name=md) to
+see all icons available
+
+---
+
+### Trigger speaker mode : press `alt + P`
+
+you can notes for your presentation wrapping mdx inside the `Notes` componenent
+:
+
+```jsx
+---
+// slide content
+
+<Notes>
+
+ #### Usefull Notes :
+
+ - do this
+
+</Notes>
+
+---
+```
+
+<Notes>
+
+#### Usefull chronometer 👆 :
+
+#### Very usefull memo 👇:
+
+- talk about your cats
+- take a break, drink your tea
+
+</Notes>
+
+---
+
+store your courses and images this way :
+
+```path
+/root
+  |_ courses
+    |_ assets (shared assets)
+    |_ React Course
+      |_ chapter I.mdx
+      |_ chapter II.mdx
+      |_ assets
+        |_ myImage.jpg
+        |_ cats.gif
+      |_ coursemap.md (=> this .md is used to display coursemap on homepage )
+    |_ React Native Course
+      |_ chapter I.mdx
+      |_ chapter II.mdx
+      |_ coursemap.md
+    [...]
+
+```
+
+</Slides>
