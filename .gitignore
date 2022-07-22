@@ -48,6 +48,7 @@ training-platform.code-workspace
 /bddScripts
 
 /pdfs
+/courses
 
 #github actions deploy
 .github/workflows/deploy.yml
