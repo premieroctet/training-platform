@@ -7,7 +7,7 @@ const NoCourse = ({ demoCourse }: { demoCourse: CourseType }) => {
   const [session, _] = useSession();
   return (
     <>
-      <Text width="100%" fontWeight="bold" fontSize="1.2rem" textAlign="left">
+      <Text width="100%" fontWeight="bold" fontSize="md" textAlign="left">
         0 cours disponibles
       </Text>
       <SimpleGrid columns={[1, 2]} spacing={10} width="100%">

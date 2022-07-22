@@ -1,0 +1,104 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="Le serveur de développement Webpack" course="Formation React">
+
+<ChapterHeading title="Le serveur de développement Webpack" />
+
+---
+
+<SlideHeader slideTitle="Serveur de développement Webpack" />
+
+##### 🚧 **Webpack** offre un [serveur de développement](https://webpack.js.org/configuration/dev-server/) :
+
+- ⚠️ A ne jamais utiliser en **production**
+- Améliorant l'expérience de développement :
+  - **Live reload** 👍️
+  - **Hot reload** 👍️
+
+---
+
+<SlideHeader slideTitle="Serveur de développement Webpack" />
+
+##### 🚀 **Installer le dev-server Webpack** (1/2)
+
+- Ajouter la dépendance **dev-server** Webpack :
+
+```
+yarn add --dev webpack-dev-server
+```
+
+- Ajouter le script pour lancer le **dev-server** (dans le package.json) :
+
+```json
+"scripts": {
+  "start": "webpack-dev-server --open --mode development"
+},
+```
+
+---
+
+<SlideHeader slideTitle="Serveur de développement Webpack" />
+
+##### 🚀 **Installer le dev-server Webpack** (2/2)
+
+- Ajouter un fichier **index.html** dans le dossier **dist** de votre projet
+  pointant vers votre bundle :
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello</title>
+    <script src="bundle.js"></script>
+  </head>
+  <body>
+    <h1>Hello world</h1>
+  </body>
+</html>
+```
+
+```
+yarn run start
+```
+
+---
+
+<SlideHeader slideTitle="Serveur de développement Webpack" />
+
+#### Mettez à jour votre code et observez la console :
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>🚩️ WDS (Webpack Dev Server) met à jour le bundle ;</ListItem>
+  <ListItem>✨ WDS rafraichit la page :</ListItem>
+</List>
+
+<Image src={require("./assets/devserver-1.png").default.src} />
+
+---
+
+<SlideHeader slideTitle="Résumé" />
+
+#### Ce que l'on vient de voir
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Ajouter des dépendances avec Yarn
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Gérer des scripts via le package.json
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Transpiler du code avec Babel
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Builder son code avec Webpack
+  </ListItem>
+</List>
+
+</Slides>

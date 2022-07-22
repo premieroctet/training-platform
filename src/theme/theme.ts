@@ -67,11 +67,11 @@ const customTheme = extendTheme({
     mono: 'source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace',
   },
   fontSizes: {
-    xs: "1.2rem",
-    sm: "1.4rem", // h6
-    md: "1.6rem", // h5
-    lg: "1.8rem", // h4
-    xl: "2rem", // h3
+    xs: "0.8rem",
+    sm: "1rem", // h6
+    md: "1.2rem", // h5
+    lg: "1.4rem", // h4
+    xl: "1.6rem", // h3
     "2xl": "2.4rem", // h2
     "3xl": "3rem", // h1
     "4xl": "3.6rem",

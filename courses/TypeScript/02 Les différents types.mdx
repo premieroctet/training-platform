@@ -1,0 +1,355 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides>
+
+<ChapterHeading title="Les différents types" backgroundColor="#ffeaa7" />
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Déclarer des types
+
+Le typage se fait juste après la déclaration d'une variable
+
+```typescript
+const username: string = "John Doe";
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Types primaires
+
+String, number, boolean
+
+```ts
+const username: string;
+const old: number;
+const isActive: boolean;
+const skills: string[];
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Types par référence
+
+Array, tuple
+
+```typescript
+// Deux façon de typer un array
+const roles: Array<string>;
+const roles: string[]; // <-- Méthode la plus utilisée
+
+// Tuples
+const settings: [string, string, number];
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Types par référence
+
+Object
+
+```typescript
+const user: {
+  name: string;
+  age: number;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Types par référence
+
+Object : propriété optionnel
+
+```typescript
+const user: {
+  name: string;
+  age?: number; // optionnel
+};
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Types par référence
+
+Object : propriété imbriquée
+
+```typescript
+const user: {
+  name: string;
+  address: {
+    street: string;
+    city: string;
+  };
+};
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Types par référence
+
+Object : définition clé/valeur
+
+```typescript
+const roles: {
+  [key: string]: number;
+};
+
+// {"admin": 1, "user": 2, "guest": 3}
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Types par référence
+
+- Map permet de déclarer un objet clé/valeur
+- Permet de déclarer un tableau à valeur unique
+
+```typescript
+const roles: Map<string, number>;
+// {"admin": 1, "user": 2, "guest": 3}
+
+const adminIds: Set<number>;
+// [1, 3, 10]
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Le type any
+
+- Le type `any` est un joker, il permet à une variable d'avoir n'importe quel type. À utiliser <mark>en dernier recours !</mark>
+- Il peut-être explicite ou implicite
+
+```typescript
+const username: any; //<-- Explicite
+const username; // <-- Implicite
+```
+
+<Box mt={6}>
+  <small>
+    💡 En mode strict, les any implicites sont interdits (option
+    --noImplicitAny)
+  </small>
+</Box>
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Le type unknown
+
+- Le type `unknown` est plus stricte que `any`, il oblige <mark>à vérifier le type</mark> lors du runtime
+
+```typescript
+const firstname: any;
+firstname = "John";
+firstname.toLowerCase(); // <-- Pas d'erreur TS
+
+const lastname: unknown;
+lastname = "Doe";
+lastname.toLowerCase(); // <-- Erreur TS
+
+if (typeof lastname === "string") {
+  lastname.toLowerCase(); // <-- Pas d'erreur TS
+}
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Le type void
+
+- Une variable typée void ne peut être que `null` ou `undefined` (pas très utile…)
+- Le type `void` est souvent utilisé pour déclarer une fonction qui ne retourne rien :
+
+```typescript
+const nada: void;
+const nada = (): void => {};
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Le type never
+
+Le type never exprime un type qui ne peut-être utilisé et qui ne devrait jamais être retourné (boucle infinie, erreur…) :
+
+```typescript
+function throwError(message: string): never {
+  throw new Error(message);
+}
+
+function worker(): never {
+  while (true) {}
+}
+
+function getValue(x: string | number) {
+  if (typeof x === "string") {
+  } else if (typeof x === "number") {
+  } else {
+    x; // never
+  }
+}
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Le type function
+
+```typescript
+const sum: (a: number, b: number): number = (a, b) => a + b;
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### 💡 Inférence de type
+
+Lors de la déclaration et initialisation d'un variable, il n'est pas nécessaire de spécifier le type, TypeScript l'infère :
+
+```typescript
+// string
+const username = "John Doe";
+
+// { name: string, age: number }
+const user: {
+  name: "John Doe";
+  age: 12;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Les types littéraux
+
+- Sous types des strings, boolean et number
+- Permet de déclarer **des constantes ou enum**
+
+```typescript
+const noticeLevel: "notice" = "notice";
+
+// Pratique avec une union
+const noticeLevel: "notice" | "warning" | "error" = "notice";
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Les enums
+
+```typescript
+enum DeploymentStatus {
+  Pending,
+  Errored,
+  Published,
+}
+
+enum DeploymentStatus {
+  Pending = "Pending",
+  Errored = "Errored",
+  Published = "Published",
+}
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Typer une fonction
+
+```typescript
+const sum = (a: number, b: number): number => a + b;
+```
+
+Ici non plus, pas besoin de typer le retour, TypeScript l'infère
+
+```typescript
+const sum = (a: number, b: number) => a + b;
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### Typer une fonction
+
+Fonction avec valeur par défaut (type inféré) et argument optionnel :
+
+```typescript
+const sum = (a = 10, b?: number): number => a + b;
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### 💡 Type Assertions
+
+Parfois TypeScript ne peut connaitre le type exact, il est nécessaire de le spécifier grâce au mot clé `as` :
+
+```tsx
+// TypeScript ne peut deviner l'élement ciblé
+const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### 💡 Non-null Assertion Operator
+
+On peut aussi dire à TypeScript qu'une variable n'est pas nulle (malgré sa déclaration) :
+
+```jsx
+function liveDangerously(x?: number | null) {
+  // No error
+  console.log(x!.toString());
+}
+```
+
+---
+
+<SlideHeader slideTitle="Les différents types" />
+
+#### 💡 readonly
+
+On peut aussi dire à TypeScript qu'une variable est uniquement accessible en lecture :
+
+```typescript
+interface Point {
+  readonly x: number;
+  readonly y: number;
+}
+
+const ids: readonly number[] = [1, 2, 3];
+```
+
+</Slides>

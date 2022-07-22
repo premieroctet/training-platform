@@ -1,0 +1,576 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="Redux" course="Formation React">
+
+<ChapterHeading title="Redux" />
+
+---
+
+<SlideHeader slideTitle="Redux" />
+
+<Image src={require("./assets/redux.png").default.src} w="50%" m="md" />
+
+- https://github.com/reactjs/redux
+- Librairie principale pour implémenter le paradigme Flux
+
+---
+
+<SlideHeader slideTitle="Complexité d'une application" />
+
+#### Complexité d'une application
+
+- **Couplage** : une vue dépend d'un ou plusieurs modèles
+- **Mise à jour laborieuse** : nécessite l'ajout/suppression de listener
+- **Effets de bord**, données erronées
+- **Stockage des données** difficile
+
+---
+
+<SlideHeader slideTitle="Exemple : Backbone" />
+<Image
+  src={require("./assets/backbone-example.png").default.src}
+  alignSelf="center"
+  width="40%"
+/>
+
+---
+
+<SlideHeader slideTitle="Flux, un pattern proposé par Facebook" />
+
+##### **Redux** à la rescousse ✌️
+
+- Une architecture pour gérer les flux de données
+- Impose un flux de donnée **unidirectionel**
+- Permet de **désamorcer la complexité** d'une application
+- Rend le code plus **clair, lisible et scalable**
+
+---
+
+<SlideHeader slideTitle="Redux : fonctionnement" />
+
+<Image src={require("./assets/redux-schema.svg").default.src} />
+
+---
+
+<SlideHeader slideTitle="Les actions" />
+
+#### Les actions
+
+- Les actions définissent **l'API de votre application** , elles sont
+  "dispatchées"
+- Elles traduisent une volonté d'interaction (récupération de données, click …)
+- Ce sont des objets JavaScript comportant **un attribut type** et des données
+  facultatives :
+
+```js
+{ type: 'DELETE_ITEM', itemId: 1234 }
+{ type: 'ADD_ITEM', itemId: { name: 'Item 1' } }
+```
+
+---
+
+<SlideHeader slideTitle="Les reducers" />
+
+#### Les reducers
+
+- C'est une fonction qui prend une action et retourne un nouveau state
+- Ils indiquent comment une action doit modifier le store :
+
+```js
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_MESSAGE":
+      return {
+        entities: [
+          ...state.entities,
+          { body: action.message, username: action.username },
+        ],
+      };
+
+    default:
+      return state;
+  }
+};
+```
+
+---
+
+<SlideHeader slideTitle="Le dispatch" />
+
+#### Le dispatch
+
+- Responsable de **l'envoi d'actions** aux reducers
+- Ces actions proviennent le plus souvent **d'interactions utilisateurs**
+  (click, submit…)
+
+---
+
+<SlideHeader slideTitle="Le store" />
+
+#### Le store
+
+- Contient les données de votre application
+- Une action **modifie** le store via les **reducers**
+- Le store **notifie** les composants lorsque les données ont été mise à jour
+
+---
+
+<SlideHeader slideTitle="Les vues" />
+
+#### Les vues
+
+- Les données du store **sont affichées** dans les vues
+- Une vue **écoute un store** : à chaque changement dans un store la vue est
+  **mise à jour** avec les nouvelles données
+- Le flux de données est toujours dans **le même sens** :
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    🚀 Les vues dispatchent les <b>actions aux reducers</b>
+  </ListItem>
+  <ListItem>
+    🔁 Les <b>reducers</b> modifient le store en fonction de l'action
+  </ListItem>
+  <ListItem>
+    🚀 Les stores renvoient les données aux <b>vues</b>
+  </ListItem>
+</List>
+
+---
+
+<SlideHeader slideTitle="Redux: récap" />
+
+#### Récap du flow
+
+<Image
+  src={require("./assets/schema.gif").default.src}
+  alignSelf="center"
+  width="70%"
+/>
+
+---
+
+<SlideHeader slideTitle="Exemple Redux" />
+
+```js
+function counter(state = 0, action) {
+  switch (action.type) {
+    case "INCREMENT":
+      return state + 1;
+    case "DECREMENT":
+      return state - 1;
+    default:
+      return state;
+  }
+}
+var store = Redux.createStore(counter);
+var valueEl = document.getElementById("value");
+
+function render() {
+  valueEl.innerHTML = store.getState().toString();
+}
+
+render();
+store.subscribe(render);
+
+document.getElementById("increment").addEventListener("click", function () {
+  store.dispatch({ type: "INCREMENT" });
+});
+document.getElementById("decrement").addEventListener("click", function () {
+  store.dispatch({ type: "DECREMENT" });
+});
+document
+  .getElementById("incrementIfOdd")
+  .addEventListener("click", function () {
+    if (store.getState() % 2 !== 0) {
+      store.dispatch({ type: "INCREMENT" });
+    }
+  });
+```
+
+---
+
+<SlideHeader slideTitle="Redux" />
+
+#### Détails d'implémentation
+
+- Composants de présentation: **affiche les données**
+- Composant container: **liés au store et aux actions**
+- Séparer les différentes parties dans des fichiers (actions.js, reducers.js,
+  store.js)
+
+---
+
+<SlideHeader slideTitle="Redux" />
+
+#### Recommandations
+
+- Redux est une proposition d'architecture et n'est pas obligatoire pour
+  réaliser une application
+- Elle permet de décrire l'état de l'application juste avec des objets et
+  tableaux
+- Décrire les changements sous forme d'objet
+
+---
+
+<SlideHeader slideTitle="Redux" />
+
+#### Les avantages
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Sauvegarder l'état complet et relancer l'application de cette sauvegarde plus
+    tard
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Serializer les actions utilisateurs et les lier à des rapports de bug pour rejouer
+    le parcours
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Facilité d'inspection et de debug (nombreux outils d'aide au développement)
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Facilité pour changer de librairie d'interface grâce au découplage
+  </ListItem>
+</List>
+
+---
+
+<SlideHeader slideTitle="Redux dev tools" />
+
+###### <b>Extension chrome</b>
+
+Nécessite un middleware Redux dans l'application
+
+<Image src={require("./assets/redux-dev-tools.png").default.src} height="65%" />
+
+https://github.com/zalmoxisus/redux-devtools-extension
+
+---
+
+<SlideHeader slideTitle="Redux" />
+
+#### **Utiliser Redux : ** toujours la même routine
+
+- Identifier les actions et les créer
+- Ajouter / modifier vos reducers
+- Appeler vos actions depuis vos composants
+- Connectez votre composants aux stores
+
+---
+
+<SlideHeader slideTitle="Implémentation Redux" />
+
+#### Brancher le provider Redux et le store ✅
+
+```jsx
+import React from "react";
+import { render } from "react-dom";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducers from "./reducers";
+import Chat from "./components/Chat";
+
+let store = createStore(reducers);
+
+render(
+  <Provider store={store}>
+    <Chat />
+  </Provider>,
+  document.getElementById("app")
+);
+```
+
+---
+
+<SlideHeader slideTitle="Le store Redux" />
+
+#### Le composant Provider de Redux
+
+- Donne à vos composants l'accès au store Redux
+
+```jsx
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("app")
+);
+```
+
+---
+
+<SlideHeader slideTitle="Le store Redux" />
+
+#### Le store redux
+
+- Le store est un objet JS contenant l’état de votre application
+- Pour le modifier on passe par un reducer qui va générer un nouvel état
+- Avec Redux, on crée un store avec la fonction createStore :
+
+```js
+let store = createStore(reducers);
+```
+
+---
+
+<SlideHeader slideTitle="Les actions Redux" />
+
+#### Les actions redux
+
+- C’est un simple objet JS
+- Il a obligatoirement une propriété "type"
+- Il peut avoir d'autres attributs (description, id…)
+
+---
+
+<SlideHeader slideTitle="Implémentation Redux" />
+
+#### Créer les actions Redux ✅
+
+```js
+// actions/messages.js
+export const addMessage = (message, username) => {
+  return {
+    type: "ADD_MESSAGE",
+    message,
+    username,
+  };
+};
+```
+
+---
+
+<SlideHeader slideTitle="Les reducers Redux" />
+
+#### Les reducers Redux
+
+- Un reducer est une fonction pure, sans état
+- Il prend en paramètre un state et une action, pour retourner un nouvel état
+- (state, action) => newState
+- Il décrit comment une action va modifier un state donné
+- Il considère l’action en paramètre afin de créer un nouvel état
+
+---
+
+<SlideHeader slideTitle="Les reducers Redux" />
+
+#### Les reducers Redux : fonctions pures
+
+- Un reducer est déterministe (si on l’appelle 30 fois avec les mêmes
+  paramètres, elle renvoie 30 fois le même résultat) ;
+- Un reducer ne modifie pas ses paramètres
+- Un reducer ne modifie aucune autre ressource externe
+
+---
+
+<SlideHeader slideTitle="Implémentation Redux" />
+
+#### Créer les reducers Redux ✅
+
+```js
+// reducers/message.js
+
+const INITIAL_STATE = {
+  entities: [],
+};
+
+const messages = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    case "ADD_MESSAGE":
+      return {
+        entities: [
+          ...state.entities,
+          { body: action.message, username: action.username },
+        ],
+      };
+
+    default:
+      return state;
+  }
+};
+```
+
+---
+
+<SlideHeader slideTitle="Implémentation Redux" />
+
+#### Combiner les reducers Redux ✅
+
+```js
+import { combineReducers } from "redux";
+import messages from "./messages";
+
+const reducers = combineReducers({
+  messages,
+});
+
+export default reducers;
+```
+
+---
+
+<SlideHeader slideTitle="Implémentation Redux" />
+
+#### La méthode connect()
+
+- Pour qu’un composant React ait effectivement accès au store, il faut le
+  connecter au store
+- On utilise la fonction
+  **<a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options">connect()</a>**
+  de Redux sur le composant désiré
+
+---
+
+<SlideHeader slideTitle="Implémentation Redux" />
+
+#### Connectez vos composants (1/2) ✅
+
+```jsx
+import React from "react";
+import { connect } from "react-redux";
+import { addMessage } from "./actions/messages";
+
+const mapStateToProps = (state) => {
+  return {
+    messages: state.messages.entities,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddMessage: (message, username) => {
+      dispatch(addMessage(message, username));
+    },
+  };
+};
+
+const Chat = ({ messages, onAddMessage }) => {
+  return <div>Chat</div>;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+```
+
+---
+
+<SlideHeader slideTitle="Implémentation Redux" />
+
+#### Connectez vos composants (1/2) ✅
+
+- **mapStateToProps** : injecte le state de vos reducers dans les props de vos
+  composants
+- **mapDispatchToProps** : injecte les fonctions permettant de créer les actions
+  dans vos composants
+
+---
+
+<SlideHeader slideTitle="Redux et les hooks" />
+
+#### Avec les hooks ⚓️
+
+```jsx
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addMessage } from "./actions/messages";
+
+const Chat = () => {
+  const dispatch = useDispatch();
+  const messages = useSelector((state) => state.messages.entities);
+
+  const message = "Hello";
+  const username = "Toms";
+
+  return (
+    <div>
+      <button onClick={() => dispatch(addMessage(message, username))}>
+        Add message
+      </button>
+      Chat
+    </div>
+  );
+};
+```
+
+---
+
+<SlideHeader slideTitle="Redux : gérer ses fichiers" />
+
+#### Redux : organiser les fichiers
+
+- Il faut séparer dans des dossiers les différents élements :
+  - Les reducers dans le dossier **/reducers**
+  - Les actions dans le dossier **/actions**
+  - Les constantes dans le dossier **/constants**
+
+---
+
+<SlideHeader slideTitle="Mise en pratique : Redux" />
+
+##### 📐🤓 <b>Redux</b> : au boulot !
+
+- http://redux.js.org/
+- Ajouter la librairie **Redux** au JoliChat
+- Passer l'ajout de message **en Redux**
+  - Création du reducer
+  - Ajout de l'action
+  - Connexion des composants
+
+---
+
+<SlideHeader slideTitle="Appel asynchrone Redux" />
+
+#### Gérer les appels asynchrones
+
+- De base Redux ne gère pas les appels asynchrones
+- Il faut utiliser la librairie
+  [Redux Thunk](https://github.com/gaearon/redux-thunk)
+- Permet de retourner une fonction ou une Promise au lieu de retourner une
+  action
+- On peut donc facilement appeler une API avec Fetch
+
+---
+
+<SlideHeader slideTitle="Appel asynchrone Redux" />
+
+#### Gérer les appels asynchrones
+
+```js
+function getMessages() {
+  return (dispatch) => {
+    dispatch({ type: GET_MESSAGES_PENDING });
+
+    return fetch("https://api.example.com/message")
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch({ type: GET_MESSAGES_SUCCESS, messages: json.messages });
+      })
+      .catch((err) => dispatch({ type: GET_MESSAGES_ERROR, error: err }));
+  };
+}
+```
+
+---
+
+<SlideHeader slideTitle="Mise en pratique : l'asynchrone avec Redux" />
+
+##### 📐🤓 <b>Redux</b> : l'asynchrone avec Redux
+
+- Ajouter la librairie **[Redux Thunk](https://github.com/gaearon/redux-thunk)**
+  au JoliChat
+- Utilisez
+  https://my-json-server.typicode.com/tlenclos/formation-react-fake-server/messages
+  et le client http [Axios](https://github.com/mzabriskie/axios)
+- Initialiser le chat avec des messages
+  - Créer trois actions :
+    - LOAD_MESSAGES_PENDING
+    - LOAD_MESSAGES_SUCCESS
+    - LOAD_MESSAGES_ERRO
+
+</Slides>

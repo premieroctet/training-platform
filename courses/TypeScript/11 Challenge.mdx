@@ -1,0 +1,88 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides>
+
+<ChapterHeading title="Type Challenges 🤯" backgroundColor="#e55039" />
+
+---
+
+<SlideHeader slideTitle="Type Challenges" />
+
+#### 🤔 Challenge #1
+
+Implémentez un `Readonly` custom
+
+```typescript
+interface Todo {
+  title: string;
+  description: string;
+}
+
+const todo: MyReadonly<Todo> = {
+  title: "Hey",
+  description: "foobar",
+};
+
+todo.title = "Hello"; // Error: cannot reassign a readonly property
+```
+
+<Box mt={6}>
+  <small>💡 Utilisez un mapped type et keyof</small>
+</Box>
+
+---
+
+<SlideHeader slideTitle="Type Challenges" />
+
+#### 🤔 Challenge #2
+
+Implémentez un `Pick` custom
+
+```typescript
+interface Todo {
+  title: string;
+  description: string;
+  completed: boolean;
+}
+
+type TodoPreview = MyPick<Todo, "title" | "completed">;
+
+const todo: TodoPreview = {
+  title: "Clean room",
+  completed: false,
+};
+```
+
+<Box mt={6}>
+  <small>💡 Utilisez un mapped type et keyof</small>
+</Box>
+
+---
+
+<SlideHeader slideTitle="Type Challenges" />
+
+#### 🤔 Challenge #3
+
+Implémentez un `Omit` custom
+
+```typescript
+interface Todo {
+  title: string;
+  description: string;
+  completed: boolean;
+}
+
+type TodoPreview = MyOmit<Todo, "description" | "title">;
+
+const todo: TodoPreview = {
+  completed: false,
+};
+```
+
+<Box mt={6}>
+  <small>💡 Utilisez un mapped type, keyof et Exclude</small>
+</Box>
+
+</Slides>

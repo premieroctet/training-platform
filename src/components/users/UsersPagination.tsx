@@ -14,7 +14,7 @@ import React from "react";
 // styles
 const baseStyles: ButtonProps = {
   w: 7,
-  fontSize: "1rem",
+  fontSize: "sm",
 };
 
 type Props = {
@@ -34,7 +34,7 @@ const UsersPagination = ({ maxPages, page, limit }: Props) => {
   });
 
   const handlePageChange = (nextPage: number) => {
-    Router.push(`/users?page=${nextPage}`);
+    Router.push(`/admin/users?page=${nextPage}`);
   };
 
   return (

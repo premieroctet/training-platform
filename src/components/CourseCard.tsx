@@ -2,11 +2,8 @@ import { Box, Stack, HStack } from "@chakra-ui/react";
 import { Text } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/react";
 import { getCourseCover } from "src/utils/courses";
-export type CourseType = {
-  title: string;
-  chapters: string[];
-  courseMap?: string | null;
-};
+import { CourseType } from "src/pages";
+
 export interface CourseCardProps {
   course: CourseType;
   isSelected: boolean;
@@ -39,17 +36,19 @@ const CourseCard = ({
       onClick={() => !isSelected && handleSelect(index)}
     >
       <HStack alignItems="flex-start">
-        <Box>
-          <Image
-            height="200"
-            width="100%"
-            src={getCourseCover(course)}
-            fit="cover"
-          />
+        <Box flex={1}>
+          <Image height="200" src={getCourseCover(course)} fit="cover" />
         </Box>
 
-        <Stack p={4} alignItems="flex-start">
-          <Text fontWeight="500">{course.title}</Text>
+        <Stack p={4} alignItems="flex-start" flex={1}>
+          <Text fontWeight="bold" fontSize={"md"}>
+            {course.info?.title ?? course?.title}
+          </Text>
+          {course?.info?.description && (
+            <Text fontWeight="400" noOfLines={4} fontSize="sm">
+              {course?.info?.description}
+            </Text>
+          )}
         </Stack>
       </HStack>
     </Box>

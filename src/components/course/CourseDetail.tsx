@@ -1,8 +1,8 @@
 import { Button, Box, Icon, Text, HStack, Image } from "@chakra-ui/react";
 import router from "next/router";
 import { MdFileDownload, MdPlayCircleOutline } from "react-icons/md";
+import { CourseType } from "src/pages";
 import { getCourseCover } from "src/utils/courses";
-import { CourseType } from "../CourseCard";
 import CourseMapPreview from "../CourseMapPreview";
 
 const CourseDetail = ({ course }: { course: CourseType }) => {
@@ -27,7 +27,7 @@ const CourseDetail = ({ course }: { course: CourseType }) => {
           aria-label="download"
         >
           <Icon color="primary.500" as={MdFileDownload} />
-          <Text fontSize="0.8rem" color="black" paddingLeft="1">
+          <Text fontSize="xs" color="black" paddingLeft="1">
             Télécharger le cours
           </Text>
         </Button>
@@ -37,12 +37,12 @@ const CourseDetail = ({ course }: { course: CourseType }) => {
           aria-label="play"
         >
           <Icon color="primary.500" as={MdPlayCircleOutline} />
-          <Text fontSize="0.8rem" color="black" paddingLeft="1">
+          <Text fontSize="xs" color="black" paddingLeft="1">
             Lancer le cours
           </Text>
         </Button>
       </HStack>
-
+      <Text paddingY={10}>{course?.info?.description}</Text>
       {course?.courseMap && <CourseMapPreview course={course} />}
     </Box>
   );

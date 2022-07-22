@@ -1,0 +1,97 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides>
+
+<ChapterHeading title="Déclarations" backgroundColor="#ffcccc" />
+
+---
+
+<SlideHeader slideTitle="Déclarations" />
+
+#### Librairies et types TypeScript
+
+Trois possibilités :
+
+- Types embarqués dans la librairie
+- Types disponibles dans un autre package (souvent sur [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped))
+- Types inexistants 😭
+
+---
+
+<SlideHeader slideTitle="Déclarations" />
+<Box display="inline-block" textAlign="center">
+  <small>Types embarqués dans la librairie</small>
+</Box>
+
+<a href="https://www.npmjs.com/package/@chakra-ui/react">
+  <Image
+    marginX="auto"
+    width="80%"
+    src={require("./assets/with-embed-types.png").default.src}
+  />
+</a>
+
+---
+
+<SlideHeader slideTitle="Déclarations" />
+
+<Box display="inline-block" textAlign="center">
+  <small>Types disponibles dans un autre package</small>
+</Box>
+
+<a href="https://www.npmjs.com/package/react">
+  <Image
+    marginX="auto"
+    width="80%"
+    src={require("./assets/with-types-dt.png").default.src}
+  />
+</a>
+
+---
+
+<SlideHeader slideTitle="Déclarations" />
+
+<a href="https://github.com/DefinitelyTyped/DefinitelyTyped">
+  <Image src={require("./assets/definitely-typed.png").default.src} />
+</a>
+
+---
+
+<SlideHeader slideTitle="Déclarations" />
+
+#### Déclaration de types
+
+- Se fait dans des fichiers `*.d.ts`
+- Doit-être inclus dans votre projet (`tsconfig.json` -> `include`)
+
+---
+
+<SlideHeader slideTitle="Déclarations" />
+
+#### Déclaration de types
+
+```typescript
+// types/nom-module.d.ts
+
+declare module "nom-module" {
+  const nomModule: {
+    hello: (world: string) => string;
+  };
+
+  export default nomModule;
+}
+```
+
+---
+
+<SlideHeader slideTitle="Déclarations" />
+
+#### 📐🤓 Déclarer des types
+
+- Ajoutez [@nanpx/slugify](https://www.npmjs.com/package/@nanpx/slugify) à votre projet
+- Utilisez `Slugify.parse(title)`
+- Déclarez les types manquants
+
+</Slides>

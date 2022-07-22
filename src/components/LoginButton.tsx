@@ -6,7 +6,7 @@ const LoginButton = (props: ButtonProps) => {
     <Button
       variant="outline"
       colorScheme="primary"
-      fontSize={"0.8rem"}
+      fontSize={"xs"}
       onClick={() => router.push("/auth/signin")}
       borderRadius="25px"
       {...props}

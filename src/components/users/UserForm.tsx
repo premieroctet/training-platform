@@ -1,14 +1,7 @@
 import { User } from ".prisma/client";
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
-import {
-  Checkbox,
-  Stack,
-  HStack,
-  VStack,
-  Text,
-  SimpleGrid,
-} from "@chakra-ui/react";
+import { Checkbox, HStack, VStack, Text, SimpleGrid } from "@chakra-ui/react";
 
 type Props = {
   user?: User;
@@ -50,7 +43,7 @@ const UserForm = ({ user, courses }: Props) => {
                 value={course}
                 defaultChecked={user?.courses.includes(course)}
               >
-                <Text fontSize="1rem"> {course}</Text>
+                <Text fontSize="sm"> {course}</Text>
               </Checkbox>
             ))}
           </SimpleGrid>
@@ -61,7 +54,7 @@ const UserForm = ({ user, courses }: Props) => {
           variant="solid"
           marginLeft="xs"
           border="1px"
-          fontSize="1rem"
+          fontSize="sm"
         >
           Sauvegarder
         </Button>

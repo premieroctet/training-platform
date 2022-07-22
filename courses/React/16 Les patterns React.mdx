@@ -1,0 +1,231 @@
+import { Image } from "@chakra-ui/image";
+import { Stack } from "@chakra-ui/layout";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="Les patterns React" course="Formation React">
+
+<ChapterHeading title="Les patterns React" />
+
+---
+
+###### <b>Component with children</b>
+
+---
+
+<SlideHeader slideTitle="Component with children" />
+
+#### On peut inclure un composant dans un autre
+
+- Grâce à la props <b>this.props.children</b> (interne à React)
+
+```jsx
+const ComponentWithHeader = (props) => (
+  <div>
+    <header>My header</header>
+    <section>{this.props.children}</section>
+  </div>
+);
+
+const App = () => (
+  <ComponentWithHeader>
+    <p>Hello :)</p>
+  </ComponentWithHeader>
+);
+render(<App />, document.getElementById("root"));
+```
+
+---
+
+###### <b>Composants container / présentation</b>
+
+---
+
+<SlideHeader slideTitle="Composants container et de présentation" />
+
+#### Séparer les composants en deux catégories:
+
+- Composants **container**
+  - **Data-fetching**
+  - Liés aux données et aux actions possibles
+- Composants de **présentation**
+  - **Rendering**
+  - Affichage et style, ils reçoivent des données et des fonctions en props
+
+---
+
+<SlideHeader slideTitle="Composants container" />
+
+#### Caractéristiques d'un composant container:
+
+- Définit **comment on récupère les données**
+- Pas/peu de **markup JSX**. Pas de styles.
+- Fournit **les données** aux composants de présentation
+
+---
+
+<SlideHeader slideTitle="Exemple de container" />
+
+```jsx
+class CommentListContainer extends React.Component {
+  constructor() {
+    super();
+    this.state = { comments: [] };
+  }
+  componentDidMount() {
+    fetch("/comments")
+      .then((resp) => resp.json())
+      .then((comments) => {
+        this.setState({ comments: comments });
+      });
+  }
+  render() {
+    return <CommentList comments={this.state.comments} />;
+  }
+}
+```
+
+---
+
+<SlideHeader slideTitle="Composant de présentation" />
+
+#### Caractéristiques d'un composant de présentation:
+
+- Définit **l'aspect esthétique**
+- **Peu de dépendances** avec l'application
+- Ne renseigne pas sur **le moyen de récupération** des données
+- Reçoit les données uniquement **par les props**
+- Composant souvent **stateless**
+
+---
+
+<SlideHeader slideTitle="Exemple d'un composant de présentation" />
+
+```jsx
+export default CommentList = (props) => {
+  <ul>
+    {props.comments.map(({ body, author }) => (
+      <li>
+        {body}—{author}
+      </li>
+    ))}
+  </ul>;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Composants container et de présentation" />
+
+#### Bénéfices de ce motif de conception:
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Séparation des couches (données/rendu)
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Réutilisation des composants de présentation
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Evite la duplication des composants
+  </ListItem>
+</List>
+
+---
+
+<SlideHeader slideTitle="Container/Présentation: résumé" />
+
+<Stack flexDirection="row" justifyContent="stretch" fontSize="0.6em">
+<div width="50%">
+
+#### Container
+
+- Comment les choses **marchent**
+- **Connait** l'architecture de l'app
+- S'occupe de la **récupération des données**
+
+</div>
+<div width="50%">
+
+#### Présentation
+
+- Comment les choses **s'affichent**
+- Isolé
+- **Affiche** les données
+- Réutilisable
+
+</div>
+</Stack>
+
+---
+
+<SlideHeader slideTitle="Mise en pratique : container" />
+
+##### 📐🤓 <b>Containers</b> : mise en pratique
+
+- Séparer le composant **MessageList** en deux composants:
+  - Un container qui gère la liaison avec Redux
+  - Un composant de présentation avec essentiellement du JSX / CSS
+
+---
+
+###### <b>Higher-order components</b>
+
+---
+
+<SlideHeader slideTitle="Higher-order components" />
+
+#### Les Higher-order components (HOC) ✨
+
+- C'est un pattern permettant de rendre les composants **plus modulaires**
+- Permet de wrapper un composant dans un autre pour le "décorer"
+- C'est le principe de **composition**
+
+---
+
+<SlideHeader slideTitle="Higher-order components : exemple" />
+
+```jsx
+const makeToggleable = (WrappedComponent) => {
+  return class ToggleableComponent extends Component {
+    constructor(props) {
+      super(props);
+      this.state = { toggled: true };
+    }
+
+    render() {
+      return (
+        <div>
+          <button
+            onClick={() => this.setState({ toggled: !this.state.toggled })}
+          >
+            {this.state.toggled ? "Masquer" : "Afficher"}
+          </button>
+          {this.state.toggled && <WrappedComponent {...this.props} />}
+        </div>
+      );
+    }
+  };
+};
+
+export default makeToggleable;
+// Utilisation: makeToggleable(MyComponent)
+```
+
+---
+
+<SlideHeader slideTitle="React patterns : lecture" />
+
+##### **React patterns :** un peu de lecture 📚
+
+- Container -
+  [Presentational and Container Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)
+- FaCC -
+  [Function as Child Components](https://medium.com/merrickchristensen/function-as-child-components-5f3920a9ace9)
+- HOC -
+  [React Higher Order Components in depth](https://medium.com/@franleplant/react-higher-order-components-in-depth-cf9032ee6c3e)
+
+</Slides>

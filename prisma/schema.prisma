@@ -58,3 +58,12 @@ model VerificationRequest {
 
   @@unique([identifier, token])
 }
+
+model Training {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  courseFile   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

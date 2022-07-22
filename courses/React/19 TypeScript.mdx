@@ -1,0 +1,96 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="Typescript" course="Formation React">
+
+<SlideHeader slideTitle="Typescript" />
+
+#### TypeScript - https://www.typescriptlang.org/
+
+<Image
+  src={require("./assets/typescript.png").default.src}
+  width="90%"
+  m="0 auto"
+/>
+
+---
+
+<SlideHeader slideTitle="Typescript" />
+
+#### TypeScript permet de:
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Typer votre application statiquement
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Fiabiliser le code et son apprentissage
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Documenter votre code
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCancel} color="green.300" />
+    Ajoute du temps de développement
+  </ListItem>
+</List>
+
+---
+
+<SlideHeader slideTitle="Typescript: exemple" />
+
+#### Exemple
+
+```typescript
+interface Person {
+  firstName: string;
+  lastName: string;
+}
+
+function greeter(person: Person) {
+  return "Hello, " + person.firstName + " " + person.lastName;
+}
+
+let user = { firstName: "Jane", lastName: "User" };
+
+document.body.textContent = greeter(user);
+```
+
+---
+
+<SlideHeader slideTitle="Typescript: React" />
+
+https://react-typescript-cheatsheet.netlify.app/
+
+```tsx
+interface Props {
+  todo: Todo
+}
+
+interface State {
+  onEdit: boolean
+}
+
+const Item: React.FC<Props> = ({ todo }) => {
+  const editInput = createRef<HTMLInputElement>()
+  const [state, setState] = useState<State>({ onEdit: false })
+
+  const onClick = (): void => {
+    setState({ onEdit: true })
+  }
+
+  const onBlurEdit = (e: React.FocusEvent<HTMLInputElement>): void => {
+    if (e.currentTarget.value.trim().length > 0) {
+      setState({ onEdit: false })
+    } else {
+      removeItem(todo.id)
+    }
+  }
+...
+```
+
+</Slides>

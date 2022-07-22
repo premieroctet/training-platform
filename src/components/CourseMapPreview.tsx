@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
+import { CourseType } from "src/pages";
 import MDXProvider from "./mdx/MDXProvider";
-import { CourseType } from "./CourseCard";
 
 const CourseMapPreview = ({ course }: { course: CourseType }) => {
   const MDContent = dynamic(

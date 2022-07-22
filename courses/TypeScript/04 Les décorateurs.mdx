@@ -1,0 +1,164 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides>
+
+<ChapterHeading title="Les décorateurs" backgroundColor="#2ed573" />
+
+---
+
+<SlideHeader slideTitle="Les décorateurs" />
+
+#### Les décorateurs 💄
+
+Les décorateurs permettent de modifier le comportement d'un élément lors du runtime et prennent la forme de fonction. Ils sont appelés grâce à une expression `@NomDuDécorateur`
+
+---
+
+<SlideHeader slideTitle="Les décorateurs" />
+
+#### Les décorateurs 💄
+
+Ils sont souvent utilisés pour des tâche techniques :
+
+- Logger des action
+- Ajouter des métadonnées
+- …
+
+---
+
+<SlideHeader slideTitle="Les décorateurs" />
+
+#### Les décorateurs 💄
+
+- Non standardisés dans la spécification ECMA
+- Indroduit par la version 1.5 de TypeScript
+
+Il faut les activer dans la config TS :
+
+```json
+{
+  "experimentalDecorators": true,
+  "emitDecoratorMetadata": true
+}
+```
+
+---
+
+<SlideHeader slideTitle="Les décorateurs" />
+
+#### Les décorateurs 💄
+
+- Fortement liés à la programmation orientée objet :
+  - Décorateur de classes
+  - Décorateur de méthodes
+  - Décorateur de propriétés
+  - Décorateur de paramètres
+
+---
+
+<SlideHeader slideTitle="Les décorateurs" />
+
+#### Rappel
+
+Les classes sont supportées depuis ES6, TypeScript ajoute la notion de visibilité :
+
+```
+class Post {
+	public title: string;
+	readonly viewCount: number = 100;
+
+	constructor(title: string) {
+		this.title = title;
+	}
+
+	public getTitle() {
+		return this.title;
+	}
+
+	protected slugify() {
+		return slugify(this.title);
+	}
+}
+```
+
+---
+
+<SlideHeader slideTitle="Les décorateurs" />
+
+#### Décorateurs de classes
+
+```typescript
+const LogClassName: ClassDecorator = (target) => console.log(target.name);
+
+@LogClassName
+class Post {
+  constructor(public title: string) {}
+}
+```
+
+---
+
+<SlideHeader slideTitle="Les décorateurs" />
+
+#### Décorateurs de méthodes
+
+```typescript
+const LogMethod: MethodDecorator = (target, key, descriptor) =>
+  console.log(target.name);
+
+class Post {
+  title: string;
+
+  constructor(public title: string) {
+    this.title = title;
+  }
+
+  @LogMethod
+  getTitle() {
+    return this.title;
+  }
+}
+```
+
+---
+
+<SlideHeader slideTitle="Les décorateurs" />
+
+#### Décorateurs de propriétés
+
+```typescript
+const OnUpdate: PropertyDecorator = (target, key) => {
+  // ...
+};
+
+class Post {
+  @OnUpdate
+  title: string;
+
+  constructor(public title: string) {
+    this.title = title;
+  }
+}
+```
+
+---
+
+<SlideHeader slideTitle="Les décorateurs" />
+
+#### Décorateurs de paramètres
+
+```typescript
+const LogParameter: ParameterDecorator = (target, key, parameterIndex) => {
+  // ...
+};
+
+class Post {
+  constructor(@LogParameter public title: string) {
+    this.title = title;
+  }
+}
+```
+
+</Slides>

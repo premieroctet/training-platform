@@ -66,7 +66,7 @@ export const getServerSideProps = async (
       });
 
       context.res.writeHead(301, {
-        Location: "/users",
+        Location: "/admin/users",
       });
       context.res.end();
     } catch (error) {
@@ -87,13 +87,12 @@ export const getServerSideProps = async (
 };
 
 const EditUserPage = ({
-  session,
   user,
   message,
   courses,
 }: inferSSRProps<typeof getServerSideProps>) => {
   return (
-    <Layout session={session} title="Stagiaires | Formations Premier Octet">
+    <Layout title="Stagiaires | Formations Premier Octet">
       <Center
         mx={"auto"}
         my={"8"}
@@ -102,12 +101,7 @@ const EditUserPage = ({
         background="white"
       >
         <Flex direction={"column"} justifyContent={"center"} p="4">
-          <Heading
-            size="md"
-            textAlign="center"
-            fontSize="1.5rem"
-            paddingTop={10}
-          >
+          <Heading size="md" textAlign="center" fontSize="lg" paddingTop={10}>
             Utilisateur {user.email}
           </Heading>
           <Message message={message} />

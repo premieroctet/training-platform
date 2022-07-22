@@ -59,10 +59,7 @@ export default function ChapterPage({
         isAdmin={isAdmin}
       >
         <FullScreen className="fullscreen-component" handle={handleFullScreen}>
-          <Layout
-            session={session}
-            title={`${course} | Formations Premier Octet`}
-          >
+          <Layout title={`${course} | Formations Premier Octet`}>
             <Flex
               w="100vw"
               h="100vh"

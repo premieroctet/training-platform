@@ -1,0 +1,363 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="JavaScript et EcmaScript" course="Formation React">
+
+<ChapterHeading
+  title="Javascript & ECMAScript"
+  imgSrc={require("../assets/backgrounds/history.jpg").default.src}
+/>
+
+---
+
+<SlideHeader slideTitle="ECMAScript vs JavaScript" />
+
+#### Pourquoi ECMAScript ?
+
+- **Apprendre et utiliser React** c'est utiliser la syntaxe ES6+ au quotidien
+- L'écosystème React est **récent** et adopte **les dernières syntaxes JS**
+- La maîtrise d'**ES6** est essentielle
+- Elle rend le code plus lisible & minimaliste
+
+---
+
+<SlideHeader slideTitle="ECMAScript vs JavaScript" />
+
+- **ECMAScript (ES)**: Spécification gérée par ECMA, normalisant à la fois le
+  JavaScript et le JScript (dans IE)
+
+  - ES1 - 1997
+  - ...
+  - ES5 - 2009
+  - ES6 - 2015
+  - ...
+  - ES10 (Juin 2019) 😎
+
+---
+
+<SlideHeader slideTitle="Variables const vs let" />
+
+#### Déclaration de variables
+
+- On oublie **var** 👋 et on utilise :
+
+  - **const** pour empêcher les changements de valeur ;
+  - **let** pour réduire son scope au bloc actuel ;
+
+```js
+const undefinedVariable; // Syntax Error
+const immutableVariable = 'foo';
+
+immutableVariable = 'bar'; // Type Error
+
+if (true) {
+  let variable = 'foo';
+}
+
+console.log(variable); // Reference Error
+```
+
+---
+
+<SlideHeader slideTitle="Arrays" />
+
+#### Arrays
+
+- Souvent utilisés avec React :
+
+  - Modifiables même si c'est déclaré via une constante, pourquoi ? 🤔
+  - Un tableau est un **objet**
+
+```js
+const t = [1, -1, 3];
+
+t.push(5);
+
+console.log(t.length); // 4 is printed
+console.log(t[1]); // -1 is printed
+
+t.forEach((value) => {
+  console.log(value); // numbers 1, -1, 3, 5 are printed, each to own line
+});
+```
+
+---
+
+<SlideHeader slideTitle="Arrays : forEach" />
+
+#### Arrays : forEach
+
+- **forEach** permet de boucler sur un tableau
+
+  - Appelle une fonction pour chaque élément du tableau
+  - Passe en paramètre la valeur et l'index
+
+```js
+const t = ["I", "love", "react"];
+
+t.forEach(function (value, index) {
+  console.log(value);
+});
+
+t.forEach((value, index) => {
+  console.log(value);
+});
+
+t.forEach((value) => {
+  console.log(value);
+});
+```
+
+---
+
+<SlideHeader slideTitle="Arrays : map" />
+
+#### Arrays : map
+
+- **map** permet aussi de boucler sur un tableau mais il retourne un **nouveau**
+  tableau
+
+```js
+const t = [1, 2, 3];
+
+const m1 = t.map((value) => value * 2);
+console.log(m1); // [2, 4, 6] is printed
+
+const m2 = t.map((value) => "<li>" + value + "</li>");
+console.log(m2); // [ '<li>1</li>', '<li>2</li>', '<li>3</li>' ] is printed
+```
+
+---
+
+<SlideHeader slideTitle="Arrays : map vs forEach" />
+
+#### Arrays : map vs forEach 🤜🤛
+
+- On utilise **forEach** pour parcourir un tableau
+- On utilise **map** pour créer un nouveau tableau à partir d'un autre
+
+---
+
+<SlideHeader slideTitle="Array : concat, filter" />
+
+#### Autres méthodes : concat, filter
+
+- **concat** créé un nouveau tableau (contrairement à push)
+- **filter** retourne un nouveau tableau filtré sur la condition donnée :
+
+```js
+const t = [3, 9, 1, 4];
+
+const t2 = t.concat(5);
+
+console.log(t); // [3, 9, 1, 4] is printed
+console.log(t2); // [3, 9, 1, 4, 5] is printed
+
+const t3 = t2.filter((value) => value > 3);
+console.log(t3); // [9, 4, 5] is printed
+```
+
+---
+
+<SlideHeader slideTitle="Classes" />
+
+#### Classes JavaScript
+
+- Pour la programmation orientée objet
+- Ancienne façon de déclarer un composant React
+
+```js
+class Member extends User {
+  constructor(email, isAdmin) {
+    super(email);
+    this.isAdmin = isAdmin;
+  }
+
+  isAdmin() {
+    return this.isAdmin;
+  }
+}
+```
+
+---
+
+<SlideHeader slideTitle="Spread / Déstructuration" />
+
+#### Spread Operator & Déstructuration ✨
+
+- Affecter par déstructuration (très utilisé avec React):
+
+```js
+var user = { username: "Mark", email: "mark@fb.com" };
+
+const { email, username } = user;
+console.log(email, username); // mark@fb.com Mark
+```
+
+- Spread opérateur (objet et tableau) :
+
+```js
+const user = { id: 3, firstName: "James", lastName: "Bond" };
+const userWithEmail = { ...user, email: "bond@jolicode.com" };
+
+const admin = ["MEMBER", "ADMIN"];
+const superAdmin = [...admin, "SUPERADMIN"]; // ["MEMBER", "ADMIN", "SUPERADMIN"]
+```
+
+---
+
+<SlideHeader slideTitle="Array : destructuring" />
+
+#### Spread Operator & Déstructuration ✨
+
+- Array destructuring :
+
+```js
+const items = ["Hello", "React"];
+
+const [item1, item2] = items;
+
+console.log(item1); // Hello
+console.log(item2); // React
+```
+
+---
+
+<SlideHeader slideTitle="Paramètres par défaut / templates" />
+
+#### Paramètres par défaut & templates
+
+- Meilleure gestion de la concaténation (by bye les + 👋
+- Utilisation du caractère `
+
+```js
+function spreadTheLove(techno = "React") {
+  return `I <3 ${techno} !`;
+}
+
+spreadTheLove(); // I <3 React !
+```
+
+---
+
+<SlideHeader slideTitle="Arrow functions" />
+
+#### ➡️ Arrow functions
+
+- Syntaxe courte déclarant des closures liées au contexte courant
+
+```js
+function sum(p1, p2) {
+  return p1 + p2;
+}
+
+const sum = (p1, p2) => {
+  return p1 + p2;
+};
+
+const sum = (p1, p2) => p1 + p2;
+```
+
+```js
+-const tSquared = t.map((p) => p * p)
++const tSquared = t.map(p => p * p)
+```
+
+---
+
+<SlideHeader slideTitle="Promesses" />
+
+#### 💌 Promesses
+
+- Pour réduire la complexité des appels asynchrones, ES6 introduit un nouveau
+  concept : les Promesses.
+
+```js
+// Sans promesses
+httpClient.get("/api/users/1", function (err, response) {
+  if (err) {
+    console.error("Could not fetch user");
+  } else {
+    console.log(JSON.parse(response));
+  }
+});
+
+// Avec promesses
+httpClient
+  .get("/api/users/1")
+  .then((response) => console.log(response))
+  .catch((err) => console.error(err))
+  .finally(() => console.log("always executed"));
+```
+
+---
+
+<SlideHeader slideTitle="Promesses" />
+
+#### 💌 Promesses
+
+- Implémentation + complexe, utilisation aisée
+
+```js
+function get(url) {
+  return new Promise(function (resolve, reject) {
+    client.get(url, function (err, text) {
+      if (err) {
+        reject(err); // erreur
+      } else {
+        resolve(text); // succès
+      }
+    });
+  });
+}
+```
+
+---
+
+<SlideHeader slideTitle="Promesses" />
+
+#### 💌 Promesses
+
+- Des promesses faciles avec async / await
+
+```js
+// Avec then()
+fetch("/api/users/1").then((user) => console.log(user));
+
+// Avec async / await
+const getUser = async () => {
+  const user = await fetch("/api/users/1");
+
+  return user;
+};
+
+const data = getUser();
+```
+
+---
+
+<SlideHeader slideTitle="Import / Module" />
+
+#### Import / Module
+
+- L'instruction **import** est utilisée pour importer des fonctions, des objets
+  ou des valeurs primitives exportées depuis un module externe (remplace le
+  **require()**).
+
+```js
+// src/monModule.js
+export default MonModule = () => {
+  console.log("hello");
+};
+
+export const myFunction = () => {
+  console.log("hello");
+};
+
+// index.js
+import MonModule from "./src/monModule";
+import { myFunction } from "./src/monModule";
+```
+
+</Slides>

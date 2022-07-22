@@ -10,7 +10,7 @@ const AvailableCourses = ({ courses }: { courses: CourseType[] }) => {
 
   return (
     <>
-      <Text width="100%" fontWeight="bold" fontSize="1.2rem">
+      <Text width="100%" fontWeight="bold" fontSize="md">
         {courses.length}{" "}
         {courses.length === 1 ? "cours disponible" : "cours disponibles"}
       </Text>

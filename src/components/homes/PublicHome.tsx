@@ -18,7 +18,7 @@ const PublicHome = () => {
           spacing={6}
         >
           <Heading fontSize="2rem" fontWeight="500">
-            Premier Octet Training Plateform
+            Premier Octet Training Platform
           </Heading>
           <Text>
             Connectez vous à votre compte pour accéder à l'ensemble de vos cours

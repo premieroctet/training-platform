@@ -1,0 +1,97 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="Internationalisation" course="Formation React">
+
+<ChapterHeading title="Internationalisation" />
+
+---
+
+<SlideHeader slideTitle="Internationalisation" />
+
+#### Internationalisation 🇫🇷🇺🇸🇬🇧
+
+- Permet de traduire votre application
+- Il existe de **nombreuses** librairies React :
+  - [yahoo/react-intl](https://github.com/yahoo/react-intl)
+  - [i18next/react-i18next](https://github.com/i18next/react-i18next)
+- La librairie de **Yahoo** reste la référence et la plus complète
+  <ListIcon as={MdCheckCircle} color="green.300" />
+
+---
+
+<SlideHeader slideTitle="Internationalisation: react-intl" />
+
+#### Librairie react-intl 👅
+
+- Développée par **Yahoo**, elle couvre de **nombreux aspects** :
+  - Gère les traductions
+  - Formatage des nombres
+  - Formatage des dates et des heures
+  - Temps relatif ("now", "yesterday"…)
+  - Formes plurielles
+  - Supporte + de 150 langues
+
+---
+
+<SlideHeader slideTitle="Internationalisation: react-intl" />
+
+##### **React-intl** : détection de la langue 🔍
+
+- **Plusieurs stratégies possibles :**
+  - Langue du navigateur
+  - Locale présente dans le header
+  - Détection custom (IP, SaaS …)
+
+---
+
+<SlideHeader slideTitle="Internationalisation: react-intl" />
+
+##### **React-intl** : implémentation 💻
+
+- Le composant **IntlProvider** permet d'initialiser la librairie
+
+```jsx
+import { IntlProvider } from "react-intl";
+
+const locale = "en";
+import messagesFr from "./translations/fr.json";
+import messagesEn from "./translations/en.json";
+
+const messages = {
+  fr: messagesFr,
+  en: messagesEn,
+};
+
+const component = (
+  <IntlProvider locale={locale} messages={messages[locale]}>
+    <Chat />
+  </IntlProvider>
+);
+
+ReactDOM.render(component, document.getElementById("app"));
+```
+
+---
+
+<SlideHeader slideTitle="Internationalisation: react-intl" />
+
+##### **React-intl** : implémentation 💻
+
+- Le composant **FormattedMessage** permet de traduire les chaines :
+
+```jsx
+import { FormattedMessage } from "react-intl";
+
+const message = (
+  <h1>
+    <FormattedMessage id="app.hello_world" />
+  </h1>
+);
+```
+
+- Un article assez complet existe détaillant la librairie :
+  ["React Internationalization – How To"](https://www.smashingmagazine.com/2017/01/internationalizing-react-apps/)📚
+
+</Slides>

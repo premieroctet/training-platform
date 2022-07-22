@@ -1,0 +1,68 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="introduction" course="Formation React">
+
+<ChapterHeading title="Optimiser son code ✨" />
+
+---
+
+<SlideHeader slideTitle="Optimiser son code" />
+
+#### Plusieurs leviers 🧞‍♂️
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>👉 React.memo() / PureComponent</ListItem>
+  <ListItem>👉 useMemo()</ListItem>
+  <ListItem>👉 Définir les key</ListItem>
+</List>
+
+---
+
+<SlideHeader slideTitle="Optimiser son code" />
+
+#### React.memo() / PureComponent ✋
+
+- Permet de bloquer le rendu si les props ne changent pas :
+
+```jsx
+import React, { PureComponent, memo } from "react";
+
+// Functionnal component
+const UserList = memo((props) => {
+  // jsx
+});
+
+// Class component
+class UserList extends PureComponent {}
+```
+
+---
+
+<SlideHeader slideTitle="Optimiser son code" />
+
+#### useMemo() 🔄
+
+- https://fr.reactjs.org/docs/hooks-reference.html#usememo
+- 🎣 Hook : utilisable uniquement dans un composant fonctionnel
+- Met en cache le résulat d'une fonction (selon ses paramètres)
+
+---
+
+<SlideHeader slideTitle="Optimiser son code" />
+
+#### Définir les keys 🔑
+
+- Il est important de définir l'attribut key dans des structures itératives
+- Permet à React d'éviter de recréer des composants lors de re-render
+
+```jsx
+import React;
+
+const UserList = ({users}) => {
+  return <>{users.map(user => <UserItem key={user.id} user={user} />)}</>
+};
+```
+
+</Slides>

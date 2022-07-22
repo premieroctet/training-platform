@@ -91,7 +91,6 @@ export const getServerSideProps = async (
 };
 
 const UsersPage = ({
-  session,
   users,
   maxPages,
   page,
@@ -99,7 +98,7 @@ const UsersPage = ({
   courses,
 }: inferSSRProps<typeof getServerSideProps>) => {
   return (
-    <Layout session={session} title="Stagiaires | Formations Premier Octet">
+    <Layout title="Stagiaires | Formations Premier Octet">
       <Center mx={"auto"} my={"8"} borderWidth="1px" borderRadius={"md"}>
         <Flex
           direction={"column"}
@@ -118,7 +117,7 @@ const UsersPage = ({
           <Message message={message} />
           <UsersTable users={users} />
           <UsersPagination maxPages={maxPages} page={page} limit={LIMIT} />
-          <Heading size="sm" mt={4} textAlign="center" fontSize="1.2rem">
+          <Heading size="sm" mt={4} textAlign="center" fontSize="md">
             Ajouter un stagiaire
           </Heading>
           <UserForm courses={courses} />

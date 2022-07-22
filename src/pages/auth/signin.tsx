@@ -77,7 +77,7 @@ export default function SignIn({ csrfToken }: Props) {
             fontSize={"sm"}
             onClick={() => signIn("github")}
           >
-            <Text fontSize="1rem" ml="10px">
+            <Text fontSize="sm" ml="10px">
               GitHub
             </Text>
           </Button>

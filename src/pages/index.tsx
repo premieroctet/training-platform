@@ -1,5 +1,6 @@
 import ConnectedHome from "@/components/homes/ConnectedHome";
 import PublicHome from "@/components/homes/PublicHome";
+import prisma from "@/lib/prisma";
 import { readdirSync } from "fs";
 import { GetServerSideProps } from "next";
 import { Session } from "next-auth";
@@ -11,6 +12,11 @@ export type CourseType = {
   title: string;
   chapters: string[];
   courseMap: string | null;
+  info?: {
+    title: string;
+    description: string;
+    courseFile?: string;
+  };
 };
 
 type Props = {
@@ -21,7 +27,7 @@ type Props = {
 
 const Home = ({ session, courses, demoCourse }: Props) => {
   return (
-    <Layout session={session} title="Formations Premier Octet">
+    <Layout title="Formations Premier Octet">
       {session ? (
         <ConnectedHome courses={courses} demoCourse={demoCourse} />
       ) : (
@@ -35,6 +41,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const session = await getSession(context);
+  const coursesInfo = await prisma.training.findMany();
+
   const coursesDirectory = path.join(process.cwd(), "courses");
   const allCourses = readdirSync(coursesDirectory)
     .filter((course) => {
@@ -49,7 +57,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         readdirSync(courseDirectory).find((name) => name.endsWith(".md")) ||
         null;
 
-      return { title: course, chapters, courseMap };
+      const courseInfo = coursesInfo.find((el) => el?.courseFile === course);
+
+      return {
+        title: course,
+        chapters,
+        courseMap,
+        info: courseInfo,
+      };
     })
     .filter(({ chapters }) => chapters.length > 0);
 
@@ -59,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
 
   const user = session?.user;
   const userCourses = noDemoCourses.filter(({ title }) => {
-    user?.courses && user?.courses.includes(title);
+    return user?.courses && user?.courses.includes(title);
   });
   const demoAdmin = allCourses.find((course) => {
     return course.title === "Demo Admin";

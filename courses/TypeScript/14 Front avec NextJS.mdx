@@ -1,0 +1,121 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides>
+
+<ChapterHeading title="📐🤓 Front avec Next.Js" backgroundColor="#6c5ce7" />
+
+---
+
+<SlideHeader slideTitle="📐🤓 Front avec Next.Js" />
+
+#### Découverte de Prisma
+
+Nous allons découvrir un nouveau **ORM TypeScript** : [Prisma](https://www.prisma.io/).
+
+- Ajoutez Prisma à votre projet Next.js précédemment créé :
+
+```
+yarn add --dev prisma
+npx prisma init
+```
+
+https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgres
+
+---
+
+<SlideHeader slideTitle="📐🤓 Front avec Next.Js" />
+
+#### Synchronisation de la BDD
+
+Modifier votre `.env` avec l'url de votre base de données
+
+```
+DATABASE_URL="postgresql://user:pwd@localhost:5432/bdd?schema=public"
+```
+
+Lancer la synchronisation :
+
+```
+npx prisma db pull
+```
+
+---
+
+<SlideHeader slideTitle="📐🤓 Front avec Next.Js" />
+
+#### Génération du client
+
+Installez et générez le client Prisma :
+
+```
+yarn add @prisma/client
+npx prisma generate
+```
+
+Ce client typé va nous permettre d'interroger notre base de données
+
+---
+
+<SlideHeader slideTitle="📐🤓 Front avec Next.Js" />
+
+#### Génération du client
+
+Récupérez vos données depuis le client :
+
+```
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const prismaClient = new PrismaClient()
+  const posts = await prismaClient.post.findMany({
+    select: { title: true, content: true },
+  })
+
+  prismaClient.$disconnect()
+
+  return { props: { posts } }
+}
+```
+
+---
+
+<SlideHeader slideTitle="📐🤓 Front avec Next.Js" />
+
+Créez un composant générique pour afficher vos données :
+
+```
+import React from "react"
+
+interface TableProps {
+  items: { id: string }[]
+  renderItem: (item: { id: string }) => React.ReactNode
+}
+
+export const Table = (props: TableProps) => {
+  return null
+}
+
+export const App = () => {
+  return (
+    <Table
+      items={[{ id: "1" }]}
+      renderItem={(item) => {
+        return null
+      }}
+    ></Table>
+  )
+}
+
+```
+
+---
+
+<SlideHeader slideTitle="" />
+
+#### Fin 🍻
+
+**Merci !** Des questions ?
+
+baptiste@premieroctet.com
+
+</Slides>

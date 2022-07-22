@@ -21,7 +21,7 @@ const NavBar = ({ session }: Props) => {
           />
           <Text
             margin="0px!important"
-            fontSize="1rem"
+            fontSize="sm"
             fontWeight="bold"
             color="primary.500"
             textTransform="uppercase"

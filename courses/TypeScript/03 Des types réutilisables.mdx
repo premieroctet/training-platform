@@ -1,0 +1,82 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides>
+
+<ChapterHeading title="Des types réutilisables" backgroundColor="#fab1a0" />
+
+---
+
+<SlideHeader slideTitle="Des types réutilisables" />
+
+#### Alias et Interfaces
+
+Jusqu'ici on déclarait directement les types. Il y a deux moyens **de réutiliser ses types** :
+
+- Les alias de types
+- Les interfaces
+
+---
+
+<SlideHeader slideTitle="Des types réutilisables" />
+
+#### Les alias de type
+
+Afin de réutiliser un type, on peut créer un <mark>alias</mark> :
+
+```typescript
+type User = {
+  name: string;
+  address: {
+    street: string;
+    city: string;
+  };
+};
+
+const user: User;
+```
+
+---
+
+<SlideHeader slideTitle="Des types réutilisables" />
+
+#### Les interfaces
+
+On peut aussi créer une <mark>interface</mark> :
+
+```typescript
+interface User {
+  name: string;
+  address: {
+    street: string;
+    city: string;
+  };
+}
+
+const user: User;
+```
+
+---
+
+<SlideHeader slideTitle="Des types réutilisables" />
+
+#### Alias VS Interfaces ⚡️
+
+Quasi identiques, mais quelques différences :
+
+- Un alias <mark>ne peut-être étendu</mark> par un autre alias
+- Les déclaration d'une même interface peut se situer <mark>dans plusieurs fichiers</mark> (fusion)
+- Une interface ne peut pas utiliser directement <mark>un type primaire</mark>
+
+---
+
+<SlideHeader slideTitle="Des types réutilisables" />
+
+#### Alias / Interfaces : que choisir ?
+
+For the most part, you can choose based on personal preference, and TypeScript will tell you if it needs something to be the other kind of declaration. <mark>If you would like a heuristic, use interface until you need to use features from type.</mark>
+
+https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces
+
+</Slides>

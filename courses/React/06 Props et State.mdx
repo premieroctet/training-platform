@@ -1,0 +1,256 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="Les Props et le State" course="Formation React">
+
+<ChapterHeading title="Les props" />
+
+---
+
+<SlideHeader slideTitle="Composants : les props" />
+
+#### Les props
+
+- Les props (propriétés) **sont disponibles dans tout les composants**
+- Elles sont passées en **attributs du composant**
+- Un composant **ne doit jamais modifier ses props** ⚠️
+
+---
+
+<SlideHeader slideTitle="Composants : les props" />
+
+#### Accéder aux props : composant de classe
+
+- On y accède via **this.props**
+
+```jsx
+<Avatar pictureUrl="http://i.imgur.com/lqKlotB.png" />;
+
+class Avatar extends Component {
+  render() {
+    return <div>{this.props.pictureUrl}</div>;
+  }
+}
+```
+
+---
+
+<SlideHeader slideTitle="Composants : les props" />
+
+#### Accéder aux props : composant fonctionnel
+
+- Elles sont passées **en paramètres** de la fonction
+
+```jsx
+<Avatar pictureUrl="http://i.imgur.com/lqKlotB.png" />;
+
+const Avatar = (props) => {
+  return <div>{props.pictureUrl}</div>;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Composants : les props" />
+
+#### Prop types : valider ses props 👮
+
+- Vous pouvre indiquer la structure de
+  [vos props](https://reactjs.org/docs/typechecking-with-proptypes.html)
+- Permet de valider ce qui est passé **au composant**
+- Il faut ajouter le package : `yarn add prop-types`
+
+```jsx
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+class MyComponent extends Component {
+  render() {
+    return <div>{this.props.text}</div>;
+  }
+}
+
+MyComponent.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+```
+
+---
+
+<ChapterHeading title="Le state" />
+
+---
+
+<SlideHeader slideTitle="Composants : l'état" />
+
+#### L'état d'un composant (state)
+
+- Ce sont des variables **internes** au composant
+- Un composant peut **ne pas avoir de state** (stateless)
+- Le state **est modifié** par le composant lui-même (contrairement aux props)
+
+---
+
+<SlideHeader slideTitle="Composants : l'état" />
+
+#### State : composant de classe
+
+- Le state est **initialisé dans le constructeur** du composant
+- On met à jour l'état via la méthode **this.setState()** du composant
+
+---
+
+<SlideHeader slideTitle="State : composant de classe" />
+
+```jsx
+import React, { Component } from "react";
+
+class Counter extends Component {
+  constructor(props) {
+    super(props); // Propriétés du composant
+    this.state = { counter: 1 }; // Etat du composant
+  }
+
+  increment() {
+    this.setState({ counter: this.state.counter + 1 });
+  }
+
+  render() {
+    return <button onClick={this.increment}>{this.state.counter}</button>;
+  }
+}
+```
+
+---
+
+<SlideHeader slideTitle="Composants : l'état" />
+
+#### State : composant fonctionnel
+
+- Possible depuis **React 16.8**
+- Utilisation du hook **useState()**
+
+```jsx
+import React, { useState } from "react";
+
+const Counter = () => {
+  const [counter, setCounter] = useState(1);
+  const increment = () => setCounter(counter + 1);
+
+  return <button onClick={increment}>{counter}</button>;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Composants : l'état" />
+
+#### Le hook useState
+
+- Il prend en paramètre **l'état initial** (pas forcément un objet)
+- Il retourne un tableau **avec deux entrées**
+
+  - La valeur courante
+  - Le setter pour modifier la valeur
+
+```js
+const [username, setUsername] = useState("");
+
+// Same as
+const data = useState("");
+const username = data[0];
+const setUsername = data[1];
+```
+
+---
+
+<SlideHeader slideTitle="Composants : l'état" />
+
+#### Le state : bonne pratique n°1 ✅️
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    👉️{" "}
+    <a href="http://brewhouse.io/blog/2015/03/24/best-practices-for-component-state-in-reactjs.html#if-a-component-does-not-own-a-datum-then-that-datum-should-not-influence-its-state">
+      Ne pas injecter <b>les props dans le state</b>
+    </a>
+  </ListItem>
+</List>
+
+```jsx
+const UserWidget = (props) => {
+  const [fullName, setFullName] = useState(
+    `${props.firstName} ${props.lastName}`
+  );
+
+  return (
+    <div>
+      <Image src={props.picture} />
+      <h2>{fullName}</h2>
+    </div>
+  );
+};
+```
+
+---
+
+<SlideHeader slideTitle="Composants : l'état" />
+
+#### Le state : bonne pratique n°2 ✅️
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    👉️ Stocker les valeurs <b>les plus simples possibles et non calculées</b>{" "}
+    (1/2)
+  </ListItem>
+</List>
+
+```jsx
+const Avatar = () => {
+  const [imgClassName, setImgClassName] = useState("disable");
+
+  const handleMouseOver = () => {
+    setImgClassName("enable"); // Wrong
+  };
+
+  return (
+    <div>
+      <Image onMouseOver={handleMouseOver} className={imgClassName} />
+    </div>
+  );
+};
+```
+
+---
+
+<SlideHeader slideTitle="Composants : l'état" />
+
+#### Le state : bonne pratique n°2 ✅️
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    👉️ Stocker les valeurs <b>les plus simples possibles et non calculées</b>{" "}
+    (2/2)
+  </ListItem>
+</List>
+
+```jsx
+const Avatar = () => {
+  const [isHovering, setIsHovering] = useState(false);
+  const handleMouseOver = () => {
+    setIsHovering(true);
+  };
+
+  return (
+    <div>
+      <Image
+        onMouseOver={handleMouseOver}
+        className={isHovering ? "enable" : "disable"}
+      />
+    </div>
+  );
+};
+```
+
+</Slides>

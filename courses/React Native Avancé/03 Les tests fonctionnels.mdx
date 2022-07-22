@@ -1,0 +1,129 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="introduction" course="Formation React">
+
+<ChapterHeading title="Tests fonctionnels 🤖" />
+
+---
+
+<SlideHeader slideTitle="Tests fonctionnels" />
+
+#### Tests fonctionnels avec React Native Testing Library <Icon as={MdCheckCircle} color="green.300" />
+
+- Remplace Enzyme
+- Permet de rendre et manipuler des composants React
+- https://www.native-testing-library.com/
+
+```
+yarn add @testing-library/react-native
+```
+
+---
+
+<SlideHeader slideTitle="Tests fonctionnels" />
+
+#### React Native Testing Library : exemple
+
+```jsx
+const Login = () => {
+  const [name, setUser] = useState("");
+  const [show, setShow] = useState(false);
+
+  return (
+    <Container>
+      <SearchInput value={name} onChangeText={setUser} testID="input" />
+      <Button
+        title="Login"
+        testID="button"
+        onPress={() => {
+          setShow(!show);
+        }}
+      />
+      {show && <Text testID="printed-username">{name}</Text>}
+    </Container>
+  );
+};
+```
+
+---
+
+<SlideHeader slideTitle="Tests fonctionnels" />
+
+#### React Native Testing Library : exemple
+
+```jsx
+import React from "react";
+import { fireEvent, render } from "@testing-library/react-native";
+import Login from "./Login";
+
+test("test login", async () => {
+  const { getByTestId, queryByTestId } = render(<Login />);
+
+  const username = "Baptiste";
+
+  const input = getByTestId("input");
+  fireEvent.changeText(input, username);
+
+  const button = getByTestId("button");
+  fireEvent.press(button);
+
+  expect(queryByTestId("printed-username")).toBeTruthy();
+  expect(getByTestId("printed-username").props.children).toBe(username);
+});
+```
+
+---
+
+<SlideHeader slideTitle="Tests fonctionnels" />
+
+#### Mock de module 1/2
+
+```js
+// users.js
+import axios from "axios";
+
+class Users {
+  static all() {
+    return axios.get("/users.json").then((resp) => resp.data);
+  }
+}
+
+export default Users;
+```
+
+---
+
+<SlideHeader slideTitle="Tests fonctionnels" />
+
+#### Mock de module 2/2
+
+```js
+// users.test.js
+import axios from "axios";
+import Users from "./users";
+
+jest.mock("axios");
+
+test("should fetch users", () => {
+  const users = [{ name: "Bob" }];
+  const resp = { data: users };
+  axios.get.mockResolvedValue(resp);
+
+  return Users.all().then((data) => expect(data).toEqual(users));
+});
+```
+
+---
+
+<SlideHeader slideTitle="Mise en pratique : tests fonctionnels" />
+
+##### 📐🤓 <b>Tests fonctionnels</b> : mise en pratique
+
+- Créez un composant qui récupère une quote de Chuck Noris selon un mot donné
+- https://api.chucknorris.io/jokes/search?query=hello
+- Testez votre composant sans mock
+- Mockez l'appel HTTP
+
+</Slides>

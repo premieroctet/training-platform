@@ -1,0 +1,74 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="introduction" course="Formation React">
+
+<ChapterHeading title="Tests unitaires 🤖" />
+
+---
+
+<SlideHeader slideTitle="Tests unitaires" />
+
+#### Tests unitaires avec Jest <Icon as={MdCheckCircle} color="green.300" />
+
+- Librairie de tests et mock créée par Facebook
+- https://facebook.github.io/jest/
+- Par défaut dans React Native :
+
+```
+yarn test
+```
+
+---
+
+<SlideHeader slideTitle="Tests unitaires" />
+
+#### Jest : exemple
+
+```js
+export const arrayToMap = (items) => {
+  let result = {};
+
+  items.forEach((item) => {
+    result[item.id] = item;
+  });
+
+  return result;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Tests unitaires" />
+
+#### Jest : exemple
+
+```js
+import { arrayToMap } from "./transformers";
+
+describe("arrayToMap", () => {
+  it("should returns an object with key ids", () => {
+    const items = [
+      { id: 1, name: "Tom" },
+      { id: 2, name: "Jim" },
+    ];
+
+    expect(arrayToMap(items)).toStrictEqual({
+      1: { id: 1, name: "Tom" },
+      2: { id: 2, name: "Jim" },
+    });
+  });
+});
+```
+
+---
+
+<SlideHeader slideTitle="Tests unitaires" />
+
+#### Bonnes pratiques 🤓
+
+- Suffixez vos fichiers de tests par **\*.test.js**
+- Mettez votre fichier de test **au même niveau** que le fichier testé
+
+</Slides>

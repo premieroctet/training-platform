@@ -47,7 +47,7 @@ const ChaptersMenu: React.FC<ChaptersMenuProps> = ({
           <Box
             key={chapter}
             bgColor="whiteAlpha.800"
-            lineHeight="1.2rem"
+            lineHeight="md"
             p="12px"
             borderRadius="md"
             boxShadow="xs"
@@ -63,8 +63,8 @@ const ChaptersMenu: React.FC<ChaptersMenuProps> = ({
             }}
             onClick={() => handleChapterClick(chapter)}
           >
-            <Text fontSize="0.8rem">Chapitre {i + 1}</Text>
-            <Text fontWeight="bold" fontSize="1.5rem">
+            <Text fontSize="xs">Chapitre {i + 1}</Text>
+            <Text fontWeight="bold" fontSize="lg">
               {chapter.replace(/^[\d-]*\s*/, "")}
             </Text>
           </Box>

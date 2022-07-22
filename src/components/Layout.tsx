@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { Session } from "next-auth";
+import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
@@ -8,17 +8,16 @@ import NavBar from "./navigation/NavBar";
 type LayoutProps = {
   children?: ReactNode;
   title?: string;
-  session?: Session | null | undefined;
 };
 
 const Layout = ({
   children,
-  session,
   title = "Formations Premier Octet",
 }: LayoutProps) => {
   const router = useRouter();
   const isSlide = router.route === "/[course]/[chapter]";
   const print = router.query.print !== undefined;
+  const [session, _] = useSession();
 
   return (
     <Box backgroundColor="#f7f7f7" minH="100vh">

@@ -1,0 +1,40 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="introduction" course="Formation React">
+
+## Plongée dans Webpack et Babel
+
+### Première journée
+
+<h5 color="gray.500">
+  Baptiste Adrien -{" "}
+  {new Date().toLocaleDateString("fr", {
+    year: "numeric",
+    month: "long",
+  })}
+</h5>
+
+---
+
+<SlideHeader slideTitle="Démarrer un projet React" />
+
+#### Un projet React c'est :
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Du code (React / JS / Librairies)
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Un outil de transpilation (Babel)
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Un outil de build (Webpack)
+  </ListItem>
+</List>
+
+</Slides>

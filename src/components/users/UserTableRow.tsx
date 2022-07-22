@@ -27,7 +27,7 @@ const UserTableRow = ({ user, deleteUser }: Props) => {
             aria-label="Search database"
             icon={<EditIcon />}
             as={Link}
-            href={`/users/${user.id}`}
+            href={`/admin/users/${user.id}`}
           />
           <CloseButton
             onClick={() => {

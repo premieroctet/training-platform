@@ -1,0 +1,86 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides>
+
+<ChapterHeading title="Union et intersection" backgroundColor="#ff6b81" />
+
+---
+
+<SlideHeader slideTitle="Union et intersection" />
+
+#### Les opérations
+
+On peut combiner les types ou interfaces grâce aux opérations :
+
+- d'union (OR) `|`
+- d'intersection (AND) `&`
+
+---
+
+<SlideHeader slideTitle="Union et intersection" />
+
+#### Union
+
+- Avec une **union**, on peut accéder uniquement <mark>aux propriétés communes</mark>
+
+```typescript
+interface Guest {
+  ip: string;
+}
+
+interface User {
+  ip: string;
+  username: string;
+}
+
+// User { ip: string }
+type Vehicle = Bike | Car;
+```
+
+---
+
+<SlideHeader slideTitle="Union et intersection" />
+
+#### Intersection
+
+- Avec une **intersection**, on peut accéder à <mark>l'ensemble des propriétés</mark>
+
+```typescript
+interface Guest {
+  ip: string;
+}
+
+interface User {
+  ip: string;
+  username: string;
+}
+
+// User { ip: string, username: string }
+type User = Guest & User;
+```
+
+---
+
+<SlideHeader slideTitle="Union et intersection" />
+
+#### Intersection par héritage
+
+Les interfaces permettent d'étendre d'autres interfaces :
+
+```typescript
+interface BasicAddress {
+  name?: string;
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+
+interface AddressWithUnit extends BasicAddress {
+  unit: string;
+}
+```
+
+</Slides>

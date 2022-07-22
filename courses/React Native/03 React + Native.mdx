@@ -1,0 +1,416 @@
+<Slides>
+
+<ChapterHeading
+  title="React"
+  imgSrc={require("../assets/backgrounds/atom-wallpaper.jpg").default.src}
+/>
+
+---
+
+<SlideHeader slideTitle="React" />
+<Image
+  src={require("../assets/logos/react-logo-full.png").default.src}
+  alignSelf="start"
+  height="15%"
+/>
+
+https://facebook.github.io/react ✌️
+
+- Développé par Facebook depuis 2013
+- **Librairie** pour gérer **l'interface et le binding de données**
+- Représente la vue comme un ensemble de **composants hiérarchiques**
+- Bien maîtriser **React et ses paradigmes** c'est bien maîtriser **React
+  Native**
+
+---
+
+<SlideHeader slideTitle="Intérêts de React" />
+
+- Apporte une **modularité** en composants
+- Désamorce **la complexité** des architectures (Redux) 💓
+- Gains de **performance** (Virtual DOM) ⚡️
+- Apporte un **niveau de raffinement** (ergonomie, UX, feedback)
+- **Isomorphique** (rendu client & serveur)
+- Débloque le niveau **React-Native** 😎
+
+---
+
+<SlideHeader slideTitle="Utilisations" />
+
+- Utilisé par de **nombreuses entreprises:**
+  - Facebook, Instagram, Twitter
+  - Netflix, Airbnb, Tesla…
+- Utilisé en production: **performances & scalabilité**
+- Une grosse communauté **contribue** à React (entreprises & particuliers)
+
+---
+
+<SlideHeader slideTitle="React: bonnes pratiques" />
+
+- [Webpack](https://webpack.github.io/docs/) comme outil de build
+- Utiliser [la syntaxe ES6](https://babeljs.io/learn-es2015/)💓
+- Utiliser une architecture de données ([Redux](http://redux.js.org/),
+  [React Query](https://react-query.tanstack.com/))
+- Pratiquer ! (courbe d'apprentissage assez rapide) 🤓
+
+---
+
+<SlideHeader slideTitle="Anatomie d'un composant React" />
+
+- L'élément central de React est le **composant**, constitué de:
+  - Des **propriétés** (props)
+  - Un **état** (state)
+  - Des **événements** (lifecycle events)
+  - Une **vue** (render view)
+- Un composant est contrôlé par des **props** et un **state**
+- Un application React consiste en une imbrication de composants
+- Un composant est une **fonction** prenant des paramètres (props) et retournant
+  du markup
+
+---
+
+<SlideHeader slideTitle="Les propriétés (props)" />
+
+#### **Les props**
+
+- https://facebook.github.io/react-native/docs/props.html
+- Elles permettent de personnaliser un composant
+- Renseignées par le parent
+- Elles sont en **lecture seules** ⚠️
+- Accessibles dans un composant avec **this.props**
+
+```jsx
+<Avatar pictureUrl="http://i.imgur.com/lqKlotB.png" />;
+
+this.props.pictureUrl; // Inside the component
+```
+
+---
+
+<SlideHeader slideTitle="L'état (state)" />
+
+#### **Le state**
+
+- https://facebook.github.io/react-native/docs/state.html
+- Ce sont des variables **internes** au composants
+- Le state est **initialisé dans le constructeur** du composant ✅
+- Un composant peut **ne pas avoir de state** (stateless)
+- Un composant stateless est un **"Pure component"**
+
+---
+
+<SlideHeader slideTitle="Exemple de composant" />
+
+```jsx
+import React from "react";
+import PropTypes from "prop-types";
+
+const Carousel = (props) => {
+  const [currentSlide, setCurrentSlide] = React.useState(1);
+
+  return (
+    <>
+      {props.imagesUrls.map((url, index) => {
+        return <img src={url} className={currentSlide === index && "active"} />;
+      })}
+      <button onClick={() => setCurrentSlide(currentSlide + 1)}>Next</button>
+    </>
+  );
+};
+
+// On peut renseigner le types des propriétés et les valeurs par défaut
+Carousel.propTypes = { imagesUrls: PropTypes.array };
+Carousel.defaultProps = { imagesUrls: [] };
+```
+
+---
+
+<SlideHeader slideTitle="Communication entre composants" />
+
+- Composant **parent vers enfant**
+  - On utilise les props
+- Composant **enfant vers parent**
+  - On utilise des callbacks passés en props
+- Données **internes** à un composant
+  - On utilise le **state**
+- Composant **parent vers petit petit petit fils** 👶
+  - On utilise les ~~props~~ ContextAPI ou Redux !
+
+---
+
+<SlideHeader slideTitle="Le markup de React: JSX" />
+
+- Un composant ne retourne pas directement du HTML mais du JSX
+- C'est un markup dérivé du HTML
+- Proche du HTML mais permet d'écrire des syntaxes plus complexes (conditions,
+  boucles …)
+
+---
+
+<SlideHeader slideTitle="JSX: choses à savoir" />
+
+- L'attribut "class" n'existe pas, il faut utiliser **className**
+  ([liste des différences](https://facebook.github.io/react/docs/dom-elements.html)
+- L'attibut style attend un **objet JavaScript**
+- Pour afficher conditionnellement une balise on peut utiliser l'opérateur
+  **&&**
+- Un composant peut retourner un autre composant
+
+---
+
+<SlideHeader slideTitle="Algorithme de rendu React" />
+
+- **Virtual DOM** - Représentation virtuelle du DOM navigateur (ou autre)
+- Lorsque le state ou les props **d'un composant changent**, un rendu est
+  déclenché
+- Différentiel entre deux arbres de rendus
+- Basé sur trois règles :
+  - 2 composants de la même classe vont générer des arbres similaires
+  - 2 composants différents vont générer des arbres différents
+  - Les composants enfants possèdent des clés uniques
+
+---
+
+<SlideHeader slideTitle="Cycle de vie" />
+<Image src={require("./assets/lifecycle.png").default.src} />
+
+---
+
+<SlideHeader slideTitle="Exercices !" />
+
+#### **Mise en pratique React** 📐🤓
+
+- Initialiser une app React avec
+  [facebook/create-react-app](https://github.com/facebook/create-react-app)
+
+---
+
+<ChapterHeading
+  title="React Native"
+  imgSrc={require("../assets/backgrounds/react-native-splash.jpg").default.src}
+/>
+
+---
+
+<SlideHeader slideTitle="React Native" />
+
+- Open source depuis avril 2015
+- Également propulsé par Facebook
+- Un showcase d'application déjà impressionnant
+  (https://facebook.github.io/react-native/showcase.html) :
+  - **Facebook, Discord, Facebook Ads Manager, Facebook Groups, Soundcloud...**
+
+<Image
+  src={require("../assets/logos/react-logo.png").default.src}
+  position="absolute"
+  top="10%"
+  right="10%"
+  height="25%"
+/>
+
+---
+
+<SlideHeader slideTitle="Architecture" />
+
+- Développement mobile en Javascript, interprété par un moteur JS (JSCore, V8,
+  Hermes...)
+- Expose les **APIs natives** du système
+- Application compilée : **performances identiques** aux applications
+  traditionnelles
+- Support d'iOS, d'Android et dans une moindre mesure de Windows, MacOS et
+  Ubuntu
+
+---
+
+<SlideHeader slideTitle="Architecture : runtime" />
+
+#### React Native = Native modules + Bridge + JS VM + JS modules
+
+<Image src={require("./assets/react-native-architecture.png").default.src} />
+
+---
+
+<SlideHeader slideTitle="Configuration de l’environnement de travail (React Native CLI)" />
+
+- Développement en **JavaScript** ✌️
+- Possibilité de descendre plus bas dans la chaîne de compilation avec **Xcode
+  et Android Studio**
+- De la **documentation** https://reactnative.dev/
+- Et pour démarrer correctement …
+  - https://reactnative.dev/docs/environment-setup
+
+---
+
+<SlideHeader slideTitle="Configuration de l’environnement de travail (React Native CLI)" />
+
+- Installation **d'Android Studio** et de **Xcode** (seulement sur Mac)
+- Installation dépendances JS
+- Watchman est optionnel mais accélère fortemment la compilation
+
+###### Mac only
+
+`$ brew install node`
+
+`$ brew install watchman`
+
+###### Everyone
+
+`$ npm install --global yarn`
+
+---
+
+<SlideHeader slideTitle="Votre première application (Native)" />
+
+`$ npx react-native init "NomDuProjet"`
+
+- Création des fichiers de template
+- Installation de react-native
+
+#### Pour lancer votre application :
+
+`$ cd "NomDuProjet"`
+
+`$ npx react-native run-ios`
+
+`$ npx react-native run-android `
+
+---
+
+<SlideHeader slideTitle="Votre première application (Expo)" />
+
+`$ npm install -g expo-cli`
+
+`$ expo init AwesomeProject`
+
+`$ cd AwesomeProject`
+
+`$ npm start`
+
+- Ne nécessite pas de compilation native 👌
+- Rapide, accessible mais incomplet
+- Nécessite l'application [Expo Go](https://expo.io/) sur votre téléphone
+
+---
+
+<SlideHeader slideTitle="Démo en ligne (snack.expo.io)" />
+
+<Image src={require("./assets/snack-expo.png").default.src} />
+
+---
+
+<SlideHeader slideTitle="Que se passe-t-il lors de la compilation ?" />
+
+- Compilation de l'application native iOS ou Android, via les outils en cli de
+  Xcode ou Gradle
+- Démarrage du packager react-native (_npm start_) qui se charge de compiler le
+  code JS et l'envoyer à l'application
+- Le SDK react-native exécute le code JS et l'application démarre
+
+---
+
+<SlideHeader slideTitle="Layout d'un projet React Native" />
+
+<Flex>
+
+<Box>
+
+```
+├── node_modules
+├── app.json
+├── babel.config.js
+├── index.js
+├── App.js
+├── metro.config.js
+├── package.json
+└── yarn.lock
+├── __tests__
+│   └── App-test.js
+```
+
+</Box>
+
+<Box>
+
+```
+├── android
+│   ├── app
+│   │   ├── BUCK
+│   │   ├── build.gradle
+│   │   ├── build_defs.bzl
+│   │   ├── debug.keystore
+│   │   ├── proguard-rules.pro
+│   │   └── src
+│   ├── build.gradle
+│   ├── gradle
+│   │   └── wrapper
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   └── settings.gradle
+```
+
+</Box>
+
+<Box>
+
+```
+├── ios
+│   ├── AwesomeProjectNative
+│   │   ├── AppDelegate.h
+│   │   ├── AppDelegate.m
+│   │   ├── Base.lproj
+│   │   ├── Images.xcassets
+│   │   ├── Info.plist
+│   │   └── main.m
+│   ├── AwesomeProjectNative.xcodeproj
+│   │   ├── project.pbxproj
+│   │   └── xcshareddata
+│   ├── AwesomeProjectNative.xcworkspace
+│   │   └── contents.xcworkspacedata
+│   ├── AwesomeProjectNativeTests
+│   │   ├── AwesomeProjectNativeTests.m
+│   │   └── Info.plist
+│   ├── Podfile
+│   ├── Podfile.lock
+│   └── Pods
+```
+
+</Box>
+
+</Flex>
+
+---
+
+<SlideHeader slideTitle="Point d'entrée" />
+
+```jsx
+import React, { Component } from "react";
+import { AppRegistry, StyleSheet, Text, View } from "react-native";
+import { name as appName } from "./app.json";
+
+const App = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.welcome}>Welcome to React Native!</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF",
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 10,
+  },
+});
+
+AppRegistry.registerComponent(appName, () => App);
+```
+
+</Slides>

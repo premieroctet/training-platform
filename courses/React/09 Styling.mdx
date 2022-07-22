@@ -1,0 +1,216 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides title="Styling" course="Formation React">
+
+<ChapterHeading title="Styling" />
+
+---
+
+<SlideHeader slideTitle="Styling" />
+
+#### Il existe une plusieurs manières de "styler" ses composants React 🎨
+
+- Feuille de style
+- CSS Module
+- Inline
+- CSS in JS
+
+---
+
+<SlideHeader slideTitle="Styling - Feuille de style" />
+
+#### Feuille de style
+
+```jsx
+import React from "react";
+
+import "./app.css";
+
+const Button = () => {
+  // You can use them as regular CSS styles
+  return <div className="header" />;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Styling - CSS Module" />
+
+#### CSS Module
+
+```css
+// Button.css
+.error {
+  background-color: red;
+}
+```
+
+```jsx
+import React from "react";
+import styles from "./Button.css"; // Import css modules stylesheet as styles
+
+const Button = () => {
+  // reference as a js object
+  return <button className={styles.error}>Error Button</button>;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Styling - Inline" />
+
+#### Inline
+
+```jsx
+const errorButtonStyle = { backgroundColor: "red" };
+
+const Button = () => {
+  return <button style={errorButtonStyle}>Error Button</button>;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Styling - CSS in JS" />
+
+#### CSS in JS avec [styled-components](https://www.styled-components.com/)
+
+- Utilise des composants React
+
+```jsx
+import styled from "styled-components";
+
+const Button = styled.button`
+  background: white;
+  border: 1px solid red;
+`;
+
+const App = () => {
+  return <Button>Save</Button>;
+};
+```
+
+---
+
+<SlideHeader slideTitle="Styling - CSS in JS" />
+
+#### CSS in JS avec [styled-components](https://www.styled-components.com/)
+
+- Compatible avec les props :
+
+```jsx
+import styled from "styled-components";
+
+const Button = styled.button`
+  background-color: `${props => props.color || "white"}`;
+  border: 1px solid red;
+`;
+
+const App = () => {
+  return <Button color="yellow">Save</Button>;
+}
+```
+
+---
+
+<SlideHeader slideTitle="Styling - CSS in JS" />
+
+#### CSS in JS avec [styled-components](https://www.styled-components.com/)
+
+- Héritage :
+
+```jsx
+import styled from "styled-components";
+
+const Button = styled.button`
+  background-color: `${props => props.color || "white"}`;
+  border: 1px solid black;
+`;
+
+const ErrorButton = styled(Button)`
+  border: 1px solid red;
+`;
+
+const App = () => {
+  return <ErrorButton>Save</ErrorButton>;
+}
+```
+
+---
+
+<SlideHeader slideTitle="Styling - CSS in JS" />
+
+#### CSS in JS avec [styled-components](https://www.styled-components.com/)
+
+- "As" pattern :
+
+```jsx
+import styled from "styled-components";
+
+const Button = styled.button`
+  border: 1px solid red;
+`;
+
+const App = () => {
+  return <Button as="a">Save</Button>; // <a href="">Save</a> et non <button></button>
+};
+```
+
+---
+
+<SlideHeader slideTitle="Mise en pratique : styled-components" />
+
+##### 📐🤓 <b>Mise en pratique :</b> styled-components
+
+- Installez la librarie **styled-components**
+- Utilisez-la pour votre composant MessageBar
+
+---
+
+<SlideHeader slideTitle="Résumé de la journée" />
+
+#### 💪 Ce que l'on a vu aujourd'hui :
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Les nouvelles syntaxes d'ES5/6
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Créer un projet avec Create React App
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Maîtriser la syntaxe JSX
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Gérer les composants React
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Appréhender le state et les props
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Communiquer entres ses composants
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Styling
+  </ListItem>
+</List>
+
+---
+
+#### Projet fil rouge: React chat 😸
+
+- Tchat temps réel avec React+Redux
+- Utilisation des patterns appris en cours
+- Bonus : Utiliser Firebase pour la communication serveur
+- A rendre sur un dépôt github en fin de semaine avec demo CodeSandbox
+
+</Slides>
