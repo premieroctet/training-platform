@@ -122,7 +122,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
   const { course, chapter } = context.params as IParams;
 
-  if (course !== "Demo") {
+  if (!course.includes("Demo")) {
     if (
       (!session && !isExporting) ||
       (session &&
