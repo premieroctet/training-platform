@@ -3,7 +3,6 @@ import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import {
   Checkbox,
-  Stack,
   HStack,
   VStack,
   Text,
