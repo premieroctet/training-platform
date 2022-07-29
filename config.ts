@@ -1,0 +1,1 @@
+export const ratio = 4 / 3;

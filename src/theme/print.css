@@ -1,0 +1,24 @@
+html,
+body {
+  height: max-content;
+}
+
+.navbar,
+.slides-controls {
+  display: none !important;
+}
+
+.slide {
+  page-break-after: always;
+  page-break-before: always;
+  min-height: 99vh;
+}
+
+.slide:last-child {
+  page-break-after: auto;
+}
+
+.chapter-heading-image {
+  justify-content: stretch;
+  align-items: stretch;
+}

@@ -1,0 +1,32 @@
+#__next {
+  min-height: 100vh;
+  color: #000;
+  height: 100vh;
+}
+
+*:fullscreen,
+*:-webkit-full-screen,
+*:-moz-full-screen {
+  background-color: #fff;
+}
+
+pre ::-moz-selection,
+code ::-moz-selection {
+  background-color: rgba(255, 255, 255, 0.24);
+}
+
+pre ::selection,
+code ::selection {
+  background-color: rgba(255, 255, 255, 0.24);
+}
+
+.fullscreen-component {
+  height: 100%;
+  width: 100%;
+}
+
+@import "print.css" print;
+
+li > ul {
+  padding-left: 1em;
+}
