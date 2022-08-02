@@ -1,5 +1,7 @@
 # Training platform 🎓
 
+You can read more about this project [on our blog 🇫🇷](https://www.premieroctet.com/blog/training-platform-v1)
+
 ## Quick start
 
 ```bash
