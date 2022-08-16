@@ -9,7 +9,7 @@ const ConnectedHome = ({
   demoCourse,
 }: {
   courses: CourseType[];
-  demoCourse: CourseType;
+  demoCourse?: CourseType;
 }) => {
   const [session, _] = useSession();
 

@@ -8,8 +8,6 @@ const ChapterDefaultBg: React.FC = ({}) => {
     return `linear(${directions[i]}, ${color}.600, transparent 50% )`;
   });
 
-  const myBgPattern = require("../../../courses/assets/backgrounds/pattern.svg");
-
   return (
     <Flex
       position="absolute"
@@ -24,7 +22,6 @@ const ChapterDefaultBg: React.FC = ({}) => {
             position="absolute"
             minHeight="100%"
             minWidth="100%"
-            bgImage={myBgPattern}
             bgRepeat="repeat"
             filter={`opacity(8%)`}
           >
