@@ -33,7 +33,6 @@ const ChapterHeading: React.FC<ChapterHeadingProps & FlexProps> = ({
         flexDir="column"
         justifyContent="center"
         alignItems="center"
-        zIndex="5"
         height="100%"
         width="100%"
       >
