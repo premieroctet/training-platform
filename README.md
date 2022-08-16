@@ -26,7 +26,7 @@ yarn create-admin-user thibault@premieroctet.com
 - You have to check the login email by going to the maildev UI
   http://localhost:1080/
 
-- You can then add users via the admin here http://localhost:3000/users
+- You can then add users via the admin here http://localhost:3000/admin/users
 
 ## Export PDF
 
