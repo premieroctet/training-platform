@@ -3,7 +3,7 @@ import { useSession } from "next-auth/client";
 import { CourseType } from "src/pages";
 import CourseDetail from "./CourseDetail";
 
-const NoCourse = ({ demoCourse }: { demoCourse: CourseType }) => {
+const NoCourse = ({ demoCourse }: { demoCourse?: CourseType }) => {
   const [session, _] = useSession();
   return (
     <>
@@ -32,7 +32,7 @@ const NoCourse = ({ demoCourse }: { demoCourse: CourseType }) => {
           </Box>
         </Stack>
 
-        <CourseDetail course={demoCourse} />
+        {demoCourse && <CourseDetail course={demoCourse} />}
       </SimpleGrid>
     </>
   );

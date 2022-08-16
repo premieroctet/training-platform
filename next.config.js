@@ -12,4 +12,6 @@ const SentryWebpackPluginOptions = {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
-module.exports = withSentryConfig(configWithMDX, SentryWebpackPluginOptions);
+module.exports = process.env.SENTRY_AUTH_TOKEN
+  ? withSentryConfig(configWithMDX, SentryWebpackPluginOptions)
+  : configWithMDX;

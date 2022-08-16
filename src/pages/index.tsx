@@ -1,7 +1,7 @@
 import ConnectedHome from "@/components/homes/ConnectedHome";
 import PublicHome from "@/components/homes/PublicHome";
 import prisma from "@/lib/prisma";
-import { readdirSync } from "fs";
+import { readdirSync, stat } from "fs";
 import { GetServerSideProps } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/client";
@@ -22,7 +22,7 @@ export type CourseType = {
 type Props = {
   session: Session | null | undefined;
   courses: CourseType[];
-  demoCourse: CourseType;
+  demoCourse?: CourseType;
 };
 
 const Home = ({ session, courses, demoCourse }: Props) => {
@@ -46,7 +46,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const coursesDirectory = path.join(process.cwd(), "courses");
   const allCourses = readdirSync(coursesDirectory)
     .filter((course) => {
-      return course !== "assets" && course !== ".DS_Store";
+      const courseDirectory = path.join(coursesDirectory, course);
+      stat(courseDirectory, (error) => {
+        // not a folder
+        if (error || course === "assets") {
+          return false;
+        }
+
+        return true;
+      });
     })
     .map((course) => {
       const courseDirectory = path.join(coursesDirectory, course);
@@ -86,7 +94,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     props: {
       session,
       courses: authorizedCourses,
-      demoCourse: user?.isAdmin ? demoAdmin : demoUser,
+      demoCourse: user?.isAdmin ? demoAdmin : demoUser ?? null,
     },
   };
 };
