@@ -48,6 +48,7 @@ training-platform.code-workspace
 /bddScripts
 
 /pdfs
+!/pdfs/.gitkeep
 /courses/*
 !/courses/.gitkeep
 

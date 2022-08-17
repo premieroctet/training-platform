@@ -25,6 +25,7 @@ const CourseDetail = ({ course }: { course: CourseType }) => {
           variant="link"
           onClick={() => router.push(`/api/download?course=${course.title}`)}
           aria-label="download"
+          disabled={!course?.hasPdf}
         >
           <Icon color="primary.500" as={MdFileDownload} />
           <Text fontSize="xs" color="black" paddingLeft="1">

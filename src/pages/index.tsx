@@ -1,11 +1,12 @@
 import ConnectedHome from "@/components/homes/ConnectedHome";
 import PublicHome from "@/components/homes/PublicHome";
 import prisma from "@/lib/prisma";
-import { readdirSync, statSync } from "fs";
+import { readdirSync, statSync, existsSync } from "fs";
 import { GetServerSideProps } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/client";
 import path from "path";
+import slugify from "slugify";
 import Layout from "../components/Layout";
 
 export type CourseType = {
@@ -17,6 +18,7 @@ export type CourseType = {
     description: string;
     courseFile?: string;
   };
+  hasPdf: boolean;
 };
 
 type Props = {
@@ -63,12 +65,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         null;
 
       const courseInfo = coursesInfo.find((el) => el?.courseFile === course);
+      const pdfsPath = path.join(process.cwd(), "pdfs");
+      const hasPdf = existsSync(pdfsPath + `/${slugify(course)}.pdf`);
 
       return {
         title: course,
         chapters,
         courseMap,
         info: courseInfo,
+        hasPdf,
       };
     })
     .filter(({ chapters }) => chapters.length > 0);
