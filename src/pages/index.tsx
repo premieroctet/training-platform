@@ -1,7 +1,7 @@
 import ConnectedHome from "@/components/homes/ConnectedHome";
 import PublicHome from "@/components/homes/PublicHome";
 import prisma from "@/lib/prisma";
-import { readdirSync, stat } from "fs";
+import { readdirSync, statSync } from "fs";
 import { GetServerSideProps } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/client";
@@ -44,17 +44,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const coursesInfo = await prisma.training.findMany();
 
   const coursesDirectory = path.join(process.cwd(), "courses");
+
   const allCourses = readdirSync(coursesDirectory)
     .filter((course) => {
       const courseDirectory = path.join(coursesDirectory, course);
-      stat(courseDirectory, (error) => {
-        // not a folder
-        if (error || course === "assets") {
-          return false;
-        }
-
-        return true;
-      });
+      if (!statSync(courseDirectory).isDirectory() || course === "assets") {
+        return false;
+      }
+      return true;
     })
     .map((course) => {
       const courseDirectory = path.join(coursesDirectory, course);
