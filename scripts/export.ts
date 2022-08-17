@@ -25,6 +25,13 @@ const mergePdf = (pdfs: string[], outputPdf: string) => {
 const courses: chapterType[][] = fs
   .readdirSync("./courses")
   //.filter((name) => name === "TypeScript")
+  .filter((course) => {
+    const courseDirectory = path.join("./courses/", course);
+    if (!fs.statSync(courseDirectory).isDirectory() || course === "assets") {
+      return false;
+    }
+    return true;
+  })
   .map((course: string[]) => {
     const coursePath = path.join("./pdfs", slugify(course));
     // make Dir if not exist
