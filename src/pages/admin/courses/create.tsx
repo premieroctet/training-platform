@@ -1,7 +1,7 @@
 import CourseForm from "@/components/course/CourseForm";
 import Layout from "@/components/Layout";
 import { Center, Flex, Heading } from "@chakra-ui/react";
-import { readdirSync } from "fs";
+import { readdirSync, statSync } from "fs";
 import { GetServerSidePropsContext } from "next";
 import { checkIsConnected } from "src/utils/auth";
 import path from "path";
@@ -50,7 +50,11 @@ export default CreateCourse;
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const coursesDirectory = path.join(process.cwd(), "courses");
   const courses = readdirSync(coursesDirectory).filter((course) => {
-    return course !== "assets" && course !== ".DS_Store";
+    const courseDirectory = path.join(coursesDirectory, course);
+    if (!statSync(courseDirectory).isDirectory() || course === "assets") {
+      return false;
+    }
+    return true;
   });
 
   await checkIsConnected(context);
