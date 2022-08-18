@@ -46,7 +46,7 @@ const CoursesTable = ({ courses }: ICoursesTableProps) => {
       </Thead>
       <Tbody>
         {courses.map((course) => (
-          <Tr>
+          <Tr key={course?.id}>
             <Td>{course?.title}</Td>
             <Td>
               <Text noOfLines={4}>{course?.description}</Text>

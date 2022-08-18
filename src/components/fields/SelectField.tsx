@@ -31,8 +31,10 @@ const SelectField = ({
       <FormLabel fontSize="sm">{label}</FormLabel>
 
       <Select placeholder={placeholder} {...register(name)}>
-        {options.map((option) => (
-          <option value={option.value}>{option.label}</option>
+        {options.map((option, idx) => (
+          <option key={idx} value={option.value}>
+            {option.label}
+          </option>
         ))}
       </Select>
 

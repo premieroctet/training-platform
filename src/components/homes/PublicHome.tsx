@@ -27,7 +27,13 @@ const PublicHome = () => {
           <LoginButton variant="solid" />
         </VStack>
         <Box flex={2}>
-          <Image height="500px" width="100%" src="/Home.png" fit="contain" />
+          <Image
+            height="500px"
+            width="100%"
+            src="/Home.png"
+            fit="contain"
+            alt="home"
+          />
         </Box>
       </Flex>
     </>
