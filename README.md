@@ -27,17 +27,3 @@ yarn create-admin-user thibault@premieroctet.com
   http://localhost:1080/
 
 - You can then add users via the admin here http://localhost:3000/admin/users
-
-## Export PDF
-
-Make sure you have `ghostscript` and `make` available :
-
-```bash
-apt install make ghostscript
-```
-
-Then to export all courses as PDF just run :
-
-```bash
-make
-```

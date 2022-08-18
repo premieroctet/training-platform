@@ -1,9 +1,7 @@
 import { Text, Box, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useSession } from "next-auth/client";
-import { CourseType } from "src/pages";
-import CourseDetail from "./CourseDetail";
 
-const NoCourse = ({ demoCourse }: { demoCourse?: CourseType }) => {
+const NoCourse = () => {
   const [session, _] = useSession();
   return (
     <>
@@ -31,8 +29,6 @@ const NoCourse = ({ demoCourse }: { demoCourse?: CourseType }) => {
             </Text>
           </Box>
         </Stack>
-
-        {demoCourse && <CourseDetail course={demoCourse} />}
       </SimpleGrid>
     </>
   );

@@ -64,6 +64,7 @@ model Training {
   title        String
   description  String
   courseFile   String
+  isDownloadable     Boolean @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

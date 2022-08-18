@@ -1,40 +1,32 @@
 import ConnectedHome from "@/components/homes/ConnectedHome";
 import PublicHome from "@/components/homes/PublicHome";
 import prisma from "@/lib/prisma";
-import { readdirSync, statSync, existsSync } from "fs";
+import { readdirSync } from "fs";
 import { GetServerSideProps } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/client";
 import path from "path";
-import slugify from "slugify";
 import Layout from "../components/Layout";
 
 export type CourseType = {
-  title: string;
   chapters: string[];
   courseMap: string | null;
-  info?: {
-    title: string;
-    description: string;
-    courseFile?: string;
-  };
-  hasPdf: boolean;
+  id: string;
+  title: string;
+  description: string;
+  courseFile?: string;
+  isDownloadable?: boolean;
 };
 
 type Props = {
   session: Session | null | undefined;
   courses: CourseType[];
-  demoCourse?: CourseType;
 };
 
-const Home = ({ session, courses, demoCourse }: Props) => {
+const Home = ({ session, courses }: Props) => {
   return (
     <Layout title="Formations Premier Octet">
-      {session ? (
-        <ConnectedHome courses={courses} demoCourse={demoCourse} />
-      ) : (
-        <PublicHome />
-      )}
+      {session ? <ConnectedHome courses={courses} /> : <PublicHome />}
     </Layout>
   );
 };
@@ -43,20 +35,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const session = await getSession(context);
-  const coursesInfo = await prisma.training.findMany();
+  const courses = await prisma.training.findMany();
 
   const coursesDirectory = path.join(process.cwd(), "courses");
 
-  const allCourses = readdirSync(coursesDirectory)
-    .filter((course) => {
-      const courseDirectory = path.join(coursesDirectory, course);
-      if (!statSync(courseDirectory).isDirectory() || course === "assets") {
-        return false;
-      }
-      return true;
-    })
+  const allCourses = courses
     .map((course) => {
-      const courseDirectory = path.join(coursesDirectory, course);
+      const courseDirectory = path.join(coursesDirectory, course?.courseFile);
       const chapters = readdirSync(courseDirectory)
         .filter((name) => name.endsWith(".mdx"))
         .map((x) => x.replace(".mdx", ""));
@@ -64,39 +49,23 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         readdirSync(courseDirectory).find((name) => name.endsWith(".md")) ||
         null;
 
-      const courseInfo = coursesInfo.find((el) => el?.courseFile === course);
-      const pdfsPath = path.join(process.cwd(), "pdfs");
-      const hasPdf = existsSync(pdfsPath + `/${slugify(course)}.pdf`);
-
       return {
-        title: course,
         chapters,
         courseMap,
-        info: courseInfo,
-        hasPdf,
+        ...course,
       };
     })
     .filter(({ chapters }) => chapters.length > 0);
 
-  const noDemoCourses = allCourses.filter(
-    ({ title }) => !title?.toLowerCase().includes("demo")
-  );
-
   const user = session?.user;
-  const userCourses = noDemoCourses.filter(({ title }) => {
+  const userCourses = allCourses.filter(({ title }) => {
     return user?.courses && user?.courses.includes(title);
   });
-  const demoAdmin = allCourses.find((course) => {
-    return course.title === "Demo Admin";
-  })!;
-  const demoUser = allCourses.find((course) => course.title === "Demo User")!;
-  const authorizedCourses = user?.isAdmin ? noDemoCourses : userCourses;
 
   return {
     props: {
       session,
-      courses: authorizedCourses,
-      demoCourse: user?.isAdmin ? demoAdmin : demoUser ?? null,
+      courses: user?.isAdmin ? allCourses : userCourses,
     },
   };
 };

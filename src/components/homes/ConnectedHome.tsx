@@ -4,13 +4,7 @@ import { CourseType } from "src/pages";
 import AvailableCourses from "../course/AvailableCourses";
 import NoCourse from "../course/NoCourse";
 
-const ConnectedHome = ({
-  courses,
-  demoCourse,
-}: {
-  courses: CourseType[];
-  demoCourse?: CourseType;
-}) => {
+const ConnectedHome = ({ courses }: { courses: CourseType[] }) => {
   const [session, _] = useSession();
 
   return (
@@ -23,7 +17,7 @@ const ConnectedHome = ({
         {courses?.length > 0 ? (
           <AvailableCourses courses={courses} />
         ) : (
-          <NoCourse demoCourse={demoCourse} />
+          <NoCourse />
         )}
       </VStack>
     </Box>
