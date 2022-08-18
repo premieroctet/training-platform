@@ -9,6 +9,8 @@ import prisma from "@/lib/prisma";
 import dynamic from "next/dynamic";
 import { MDEditorProps } from "@uiw/react-md-editor";
 import { useState } from "react";
+import "@uiw/react-md-editor/dist/mdeditor.min.css";
+import "@uiw/react-markdown-preview/dist/markdown.min.css";
 
 const MDEditor = dynamic<MDEditorProps>(
   () => import("@uiw/react-md-editor").then((mod) => mod.default),

@@ -4,8 +4,6 @@ import { AppProps } from "next/app";
 import DeckTimerContextProvider from "../context/DeckTimerContext";
 import customTheme from "../theme/theme";
 import "./../theme/app.css";
-import "@uiw/react-md-editor/dist/mdeditor.min.css";
-import "@uiw/react-markdown-preview/dist/markdown.min.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
