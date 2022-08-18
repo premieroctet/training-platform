@@ -19,6 +19,7 @@ const CourseDetail = ({ course }: { course: CourseType }) => {
         width="100%"
         src={getCourseCover(course)}
         fit="cover"
+        alt="cover"
       />
       <HStack paddingY={8} justifyContent="center">
         <Button

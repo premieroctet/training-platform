@@ -85,6 +85,7 @@ const mdComponents = {
       maxWidth="100%"
       flex="0 auto"
       m="md"
+      alt="image mdx"
       {...props}
     />
   ),

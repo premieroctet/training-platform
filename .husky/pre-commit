@@ -1,0 +1,24 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+
+yarn lint --quiet ||
+(
+        echo '💥 ❌ 💥 ❌ 💥 Erreurs ESLint sur /front à corriger avant de commit'
+        false; 
+)
+(
+        echo '✨ ✅ ✨ ✅ ✨ Rien à signaler sur ESLint !'
+        true; 
+)
+
+
+yarn tsc --noEmit ||
+(
+    echo '🙈 ❌ 🙈 ❌ 🙈  Erreurs Typrescript sur /front à corriger avant de commit'
+    false;
+)
+(
+        echo '👑 ✅ 👑 ✅ 👑 Typescript au top !'
+        true; 
+)

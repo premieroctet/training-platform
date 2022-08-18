@@ -37,7 +37,12 @@ const CourseCard = ({
     >
       <HStack alignItems="flex-start">
         <Box flex={1}>
-          <Image height="200" src={getCourseCover(course)} fit="cover" />
+          <Image
+            height="200"
+            src={getCourseCover(course)}
+            fit="cover"
+            alt="cover"
+          />
         </Box>
 
         <Stack p={4} alignItems="flex-start" flex={1}>

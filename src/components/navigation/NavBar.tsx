@@ -18,6 +18,7 @@ const NavBar = ({ session }: Props) => {
             objectFit="cover"
             height="45px"
             cursor="pointer"
+            alt="logo"
           />
           <Text
             margin="0px!important"

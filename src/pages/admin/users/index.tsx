@@ -43,6 +43,7 @@ export const getServerSideProps = async (
 
       success = true;
     } catch (error) {
+      /* eslint-disable no-console*/
       console.log(error);
       success = false;
     }

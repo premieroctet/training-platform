@@ -26,7 +26,9 @@ const ChapterHeading: React.FC<ChapterHeadingProps & FlexProps> = ({
       {...rest}
     >
       <Flex position="absolute" minWidth="100%" height="100%">
-        {imgSrc && <Image objectFit="cover" src={imgSrc} width="100%" />}
+        {imgSrc && (
+          <Image objectFit="cover" src={imgSrc} width="100%" alt="heading" />
+        )}
         {!imgSrc && <DefaultBackground />}
       </Flex>
       <Flex
