@@ -18,7 +18,7 @@ const MDEditor = dynamic<MDEditorProps>(
 );
 
 const EditCourseChapter = ({
-  filename,
+  //filename,
   chapterContent,
 }: inferSSRProps<typeof getServerSideProps>) => {
   const [value, setValue] = useState(chapterContent);
@@ -28,7 +28,7 @@ const EditCourseChapter = ({
   //   [filename]
   // );
 
-  console.log(filename);
+  // console.log(filename);
 
   return (
     <Layout>
