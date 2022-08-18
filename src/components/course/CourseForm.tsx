@@ -6,6 +6,7 @@ import TextAreaField from "../fields/TextAreaInput";
 import { Box, Button, Center, HStack, Stack, Text } from "@chakra-ui/react";
 import SelectField from "../fields/SelectField";
 import { useRouter } from "next/router";
+import SwitchField from "../fields/SwitchField";
 
 interface ICourseFormProps {
   course?: any;
@@ -33,14 +34,14 @@ const CourseForm = ({ course, availableCourses }: ICourseFormProps) => {
 
   const onSubmit = async (data: any) => {
     try {
-      if (id)
+      if (id) {
         // Update
         await fetch(`/api/courses/` + id, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
-      else {
+      } else {
         // Create
         await fetch(`/api/courses`, {
           method: "POST",
@@ -67,6 +68,10 @@ const CourseForm = ({ course, availableCourses }: ICourseFormProps) => {
             )}
             <TextField name="title" label="Titre du cours" />
             <TextAreaField name="description" label="Description courte" />
+            <SwitchField
+              name="isDownloadable"
+              label="Autoriser le téléchargement PDF"
+            />
             {availableCourses && (
               <SelectField
                 name="courseFile"

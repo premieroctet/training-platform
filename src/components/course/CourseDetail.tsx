@@ -1,11 +1,13 @@
 import { Button, Box, Icon, Text, HStack, Image } from "@chakra-ui/react";
 import router from "next/router";
+import { useState } from "react";
 import { MdFileDownload, MdPlayCircleOutline } from "react-icons/md";
 import { CourseType } from "src/pages";
 import { getCourseCover } from "src/utils/courses";
 import CourseMapPreview from "../CourseMapPreview";
 
 const CourseDetail = ({ course }: { course: CourseType }) => {
+  const [loadingPdf, setLoadingPdf] = useState(false);
   return (
     <Box
       background="white"
@@ -24,9 +26,14 @@ const CourseDetail = ({ course }: { course: CourseType }) => {
       <HStack paddingY={8} justifyContent="center">
         <Button
           variant="link"
-          onClick={() => router.push(`/api/download?course=${course.title}`)}
+          onClick={async () => {
+            setLoadingPdf(true);
+            await router.push(`/api/download?id=${course.id!}`);
+            setLoadingPdf(false);
+          }}
           aria-label="download"
-          disabled={!course?.hasPdf}
+          disabled={!course?.isDownloadable}
+          isLoading={loadingPdf}
         >
           <Icon color="primary.500" as={MdFileDownload} />
           <Text fontSize="xs" color="black" paddingLeft="1">
@@ -44,7 +51,7 @@ const CourseDetail = ({ course }: { course: CourseType }) => {
           </Text>
         </Button>
       </HStack>
-      <Text paddingY={10}>{course?.info?.description}</Text>
+      <Text paddingY={10}>{course?.description}</Text>
       {course?.courseMap && <CourseMapPreview course={course} />}
     </Box>
   );

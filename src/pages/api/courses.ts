@@ -8,8 +8,8 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const { method, body } = req;
-
   let result;
+
   switch (method) {
     case "GET":
       result = await prisma.training.findMany();
@@ -18,15 +18,12 @@ export default async function handle(
       break;
     case "POST":
       result = await prisma.training.create({
-        data: {
-          title: body.title,
-          description: body.description,
-          courseFile: body.courseFile,
-        },
+        data: body,
       });
       res.json(result);
 
       break;
+
     default:
       res.setHeader("Allow", ["POST", "GET"]);
       res.status(405).end(`Method ${method} Not Allowed`);

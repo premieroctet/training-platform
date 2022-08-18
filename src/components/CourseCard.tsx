@@ -47,11 +47,11 @@ const CourseCard = ({
 
         <Stack p={4} alignItems="flex-start" flex={1}>
           <Text fontWeight="bold" fontSize={"md"}>
-            {course.info?.title ?? course?.title}
+            {course.title ?? course?.title}
           </Text>
-          {course?.info?.description && (
+          {course?.description && (
             <Text fontWeight="400" noOfLines={4} fontSize="sm">
-              {course?.info?.description}
+              {course?.description}
             </Text>
           )}
         </Stack>

@@ -20,10 +20,7 @@ export default async function handle(
           //@ts-ignore
           id: id,
         },
-        data: {
-          title: body.title,
-          description: body.description,
-        },
+        data: body,
       });
       res.json(result);
       break;
