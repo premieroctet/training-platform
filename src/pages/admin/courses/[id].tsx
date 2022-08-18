@@ -1,48 +1,35 @@
 import CourseForm from "@/components/course/CourseForm";
 import Layout from "@/components/Layout";
-import { Center, Flex, Heading, useBoolean } from "@chakra-ui/react";
+import { Center, Flex, Heading } from "@chakra-ui/react";
 import { GetServerSidePropsContext } from "next";
 import { checkIsConnected } from "src/utils/auth";
 import { inferSSRProps } from "@/lib/inferNextProps";
 import prisma from "@/lib/prisma";
 import path from "path";
 import fs from "fs";
-import EditCourseContent from "@/components/course/EditCourseContent";
 
-const EditCourse = ({
-  course,
-  filename,
-}: inferSSRProps<typeof getServerSideProps>) => {
-  const [contentEditor, setContentEditor] = useBoolean(false);
-
+const EditCourse = ({ course }: inferSSRProps<typeof getServerSideProps>) => {
   return (
     <Layout title="Cours">
-      {contentEditor ? (
-        <EditCourseContent filename={filename} />
-      ) : (
-        <Center mx={"auto"} my={"8"} borderWidth="1px" borderRadius={"md"}>
-          <Flex
-            p={10}
-            direction={"column"}
-            justifyContent={"center"}
-            background="white"
-            width="container.sm"
+      <Center mx={"auto"} my={"8"} borderWidth="1px" borderRadius={"md"}>
+        <Flex
+          p={10}
+          direction={"column"}
+          justifyContent={"center"}
+          background="white"
+          width="container.sm"
+        >
+          <Heading
+            size="md"
+            textAlign="center"
+            paddingBottom={20}
+            paddingTop="5"
           >
-            <Heading
-              size="md"
-              textAlign="center"
-              paddingBottom={20}
-              paddingTop="5"
-            >
-              Éditer le Cours
-            </Heading>
-            <CourseForm
-              course={course}
-              setContentEditor={setContentEditor.toggle}
-            />
-          </Flex>
-        </Center>
-      )}
+            Éditer le Cours
+          </Heading>
+          <CourseForm course={course} />
+        </Flex>
+      </Center>
     </Layout>
   );
 };
