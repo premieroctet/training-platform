@@ -11,9 +11,14 @@ import SwitchField from "../fields/SwitchField";
 interface ICourseFormProps {
   course?: any;
   availableCourses?: string[];
+  setContentEditor?: (bool: boolean) => any;
 }
 
-const CourseForm = ({ course, availableCourses }: ICourseFormProps) => {
+const CourseForm = ({
+  course,
+  availableCourses,
+  setContentEditor,
+}: ICourseFormProps) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -85,10 +90,22 @@ const CourseForm = ({ course, availableCourses }: ICourseFormProps) => {
             <Center>
               <Button
                 type="submit"
+                colorScheme="orange"
+                variant="solid"
+                border="1px"
+                fontSize="sm"
+                mx="sm"
+                onClick={() => setContentEditor!(true)}
+              >
+                Editer le contenu
+              </Button>
+              <Button
+                type="submit"
                 colorScheme="primary"
                 variant="solid"
                 border="1px"
                 fontSize="sm"
+                mx="sm"
               >
                 Valider
               </Button>

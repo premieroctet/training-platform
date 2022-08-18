@@ -24,7 +24,7 @@ type ChildrenProp = {
   courseMap?: Boolean;
 };
 
-const mdComponents = {
+export const mdComponents = {
   // huge headings
   h1: (props: any) => <Heading fontSize="2.4em" {...props} />,
   h2: (props: any) => <Heading fontSize="2em" {...props} />,
@@ -99,7 +99,7 @@ const mdComponents = {
   ),
 };
 
-const courseMapComponents = {
+export const courseMapComponents = {
   h1: (props: any) => <Heading fontSize="2.4em" marginBottom="md" {...props} />,
   h2: (props: any) => <Heading fontSize="2em" marginY="sm" {...props} />,
   h3: (props: any) => <Heading fontSize="1.8em" marginBottom="sm" {...props} />,
