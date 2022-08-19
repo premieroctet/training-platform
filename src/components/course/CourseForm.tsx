@@ -68,12 +68,28 @@ const CourseForm = ({ course }: ICourseFormProps) => {
             {/* TODO remove slug field once editor is ready */}
             {!course && <TextField name="slug" label="Slug" />}
             <Center>
+              {course && (
+                <Button
+                  colorScheme="orange"
+                  variant="solid"
+                  border="1px"
+                  fontSize="sm"
+                  mx="sm"
+                  onClick={() =>
+                    router.push("/admin/courses/" + course!.id + "/0")
+                  }
+                >
+                  Editer le contenu
+                </Button>
+              )}
+
               <Button
                 type="submit"
                 colorScheme="primary"
                 variant="solid"
                 border="1px"
                 fontSize="sm"
+                mx="sm"
               >
                 Valider
               </Button>
