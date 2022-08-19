@@ -14,7 +14,7 @@ export type CourseType = {
   id: string;
   title: string;
   description: string;
-  courseFile?: string;
+  slug: string;
   isDownloadable?: boolean;
 };
 
@@ -25,7 +25,7 @@ type Props = {
 
 const Home = ({ session, courses }: Props) => {
   return (
-    <Layout title="Formations Premier Octet">
+    <Layout title="Training Platform">
       {session ? <ConnectedHome courses={courses} /> : <PublicHome />}
     </Layout>
   );
@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
 
   const allCourses = courses
     .map((course) => {
-      const courseDirectory = path.join(coursesDirectory, course?.courseFile);
+      const courseDirectory = path.join(coursesDirectory, course?.slug);
       const chapters = readdirSync(courseDirectory)
         .filter((name) => name.endsWith(".mdx"))
         .map((x) => x.replace(".mdx", ""));

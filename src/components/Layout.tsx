@@ -10,10 +10,7 @@ type LayoutProps = {
   title?: string;
 };
 
-const Layout = ({
-  children,
-  title = "Formations Premier Octet",
-}: LayoutProps) => {
+const Layout = ({ children, title = "Training Platform" }: LayoutProps) => {
   const router = useRouter();
   const isSlide = router.route === "/[course]/[chapter]";
   const print = router.query.print !== undefined;

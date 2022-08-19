@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 import { useSwipeable } from "react-swipeable";
+import { CourseType } from "src/pages";
 import { useSocketContext } from "./SocketContext";
 
 type SlidesContextValues = {
@@ -28,7 +29,7 @@ export const SlidesContext = createContext<SlidesContextValues>({
 
 type SlidesProviderProps = {
   children: any;
-  course: string;
+  course: CourseType;
   chapters: string[];
   chapter: string;
   isAdmin: Boolean;
@@ -36,7 +37,7 @@ type SlidesProviderProps = {
 
 type BroadcastPresenterMessage = {
   slide: number;
-  course: string;
+  course: CourseType;
   chapter: string;
 };
 
@@ -72,7 +73,7 @@ export function SlidesProvider({
         router.replace(
           {
             query: {
-              course,
+              course: course?.slug,
               chapter,
               slide: totalSlides - 1,
               mode: currentMode,
@@ -112,7 +113,7 @@ export function SlidesProvider({
     router.push(
       {
         query: {
-          course,
+          course: course?.slug,
           chapter,
           slide: currentSlide + n,
           mode: currentMode,
@@ -123,7 +124,7 @@ export function SlidesProvider({
     );
     if (isAdmin) {
       pushSlide({
-        course,
+        course: course?.slug,
         chapter: chapter,
         slide: currentSlide + n,
       });
@@ -133,7 +134,7 @@ export function SlidesProvider({
   const toggleFollowMode = () => {
     router.push({
       query: {
-        course,
+        course: course?.slug,
         chapter,
         slide: currentSlide,
         mode: currentMode === "follow" ? "slideshow" : "follow",
@@ -146,7 +147,7 @@ export function SlidesProvider({
     router.push({
       pathname: "/[course]/[chapter]",
       query: {
-        course,
+        course: course?.slug,
         chapter: chapters[currentChapter + n],
         slide: n < 0 ? 999 : 0,
         mode: router.query.mode ?? "slideshow",
@@ -154,7 +155,7 @@ export function SlidesProvider({
     });
     if (isAdmin) {
       pushSlide({
-        course,
+        course: course?.slug,
         chapter: chapters[currentChapter + n],
         slide: n < 0 ? 999 : 0,
       });
@@ -166,7 +167,7 @@ export function SlidesProvider({
       const nextMode = currentMode === "speaker" ? "slideshow" : "speaker";
       router.replace({
         query: {
-          course,
+          course: course?.slug,
           chapter,
           slide: currentSlide,
           mode: nextMode,
@@ -211,7 +212,7 @@ export function SlidesProvider({
         router.push({
           pathname: "/[course]/[chapter]",
           query: {
-            course: eventMessage.data.course,
+            course: eventMessage.data.course?.slug,
             chapter: eventMessage.data.chapter,
             slide: eventMessage.data.slide,
           },

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Unauthoried() {
   return (
-    <Layout title="Formations Premier Octet">
+    <Layout title="Training Platform">
       <Center flexDirection="column" py="auto" h={["100%", "auto"]}>
         <Stack
           margin={["auto", "xl", "2xl"]}
@@ -29,9 +29,6 @@ export default function Unauthoried() {
             <Link href="/auth/signin">Se connecter</Link>
           </Button>
         </Stack>
-        <Text m="0" color="gray.300" fontSize="2xs">
-          Formations Premier Octet
-        </Text>
       </Center>
     </Layout>
   );

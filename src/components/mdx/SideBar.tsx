@@ -6,10 +6,11 @@ import { Slide as ChakraAnimationSlide } from "@chakra-ui/transition";
 import { useWindowSize } from "@react-hook/window-size/throttled";
 import Link from "next/link";
 import { MdHome } from "react-icons/md";
+import { CourseType } from "src/pages";
 import ChaptersMenu from "./ChaptersMenu";
 
 export interface SideBarProps {
-  course: string;
+  course: CourseType;
   currentChapter: string;
   chapters: string[];
   showSideBar: boolean;

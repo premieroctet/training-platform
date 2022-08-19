@@ -14,7 +14,7 @@ const LIMIT = 10;
 const CoursesPage = ({ courses }: inferSSRProps<typeof getServerSideProps>) => {
   const router = useRouter();
   return (
-    <Layout title="Cours | Formations Premier Octet">
+    <Layout title="Cours">
       <Center mx={"auto"} my={"8"} borderWidth="1px" borderRadius={"md"}>
         <VStack
           p={10}

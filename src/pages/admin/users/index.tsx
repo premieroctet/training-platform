@@ -99,7 +99,7 @@ const UsersPage = ({
   courses,
 }: inferSSRProps<typeof getServerSideProps>) => {
   return (
-    <Layout title="Stagiaires | Formations Premier Octet">
+    <Layout title="Stagiaires">
       <Center mx={"auto"} my={"8"} borderWidth="1px" borderRadius={"md"}>
         <Flex
           direction={"column"}

@@ -21,8 +21,8 @@ export const mergePdfs = (pdfs: string[], outputPdf: string) => {
   );
 };
 
-const getCourseChapters = (courseName: string): chapterType[] => {
-  const coursePdfsFolder = path.join("./pdfs", slugify(courseName));
+const getCourseChapters = (slug: string): chapterType[] => {
+  const coursePdfsFolder = path.join("./pdfs", slug);
   // make Dir if not exist
   if (!fs.existsSync(coursePdfsFolder)) {
     fs.mkdir(coursePdfsFolder, (err: any) => {
@@ -31,20 +31,19 @@ const getCourseChapters = (courseName: string): chapterType[] => {
     });
   }
 
-  return fs.readdirSync(`./courses/${courseName}`).map((chapter: string) => {
+  return fs.readdirSync(`./courses/${slug}`).map((chapter: string) => {
     {
       const filename = chapter.replace(".mdx", "");
       return {
-        path: `${process.env.NEXT_PUBLIC_FRONT_URL}/${courseName}/${filename}?print`,
-        course: slugify(courseName),
+        path: `${process.env.NEXT_PUBLIC_FRONT_URL}/${slug}/${filename}?print`,
+        course: slug,
         chapter: filename,
       };
     }
   });
 };
 
-export const generatePdf = async (courseName: string) => {
-  const slug = slugify(courseName);
+export const generatePdf = async (slug: string) => {
   const args = [];
   args.push("--no-sandbox", "--disable-setuid-sandbox");
 
@@ -54,7 +53,7 @@ export const generatePdf = async (courseName: string) => {
     context: "pdf-export",
   });
 
-  const course = getCourseChapters(courseName);
+  const course = getCourseChapters(slug);
   const files: string[] = [];
   for (const chapter of course) {
     const filename = path.join(

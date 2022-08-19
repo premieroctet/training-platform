@@ -23,11 +23,13 @@ import SideBar from "@/components/mdx/SideBar";
 import { SlidesProvider } from "@/context/SlidesContext";
 import { SocketProvider } from "@/context/SocketContext";
 import premierOctet from "../../theme/premierOctet";
+import { CourseType } from "..";
+import prisma from "@/lib/prisma";
 
 type ChapterPageProps = {
   session?: Session | null | undefined;
   filename: string;
-  course: string;
+  course: CourseType;
   currentChapter: string;
   chapters: string[];
 };
@@ -59,7 +61,7 @@ export default function ChapterPage({
         isAdmin={isAdmin}
       >
         <FullScreen className="fullscreen-component" handle={handleFullScreen}>
-          <Layout title={`${course} | Formations Premier Octet`}>
+          <Layout title={course?.title}>
             <Flex
               w="100vw"
               h="100vh"
@@ -121,30 +123,39 @@ export const getServerSideProps: GetServerSideProps = async (
     context.req.headers["context"] === "pdf-export";
 
   const { course, chapter } = context.params as IParams;
+  const courseInfo = await prisma.training.findUnique({
+    where: {
+      slug: course as string,
+    },
+  });
 
-  if (!course.includes("Demo")) {
-    if (
-      (!session && !isExporting) ||
-      (session &&
-        !session.user?.isAdmin &&
-        !session.user?.courses?.includes(course) &&
-        !isExporting)
-    ) {
-      return {
-        redirect: {
-          destination: "/auth/unauthorized",
-          permanent: false,
-        },
-      };
-    }
+  if (
+    (course && !session && !isExporting) ||
+    (session &&
+      !session.user?.isAdmin &&
+      !session.user?.courses?.includes(courseInfo!.title) &&
+      !isExporting)
+  ) {
+    return {
+      redirect: {
+        destination: "/auth/unauthorized",
+        permanent: false,
+      },
+    };
   }
   const filename = path.join(`${course}`, `${chapter}.mdx`);
   const chapters = fs
-    .readdirSync(path.join(process.cwd(), "courses", `${course}`))
+    .readdirSync(path.join(process.cwd(), "courses", `${courseInfo?.slug}`))
     .filter((name) => name.endsWith(".mdx"))
     .map((name) => name.replace(".mdx", ""));
 
   return {
-    props: { session, filename, course, currentChapter: chapter, chapters },
+    props: {
+      session,
+      filename,
+      course: courseInfo,
+      currentChapter: chapter,
+      chapters,
+    },
   };
 };
