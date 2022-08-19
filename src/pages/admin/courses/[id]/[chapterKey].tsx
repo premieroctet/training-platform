@@ -9,6 +9,8 @@ import prisma from "@/lib/prisma";
 import dynamic from "next/dynamic";
 import { MDEditorProps } from "@uiw/react-md-editor";
 import { useState } from "react";
+import { Button, Flex, Spacer, useToast } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import "@uiw/react-md-editor/dist/mdeditor.min.css";
 import "@uiw/react-markdown-preview/dist/markdown.min.css";
 
@@ -18,26 +20,89 @@ const MDEditor = dynamic<MDEditorProps>(
 );
 
 const EditCourseChapter = ({
-  //filename,
   chapterContent,
+  selectChapter,
+  chapters,
+  filename,
+  course,
 }: inferSSRProps<typeof getServerSideProps>) => {
   const [value, setValue] = useState(chapterContent);
+  const [isLoading, setLoading] = useState(false);
 
-  // const MDXContent = useMemo(
-  //   () => dynamic(() => import(`../../../../../courses/${filename}`)),
-  //   [filename]
-  // );
+  const router = useRouter();
+  const toast = useToast();
 
-  // console.log(filename);
+  const saveMdxContent = async () => {
+    setLoading(true);
+
+    try {
+      await fetch(`/api/courses/edit`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: value, filename: filename }),
+      });
+      setLoading(false);
+      toast({
+        title: "Le contenu a été modifié !",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      toast({
+        title: "Une erreur est survenue",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Layout>
+      <Flex my="sm" px="md" align="center" justify="center" w="100%">
+        <Button
+          colorScheme="primary"
+          isDisabled={selectChapter === 0}
+          onClick={() =>
+            router.push(
+              "/admin/courses/" + course!.id + "/" + `${selectChapter - 1}`
+            )
+          }
+        >
+          {"<"} Précédent
+        </Button>
+        <Spacer />
+        <Button
+          mx="md"
+          colorScheme="secondary"
+          isDisabled={chapterContent === value}
+          isLoading={isLoading}
+          onClick={() => saveMdxContent()}
+        >
+          Sauvegarder
+        </Button>
+        <Spacer />
+        <Button
+          colorScheme="primary"
+          isDisabled={selectChapter === chapters.length - 1}
+          onClick={() =>
+            router.push(
+              "/admin/courses/" + course!.id + "/" + `${selectChapter + 1}`
+            )
+          }
+        >
+          Suivant {">"}
+        </Button>
+      </Flex>
       <div data-color-mode="light">
         <MDXProvider>
           <MDEditor
             value={value}
             onChange={(e) => setValue(e as string)}
-            height="90vh"
+            height="85vh"
           />
         </MDXProvider>
       </div>
@@ -84,6 +149,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   );
 
   return {
-    props: { filename, selectChapter, chapters, chapterContent },
+    props: { filename, selectChapter, chapters, chapterContent, course },
   };
 }
