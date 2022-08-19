@@ -1,9 +1,10 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import { useSocketContext } from "@/context/SocketContext";
+import { CourseType } from "src/pages";
 
 export interface ChaptersMenuProps {
-  course: string;
+  course: CourseType;
   currentChapter: string;
   chapters: string[];
 }
@@ -18,12 +19,12 @@ const ChaptersMenu: React.FC<ChaptersMenuProps> = ({
 
   const handleChapterClick = (chapter: string) => {
     pushSlide({
-      course,
+      course: course?.slug,
       chapter,
       slide: 0,
     });
     router.push({
-      pathname: `/${course}/${chapter}`,
+      pathname: `/${course?.slug}/${chapter}`,
       query: {
         mode: router.query.mode,
       },
@@ -39,7 +40,7 @@ const ChaptersMenu: React.FC<ChaptersMenuProps> = ({
       gridGap="xs"
     >
       <Heading padding="0" fontSize="md" textAlign="center">
-        {course}
+        {course?.title}
       </Heading>
       {chapters.map((chapter: string, i) => {
         const isActive = chapter === currentChapter;

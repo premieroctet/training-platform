@@ -41,7 +41,7 @@ const CourseDetail = ({ course }: { course: CourseType }) => {
           </Text>
         </Button>
         <Button
-          onClick={() => router.push(`/${course.title}/${course.chapters[0]}`)}
+          onClick={() => router.push(`/${course.slug}/0`)}
           variant="link"
           aria-label="play"
         >

@@ -2,7 +2,6 @@ import { readFileSync, existsSync, statSync } from "fs";
 import path from "path";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/client";
-import slugify from "slugify";
 import { generatePdf } from "src/utils/pdf";
 import prisma from "@/lib/prisma";
 
@@ -15,8 +14,8 @@ const downloadPdf = async (req: NextApiRequest, res: NextApiResponse) => {
         id,
       },
     });
-    const courseName = courseInfo?.courseFile!;
-    const slug = slugify(courseName);
+    const { slug } = courseInfo ?? {};
+
     const coursePdfPath = path.join(process.cwd(), "pdfs", slug + ".pdf");
     const hasPdf = existsSync(coursePdfPath);
     const isOutdated =
@@ -26,7 +25,7 @@ const downloadPdf = async (req: NextApiRequest, res: NextApiResponse) => {
         courseInfo?.updatedAt?.getTime();
 
     if (!hasPdf || isOutdated) {
-      await generatePdf(courseName);
+      await generatePdf(slug!);
     }
 
     const filePath = slug + ".pdf";

@@ -3,17 +3,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import TextField from "../fields/TextField";
 import TextAreaField from "../fields/TextAreaInput";
-import { Box, Button, Center, HStack, Stack, Text } from "@chakra-ui/react";
-import SelectField from "../fields/SelectField";
+import { Box, Button, Center, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import SwitchField from "../fields/SwitchField";
+import { Training } from "@prisma/client";
 
 interface ICourseFormProps {
-  course?: any;
-  availableCourses?: string[];
+  course?: Training;
 }
 
-const CourseForm = ({ course, availableCourses }: ICourseFormProps) => {
+const CourseForm = ({ course }: ICourseFormProps) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -21,7 +20,7 @@ const CourseForm = ({ course, availableCourses }: ICourseFormProps) => {
     .object({
       title: yup.string().required(),
       description: yup.string().required(),
-      courseFile: yup.string().required(),
+      slug: yup.string().required(),
     })
     .required();
 
@@ -60,28 +59,14 @@ const CourseForm = ({ course, availableCourses }: ICourseFormProps) => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={6}>
-            {course && (
-              <HStack>
-                <Text fontWeight="bold">Fichier de cours: </Text>
-                <Text>{course?.courseFile} </Text>
-              </HStack>
-            )}
             <TextField name="title" label="Titre du cours" />
             <TextAreaField name="description" label="Description courte" />
             <SwitchField
               name="isDownloadable"
               label="Autoriser le téléchargement PDF"
             />
-            {availableCourses && (
-              <SelectField
-                name="courseFile"
-                label="Fichier cours"
-                options={availableCourses.map((courseName: any) => ({
-                  label: courseName,
-                  value: courseName,
-                }))}
-              />
-            )}
+            {/* TODO remove slug field once editor is ready */}
+            {!course && <TextField name="slug" label="Slug" />}
             <Center>
               <Button
                 type="submit"
