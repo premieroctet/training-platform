@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import slugify from "slugify";
 
 const prisma = new PrismaClient();
 
@@ -18,7 +19,10 @@ export default async function handle(
       break;
     case "POST":
       result = await prisma.training.create({
-        data: body,
+        data: {
+          ...body,
+          slug: slugify(body?.title),
+        },
       });
       res.json(result);
 

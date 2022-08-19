@@ -92,7 +92,7 @@ const EditUserPage = ({
   courses,
 }: inferSSRProps<typeof getServerSideProps>) => {
   return (
-    <Layout title="Stagiaires | Formations Premier Octet">
+    <Layout title="Stagiaires">
       <Center
         mx={"auto"}
         my={"8"}

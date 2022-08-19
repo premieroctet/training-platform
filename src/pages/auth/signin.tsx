@@ -21,7 +21,7 @@ type Props = {
 
 export default function SignIn({ csrfToken }: Props) {
   return (
-    <Layout title="Formations Premier Octet">
+    <Layout title="Training Platform">
       <Center flexDirection="column" py="auto" h={["100%", "auto"]}>
         <Stack
           margin={["auto", "xl", "2xl"]}
