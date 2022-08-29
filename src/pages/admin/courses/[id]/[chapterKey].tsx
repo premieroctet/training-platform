@@ -4,13 +4,13 @@ import { checkIsConnected } from "src/utils/auth";
 import { inferSSRProps } from "@/lib/inferNextProps";
 import path from "path";
 import fs from "fs";
-import MDXProvider from "../../../../components/mdx/MDXProvider";
 import prisma from "@/lib/prisma";
 import dynamic from "next/dynamic";
 import { MDEditorProps } from "@uiw/react-md-editor";
 import { useState } from "react";
 import { Button, Flex, Spacer, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import MDXProviderPreview from "@/components/mdx/MDXProviderPreview";
 import "@uiw/react-md-editor/dist/mdeditor.min.css";
 import "@uiw/react-markdown-preview/dist/markdown.min.css";
 
@@ -29,6 +29,13 @@ const EditCourseChapter = ({
   const [value, setValue] = useState(chapterContent);
   const [isLoading, setLoading] = useState(false);
 
+  const MDContent = dynamic(
+    () =>
+      import(
+        `../../../../../courses/${course.courseFile}/${chapters[selectChapter]}.mdx`
+      )
+  );
+
   const router = useRouter();
   const toast = useToast();
 
@@ -42,6 +49,7 @@ const EditCourseChapter = ({
         body: JSON.stringify({ content: value, filename: filename }),
       });
       setLoading(false);
+      router.replace(router.asPath);
       toast({
         title: "Le contenu a été modifié !",
         status: "success",
@@ -62,50 +70,84 @@ const EditCourseChapter = ({
 
   return (
     <Layout>
-      <Flex my="sm" px="md" align="center" justify="center" w="100%">
-        <Button
-          colorScheme="primary"
-          isDisabled={selectChapter === 0}
-          onClick={() =>
-            router.push(
-              "/admin/courses/" + course!.id + "/" + `${selectChapter - 1}`
-            )
-          }
+      <Flex
+        w="100%"
+        h="100%"
+        alignItems="stretch"
+        flex={1}
+        align="center"
+        justify="center"
+        flexDir="column"
+      >
+        <Flex my="sm" px="md" align="center" justify="center" w="100%">
+          <Button
+            colorScheme="primary"
+            isDisabled={selectChapter === 0}
+            onClick={() =>
+              router.push(
+                "/admin/courses/" + course!.id + "/" + `${selectChapter - 1}`
+              )
+            }
+          >
+            {"<"} Précédent
+          </Button>
+          <Spacer />
+          <Button
+            mx="md"
+            colorScheme="secondary"
+            isDisabled={chapterContent === value}
+            isLoading={isLoading}
+            onClick={() => saveMdxContent()}
+          >
+            Sauvegarder
+          </Button>
+          <Spacer />
+          <Button
+            colorScheme="primary"
+            isDisabled={selectChapter === chapters.length - 1}
+            onClick={() =>
+              router.push(
+                "/admin/courses/" + course!.id + "/" + `${selectChapter + 1}`
+              )
+            }
+          >
+            Suivant {">"}
+          </Button>
+        </Flex>
+        <Flex
+          h="100%"
+          data-color-mode="light"
+          alignItems="stretch"
+          flexdir="column"
+          w="100%"
+          flex={1}
         >
-          {"<"} Précédent
-        </Button>
-        <Spacer />
-        <Button
-          mx="md"
-          colorScheme="secondary"
-          isDisabled={chapterContent === value}
-          isLoading={isLoading}
-          onClick={() => saveMdxContent()}
-        >
-          Sauvegarder
-        </Button>
-        <Spacer />
-        <Button
-          colorScheme="primary"
-          isDisabled={selectChapter === chapters.length - 1}
-          onClick={() =>
-            router.push(
-              "/admin/courses/" + course!.id + "/" + `${selectChapter + 1}`
-            )
-          }
-        >
-          Suivant {">"}
-        </Button>
+          <Flex
+            w="100%"
+            align="center"
+            h="100%"
+            flex={1}
+            justify="center"
+            alignItems="stretch"
+          >
+            <Flex w="100%" h="100%" flex={1} align="center" justify="center">
+              <MDEditor
+                value={value}
+                preview="edit"
+                height="100%"
+                overflow
+                onChange={(e) => setValue(e as string)}
+                style={{ width: "100%" }}
+              />
+            </Flex>
+            <Flex w="100%" ml="xs" flex={1} align="center" justify="center">
+              <MDXProviderPreview>
+                <MDContent />
+              </MDXProviderPreview>
+            </Flex>
+          </Flex>
+        </Flex>
       </Flex>
-      <div data-color-mode="light">
-        <MDXProvider>
-          <MDEditor
-            value={value}
-            onChange={(e) => setValue(e as string)}
-            height="85vh"
-          />
-        </MDXProvider>
-      </div>
     </Layout>
   );
 };
