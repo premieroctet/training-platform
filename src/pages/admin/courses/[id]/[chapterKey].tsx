@@ -2,13 +2,11 @@ import Layout from "@/components/Layout";
 import { GetServerSidePropsContext } from "next";
 import { checkIsConnected } from "src/utils/auth";
 import { inferSSRProps } from "@/lib/inferNextProps";
-import path from "path";
-import fs from "fs";
 import MDXProvider from "../../../../components/mdx/MDXProvider";
 import prisma from "@/lib/prisma";
 import dynamic from "next/dynamic";
 import { MDEditorProps } from "@uiw/react-md-editor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Flex, Spacer, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import "@uiw/react-md-editor/dist/mdeditor.min.css";
@@ -23,7 +21,6 @@ const EditCourseChapter = ({
   chapterContent,
   selectChapter,
   chapters,
-  filename,
   course,
 }: inferSSRProps<typeof getServerSideProps>) => {
   const [value, setValue] = useState(chapterContent);
@@ -32,6 +29,10 @@ const EditCourseChapter = ({
   const router = useRouter();
   const toast = useToast();
 
+  useEffect(() => {
+    setValue(chapterContent);
+  }, [chapterContent]);
+
   const saveMdxContent = async () => {
     setLoading(true);
 
@@ -39,8 +40,12 @@ const EditCourseChapter = ({
       await fetch(`/api/courses/edit`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: value, filename: filename }),
+        body: JSON.stringify({
+          content: value,
+          chapterId: chapters[selectChapter].id,
+        }),
       });
+      router.replace(router.asPath);
       setLoading(false);
       toast({
         title: "Le contenu a été modifié !",
@@ -66,11 +71,11 @@ const EditCourseChapter = ({
         <Button
           colorScheme="primary"
           isDisabled={selectChapter === 0}
-          onClick={() =>
+          onClick={() => {
             router.push(
               "/admin/courses/" + course!.id + "/" + `${selectChapter - 1}`
-            )
-          }
+            );
+          }}
         >
           {"<"} Précédent
         </Button>
@@ -88,11 +93,11 @@ const EditCourseChapter = ({
         <Button
           colorScheme="primary"
           isDisabled={selectChapter === chapters.length - 1}
-          onClick={() =>
+          onClick={() => {
             router.push(
               "/admin/courses/" + course!.id + "/" + `${selectChapter + 1}`
-            )
-          }
+            );
+          }}
         >
           Suivant {">"}
         </Button>
@@ -133,22 +138,29 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  const chapters = fs
-    .readdirSync(path.join(process.cwd(), "courses", `${course.courseFile}`))
-    .filter((name) => name.endsWith(".mdx"))
-    .map((name) => name.replace(".mdx", ""));
+  const chaptersData = await prisma.chapters.findMany({
+    where: {
+      trainingId: course.id,
+    },
+  });
 
-  const filename = path.join(
-    `${course.courseFile}`,
-    `${chapters[selectChapter]}.mdx`
-  );
+  const chapterContent = chaptersData.filter((e) => e.pageId === selectChapter);
 
-  const chapterContent = fs.readFileSync(
-    path.join(process.cwd(), "courses", `${filename}`),
-    "utf8"
-  );
+  if (chapterContent.length <= 0) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
 
   return {
-    props: { filename, selectChapter, chapters, chapterContent, course },
+    props: {
+      selectChapter,
+      chapters: chaptersData,
+      chapterContent: chapterContent[0].content,
+      course,
+    },
   };
 }
