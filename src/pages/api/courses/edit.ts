@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import fs from "fs";
-import path from "path";
+import prisma from "@/lib/prisma";
 
 export default async function handle(
   req: NextApiRequest,
@@ -8,19 +7,22 @@ export default async function handle(
 ) {
   const { method, body } = req;
 
-  function readWriteSync() {
-    fs.writeFileSync(
-      path.join(process.cwd(), "courses", `${body.filename}`),
-      body.content,
-      "utf-8"
-    );
+  async function updateCourseContent() {
+    await prisma.chapters.update({
+      where: {
+        id: body.chapterId,
+      },
+      data: {
+        content: body.content,
+      },
+    });
 
-    res.json({ message: "Updated successfully !" });
+    res.status(200).end(`Updated successfully !`);
   }
 
   switch (method) {
     case "PUT":
-      readWriteSync();
+      updateCourseContent();
       break;
     default:
       res.setHeader("Allow", ["PUT"]);
