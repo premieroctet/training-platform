@@ -136,6 +136,7 @@ const EditCourseChapter = ({
                 preview="edit"
                 height="100%"
                 overflow
+                extraCommands={[]}
                 onChange={(e) => setValue(e as string)}
                 style={{ width: "100%" }}
               />
