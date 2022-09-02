@@ -7,10 +7,22 @@ import fs from "fs";
 import prisma from "@/lib/prisma";
 import dynamic from "next/dynamic";
 import { MDEditorProps } from "@uiw/react-md-editor";
-import { useState } from "react";
-import { Button, Flex, Spacer, useToast } from "@chakra-ui/react";
+import { useState, useMemo } from "react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Spacer,
+  useToast,
+  List,
+  ListItem,
+  ListIcon,
+} from "@chakra-ui/react";
+import { Image } from "@chakra-ui/image";
 import { useRouter } from "next/router";
 import MDXProviderPreview from "@/components/mdx/MDXProviderPreview";
+import { getMDXComponent } from "mdx-bundler/client";
+import { bundleMDX } from "mdx-bundler";
 import "@uiw/react-md-editor/dist/mdeditor.min.css";
 import "@uiw/react-markdown-preview/dist/markdown.min.css";
 
@@ -25,16 +37,25 @@ const EditCourseChapter = ({
   chapters,
   filename,
   course,
+  code,
 }: inferSSRProps<typeof getServerSideProps>) => {
   const [value, setValue] = useState(chapterContent);
   const [isLoading, setLoading] = useState(false);
 
-  const MDContent = dynamic(
+  const Component = useMemo(
     () =>
-      import(
-        `../../../../../courses/${course.courseFile}/${chapters[selectChapter]}.mdx`
-      )
+      getMDXComponent(code, {
+        chakraLib: { Image, Flex, Heading, List, ListItem, ListIcon },
+      }),
+    [code]
   );
+
+  // const MDContent = dynamic(
+  //   () =>
+  //     import(
+  //       `../../../../../courses/${course.courseFile}/${chapters[selectChapter]}.mdx`
+  //     )
+  // );
 
   const router = useRouter();
   const toast = useToast();
@@ -143,7 +164,8 @@ const EditCourseChapter = ({
             </Flex>
             <Flex w="100%" ml="xs" flex={1} align="center" justify="center">
               <MDXProviderPreview>
-                <MDContent />
+                {/* <Component /> */}
+                {/* <MDContent /> */}
               </MDXProviderPreview>
             </Flex>
           </Flex>
@@ -191,7 +213,59 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     "utf8"
   );
 
+  if (process.platform === "win32") {
+    process.env.ESBUILD_BINARY_PATH = path.join(
+      process.cwd(),
+      "node_modules",
+      "esbuild",
+      "esbuild.exe"
+    );
+  } else {
+    process.env.ESBUILD_BINARY_PATH = path.join(
+      process.cwd(),
+      "node_modules",
+      "esbuild",
+      "bin",
+      "esbuild"
+    );
+  }
+
+  const { code } = await bundleMDX({
+    source: chapterContent,
+    globals: {
+      "@chakra-ui/react": {
+        varName: "chakraLib",
+        namedExports: [
+          "Flex",
+          "Heading",
+          "Image",
+          "List",
+          "ListItem",
+          "ListIcon",
+        ],
+        defaultExport: true,
+      },
+    },
+    cwd: path.join(process.cwd(), "courses", `${course.courseFile}`),
+    esbuildOptions: (options) => {
+      options.loader = {
+        ...options.loader,
+        ".png": "dataurl",
+        ".jpg": "dataurl",
+        ".gif": "dataurl",
+      };
+      return options;
+    },
+  });
+
   return {
-    props: { filename, selectChapter, chapters, chapterContent, course },
+    props: {
+      filename,
+      selectChapter,
+      chapters,
+      chapterContent,
+      course,
+      code,
+    },
   };
 }
