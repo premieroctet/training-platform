@@ -1,9 +1,17 @@
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/client";
+import { isStaff } from "./users";
 
-export const checkIsConnected = async (context: GetServerSidePropsContext) => {
+export const checkIsConnected = async ({
+  context,
+  staffOnly,
+}: {
+  context: GetServerSidePropsContext;
+  staffOnly?: boolean;
+}) => {
   const session = await getSession(context);
-  if ((session && !session.user?.isAdmin) || !session) {
+
+  if ((staffOnly && !isStaff(session)) || !session) {
     return {
       redirect: {
         destination: "/",

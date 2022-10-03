@@ -1,25 +1,20 @@
 import { User } from ".prisma/client";
-import {
-  CloseButton,
-  Td,
-  Tr,
-  Link,
-  IconButton,
-  HStack,
-} from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+import { Td, Tr, Link, IconButton, HStack } from "@chakra-ui/react";
+import { CloseIcon, EditIcon } from "@chakra-ui/icons";
+import ConfirmButton from "../ConfirmButton";
 
 type Props = {
   user: User;
-  deleteUser: (user: User) => void;
+  deleteUser: (userID: User["id"]) => void;
+  tab?: number;
+  disabled?: boolean;
 };
 
-const UserTableRow = ({ user, deleteUser }: Props) => {
+const UserTableRow = ({ user, deleteUser, tab, disabled }: Props) => {
   return (
     <Tr key={user.id}>
       <Td>{user.name}</Td>
       <Td>{user.email}</Td>
-      <Td>{user.courses.join(", ")}</Td>
       <Td justifyContent="flex-end">
         <HStack>
           <IconButton
@@ -27,12 +22,17 @@ const UserTableRow = ({ user, deleteUser }: Props) => {
             aria-label="Search database"
             icon={<EditIcon />}
             as={Link}
-            href={`/admin/users/${user.id}`}
+            href={`/admin/users/${user.id}?tab=${tab}`}
+            disabled={disabled}
           />
-          <CloseButton
-            onClick={() => {
-              deleteUser(user);
-            }}
+          <ConfirmButton
+            label="Supprimer l'utilisateur"
+            confirmDetail="Êtes-vous sûrs de vouloir supprimer cet utilisateur?"
+            colorScheme="red"
+            icon={<CloseIcon />}
+            onConfirm={() => deleteUser(user?.id)}
+            size="xs"
+            disabled={disabled}
           />
         </HStack>
       </Td>

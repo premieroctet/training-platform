@@ -7,7 +7,6 @@ import {
   Text,
   HStack,
   Icon,
-  Box,
 } from "@chakra-ui/react";
 import { signOut, useSession } from "next-auth/client";
 import { FiLogOut } from "react-icons/fi";
@@ -15,6 +14,8 @@ import { BsBook } from "react-icons/bs";
 import { RiUserAddLine } from "react-icons/ri";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 import NextLink from "next/link";
+import UserBadge from "../users/UserBadge";
+import { isStaff } from "src/utils/users";
 
 const UserDropdoown = () => {
   const [session, _] = useSession();
@@ -33,21 +34,9 @@ const UserDropdoown = () => {
       <MenuList>
         <HStack paddingX={4} paddingY={2}>
           <Text fontWeight="bold"> {userName} </Text>
-          {session?.user?.isAdmin && (
-            <Box
-              backgroundColor="secondary.400"
-              color="white"
-              paddingY={1}
-              paddingX={3}
-              borderRadius="lg"
-            >
-              <Text fontWeight="bold" fontSize="xs">
-                ADMIN
-              </Text>
-            </Box>
-          )}
+          <UserBadge />
         </HStack>
-        {session?.user?.isAdmin && (
+        {isStaff(session) && (
           <>
             <NextLink href="/admin/courses" passHref>
               <MenuItem
@@ -60,7 +49,7 @@ const UserDropdoown = () => {
 
             <NextLink href="/admin/users" passHref>
               <MenuItem icon={<Icon as={RiUserAddLine} w={6} h={6} />}>
-                Ajouter un stagiaire
+                Gérer les utilisateurs
               </MenuItem>
             </NextLink>
           </>

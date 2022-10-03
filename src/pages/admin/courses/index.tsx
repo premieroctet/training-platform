@@ -6,8 +6,9 @@ import prisma from "@/lib/prisma";
 import { MdAddCircleOutline } from "react-icons/md";
 import { Box, Button, Center, Heading, VStack, Text } from "@chakra-ui/react";
 import { GetServerSidePropsContext } from "next";
-import { getSession } from "next-auth/client";
 import { useRouter } from "next/router";
+import { checkIsConnected } from "src/utils/auth";
+import { getSession } from "next-auth/client";
 
 const LIMIT = 10;
 
@@ -19,7 +20,7 @@ const CoursesPage = ({ courses }: inferSSRProps<typeof getServerSideProps>) => {
         <VStack
           p={10}
           background="white"
-          width="container.sm"
+          minW="container.sm"
           minH="60vh"
           spacing={10}
         >
@@ -54,13 +55,9 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const session = await getSession(context);
-  if ((session && !session.user?.isAdmin) || !session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
+  const redirect = await checkIsConnected({ context, staffOnly: true });
+  if (redirect) {
+    return redirect;
   }
 
   let message: MessageData | null = null;
@@ -73,6 +70,15 @@ export const getServerSideProps = async (
     take: LIMIT,
     orderBy: {
       createdAt: "asc",
+    },
+    where:
+      session && session?.user?.role === "teacher"
+        ? {
+            userId: session?.user?.id!,
+          }
+        : {},
+    include: {
+      author: true,
     },
   });
   return {

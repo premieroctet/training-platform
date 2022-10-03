@@ -41,6 +41,7 @@ const CoursesTable = ({ courses }: ICoursesTableProps) => {
           <Th>titre</Th>
           <Th>description</Th>
           <Th>slug</Th>
+          <Th>formateur</Th>
           <Th></Th>
         </Tr>
       </Thead>
@@ -52,6 +53,7 @@ const CoursesTable = ({ courses }: ICoursesTableProps) => {
               <Text noOfLines={4}>{course?.description}</Text>
             </Td>
             <Td>{course?.slug}</Td>
+            <Td>{course?.author?.email}</Td>
             <Td justifyContent="flex-end">
               <HStack>
                 <IconButton

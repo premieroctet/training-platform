@@ -1,22 +1,19 @@
 import ConnectedHome from "@/components/homes/ConnectedHome";
 import PublicHome from "@/components/homes/PublicHome";
 import prisma from "@/lib/prisma";
-import { readdirSync } from "fs";
+import { Training, User } from "@prisma/client";
+import { readdirSync, existsSync } from "fs";
 import { GetServerSideProps } from "next";
 import { Session } from "next-auth";
 import { getSession } from "next-auth/client";
 import path from "path";
 import Layout from "../components/Layout";
 
-export type CourseType = {
+export interface CourseType extends Training {
   chapters: string[];
   courseMap: string | null;
-  id: string;
-  title: string;
-  description: string;
-  slug: string;
-  isDownloadable?: boolean;
-};
+  author: User;
+}
 
 type Props = {
   session: Session | null | undefined;
@@ -35,16 +32,21 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const session = await getSession(context);
-  const courses = await prisma.training.findMany();
+  const courses = await prisma.training.findMany({ include: { author: true } });
 
   const coursesDirectory = path.join(process.cwd(), "courses");
 
   const allCourses = courses
+    .filter((course) => {
+      const courseDirectory = path.join(coursesDirectory, course?.slug);
+      return existsSync(courseDirectory);
+    })
     .map((course) => {
       const courseDirectory = path.join(coursesDirectory, course?.slug);
       const chapters = readdirSync(courseDirectory)
         .filter((name) => name.endsWith(".mdx"))
         .map((x) => x.replace(".mdx", ""));
+
       const courseMap =
         readdirSync(courseDirectory).find((name) => name.endsWith(".md")) ||
         null;
@@ -58,14 +60,24 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     .filter(({ chapters }) => chapters.length > 0);
 
   const user = session?.user;
-  const userCourses = allCourses.filter(({ title }) => {
-    return user?.courses && user?.courses.includes(title);
-  });
+  let userCourses = allCourses;
+
+  if (user?.role === "trainee") {
+    userCourses = allCourses.filter(({ slug }) => {
+      return user?.courses && user?.courses.includes(slug);
+    });
+  }
+  if (user?.role === "teacher") {
+    // Teachers only have access to their courses
+    userCourses = allCourses.filter((course) => {
+      return course?.userId === user?.id;
+    });
+  }
 
   return {
     props: {
       session,
-      courses: user?.isAdmin ? allCourses : userCourses,
+      courses: userCourses,
     },
   };
 };

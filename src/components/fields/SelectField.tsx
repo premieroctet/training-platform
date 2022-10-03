@@ -11,6 +11,7 @@ interface ITextInputProps {
   label: string;
   placeholder?: string;
   options: { value: string; label: string }[];
+  disabled?: boolean;
 }
 
 const SelectField = ({
@@ -18,6 +19,7 @@ const SelectField = ({
   label,
   placeholder,
   options,
+  disabled,
 }: ITextInputProps) => {
   const {
     register,
@@ -30,7 +32,7 @@ const SelectField = ({
     <FormControl isInvalid={hasError}>
       <FormLabel fontSize="sm">{label}</FormLabel>
 
-      <Select placeholder={placeholder} {...register(name)}>
+      <Select placeholder={placeholder} {...register(name)} disabled={disabled}>
         {options.map((option, idx) => (
           <option key={idx} value={option.value}>
             {option.label}

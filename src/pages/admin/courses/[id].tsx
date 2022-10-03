@@ -5,8 +5,6 @@ import { GetServerSidePropsContext } from "next";
 import { checkIsConnected } from "src/utils/auth";
 import { inferSSRProps } from "@/lib/inferNextProps";
 import prisma from "@/lib/prisma";
-import path from "path";
-import fs from "fs";
 
 const EditCourse = ({ course }: inferSSRProps<typeof getServerSideProps>) => {
   return (
@@ -37,7 +35,10 @@ const EditCourse = ({ course }: inferSSRProps<typeof getServerSideProps>) => {
 export default EditCourse;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  await checkIsConnected(context);
+  const redirect = await checkIsConnected({ context, staffOnly: true });
+  if (redirect) {
+    return redirect;
+  }
 
   const id = context.params!.id as string;
   const course = await prisma.training.findUnique({
@@ -55,14 +56,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  const chapters = fs
-    .readdirSync(path.join(process.cwd(), "courses", `${course.courseFile}`))
-    .filter((name) => name.endsWith(".mdx"))
-    .map((name) => name.replace(".mdx", ""));
-
-  const filename = path.join(`${course.courseFile}`, `${chapters[0]}.mdx`);
-
   return {
-    props: { course, filename },
+    props: { course },
   };
 }

@@ -39,7 +39,10 @@ const CreateCourse = () => {
 export default CreateCourse;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  await checkIsConnected(context);
+  const redirect = await checkIsConnected({ context, staffOnly: true });
+  if (redirect) {
+    return redirect;
+  }
   return {
     props: {},
   };

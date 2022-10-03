@@ -1,131 +1,124 @@
 import Layout from "@/components/Layout";
-import Message, { MessageData } from "@/components/users/Message";
-import UserForm from "@/components/users/UserForm";
-import UsersPagination from "@/components/users/UsersPagination";
+import AddUserModal from "@/components/users/AddUserModal";
 import UsersTable from "@/components/users/UsersTable";
 import { inferSSRProps } from "@/lib/inferNextProps";
 import prisma from "@/lib/prisma";
-import { Center, Flex, Heading } from "@chakra-ui/react";
-import { readdirSync } from "fs";
-import { GetServerSidePropsContext, NextApiRequest } from "next";
-import { getSession } from "next-auth/client";
-import { parseBody } from "next/dist/server/api-utils";
-import path from "path";
+import {
+  Center,
+  Flex,
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  VStack,
+} from "@chakra-ui/react";
+import { GetServerSidePropsContext } from "next";
+import { useSession } from "next-auth/client";
+import { useRouter } from "next/router";
+import { checkIsConnected } from "src/utils/auth";
 
-const LIMIT = 10;
-
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const session = await getSession(context);
-  if ((session && !session.user?.isAdmin) || !session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  const body = await parseBody(context.req as NextApiRequest, "1mb");
-  let message: MessageData | null = null;
-
-  if (context.req.method === "POST") {
-    let success;
-    try {
-      await prisma.user.create({
-        data: {
-          name: body.name,
-          email: body.email,
-          courses: body.courses,
-        },
-      });
-
-      success = true;
-    } catch (error) {
-      /* eslint-disable no-console*/
-      console.log(error);
-      success = false;
-    }
-
-    message = {
-      message: success
-        ? `${body.email} a été ajouté avec succès`
-        : `${body.email} est déjà sur la liste`,
-      type: success ? "success" : "error",
-    };
-  }
-
-  if (context.req.method === "DELETE") {
-    try {
-      await prisma.user.delete({
-        where: { id: body },
-      });
-      message = {
-        message: `Utilisateur supprimé avec succès`,
-        type: "success",
-      };
-    } catch (error) {
-      throw new Error("Error adding new user");
-    }
-  }
-
-  const page = parseInt(context.query.page?.toString()) || 1;
-  const usersCount = await prisma.user.count();
-  const maxPages = Math.ceil(usersCount / LIMIT);
-  const users = await prisma.user.findMany({
-    where: {
-      isAdmin: false,
-    },
-    skip: page > 1 ? (page - 1) * LIMIT : 0,
-    take: LIMIT,
-    orderBy: {
-      createdAt: "asc",
-    },
-  });
-  const courses = readdirSync(path.join(process.cwd(), "courses")).filter(
-    (course) => course !== "assets"
-  );
-  return {
-    props: { session, users, maxPages, page, message, courses },
-  };
-};
-
-const UsersPage = ({
-  users,
-  maxPages,
-  page,
-  message,
-  courses,
+const ManageUsers = ({
+  admins,
+  trainees,
+  teachers,
 }: inferSSRProps<typeof getServerSideProps>) => {
+  const [session] = useSession();
+  const router = useRouter();
+  const { tab } = router.query;
+
   return (
     <Layout title="Stagiaires">
       <Center mx={"auto"} my={"8"} borderWidth="1px" borderRadius={"md"}>
-        <Flex
-          direction={"column"}
-          justifyContent={"center"}
-          p="4"
+        <VStack
+          p={8}
           background="white"
+          minW="60vw"
+          spacing={8}
+          alignItems="flex-start"
         >
-          <Heading
-            size="md"
-            textAlign="center"
-            paddingBottom={20}
-            paddingTop="5"
-          >
-            Stagiaires
+          <Heading size="md" paddingTop="5">
+            Gérer les utilisateurs
           </Heading>
-          <Message message={message} />
-          <UsersTable users={users} />
-          <UsersPagination maxPages={maxPages} page={page} limit={LIMIT} />
-          <Heading size="sm" mt={4} textAlign="center" fontSize="md">
-            Ajouter un stagiaire
-          </Heading>
-          <UserForm courses={courses} />
-        </Flex>
+
+          <Flex>
+            <AddUserModal />
+          </Flex>
+
+          <VStack spacing={2}>
+            <Tabs variant="enclosed" defaultIndex={tab ? +tab : 0}>
+              <TabList>
+                <Tab>
+                  <Flex>Stagiaires</Flex>
+                </Tab>
+                {session?.user?.role === "admin" && (
+                  <>
+                    <Tab>
+                      <Flex>Formateurs</Flex>
+                    </Tab>
+                    <Tab>
+                      <Flex>Admins</Flex>
+                    </Tab>
+                  </>
+                )}
+              </TabList>
+
+              <TabPanels>
+                <TabPanel>
+                  <UsersTable users={trainees} tab={0} />
+                </TabPanel>
+                <TabPanel>
+                  <UsersTable users={teachers} tab={1} />
+                </TabPanel>
+                <TabPanel>
+                  <UsersTable users={admins} tab={2} />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </VStack>
+        </VStack>
       </Center>
     </Layout>
   );
 };
 
-export default UsersPage;
+export default ManageUsers;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const redirect = await checkIsConnected({ context, staffOnly: true });
+
+  if (redirect) {
+    return redirect;
+  }
+  const admins = await prisma.user.findMany({
+    where: {
+      role: "admin",
+    },
+  });
+
+  const trainees = await prisma.user.findMany({
+    where: {
+      role: "trainee",
+    },
+    include: {
+      trainings: true,
+    },
+  });
+
+  const teachers = await prisma.user.findMany({
+    where: {
+      role: "teacher",
+    },
+  });
+
+  return {
+    props: {
+      admins,
+      trainees,
+      teachers,
+    },
+  };
+};

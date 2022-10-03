@@ -1,8 +1,10 @@
 import { Text, Box, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useSession } from "next-auth/client";
+import { isStaff } from "src/utils/users";
 
 const NoCourse = () => {
   const [session, _] = useSession();
+
   return (
     <>
       <Text width="100%" fontWeight="bold" fontSize="md" textAlign="left">
@@ -18,14 +20,14 @@ const NoCourse = () => {
         >
           <Box maxWidth="container.xs">
             <Text fontWeight="bold" textAlign="center">
-              {session?.user?.isAdmin
+              {isStaff(session)
                 ? "Vous n'avez créé aucun cours pour le moment."
                 : "Vous n'êtes inscrit à aucun cours pour le moment."}
             </Text>
             <Text textAlign="center">
-              {session?.user?.isAdmin
-                ? "Ajoutez un cours et inscrivez vos premiers stagiaires ou découvrez le tutoriel."
-                : "Attendez l'invitation d'un instructeur pour obtenir vos accès et découvrez le tutoriel."}
+              {isStaff(session)
+                ? "Ajoutez un cours et inscrivez vos premiers stagiaires.."
+                : "Attendez l'invitation d'un instructeur pour obtenir vos accès."}
             </Text>
           </Box>
         </Stack>

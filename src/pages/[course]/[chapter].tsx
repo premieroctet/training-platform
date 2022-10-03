@@ -125,7 +125,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const { course, chapter } = context.params as IParams;
   const courseInfo = await prisma.training.findUnique({
     where: {
-      slug: course as string,
+      id: course as string,
     },
   });
 
