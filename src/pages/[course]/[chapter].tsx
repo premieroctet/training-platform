@@ -123,9 +123,10 @@ export const getServerSideProps: GetServerSideProps = async (
     context.req.headers["context"] === "pdf-export";
 
   const { course, chapter } = context.params as IParams;
+
   const courseInfo = await prisma.training.findUnique({
     where: {
-      id: course as string,
+      slug: course as string,
     },
   });
 
