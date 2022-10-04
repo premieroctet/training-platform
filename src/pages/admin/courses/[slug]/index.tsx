@@ -40,10 +40,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return redirect;
   }
 
-  const id = context.params!.id as string;
+  const slug = context.params!.slug as string;
   const course = await prisma.training.findUnique({
     where: {
-      id,
+      slug,
     },
   });
 

@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import SwitchField from "../fields/SwitchField";
 import { Training } from "@prisma/client";
 import { useSession } from "next-auth/client";
+import { CopyIcon } from "@chakra-ui/icons";
 
 interface ICourseFormProps {
   course?: Training;
@@ -57,6 +58,29 @@ const CourseForm = ({ course }: ICourseFormProps) => {
 
   return (
     <Box>
+      <Center>
+        {course && (
+          <Button
+            colorScheme="secondary"
+            variant="solid"
+            border="1px"
+            fontSize="sm"
+            mx="sm"
+            leftIcon={<CopyIcon />}
+            onClick={() =>
+              router.push({
+                pathname: "/admin/courses/[slug]/[chapterKey]",
+                query: {
+                  slug: course?.slug,
+                  chapterKey: 0,
+                },
+              })
+            }
+          >
+            Editer le contenu
+          </Button>
+        )}
+      </Center>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={6}>
@@ -67,21 +91,6 @@ const CourseForm = ({ course }: ICourseFormProps) => {
               label="Autoriser le téléchargement PDF"
             />
             <Center>
-              {course && (
-                <Button
-                  colorScheme="orange"
-                  variant="solid"
-                  border="1px"
-                  fontSize="sm"
-                  mx="sm"
-                  onClick={() =>
-                    router.push("/admin/courses/" + course!.id + "/0")
-                  }
-                >
-                  Editer le contenu
-                </Button>
-              )}
-
               <Button
                 type="submit"
                 colorScheme="primary"

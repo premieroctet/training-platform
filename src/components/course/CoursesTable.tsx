@@ -9,6 +9,7 @@ import {
   Text,
   Th,
   Thead,
+  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -56,13 +57,15 @@ const CoursesTable = ({ courses }: ICoursesTableProps) => {
             <Td>{course?.author?.email}</Td>
             <Td justifyContent="flex-end">
               <HStack>
-                <IconButton
-                  size="sm"
-                  aria-label="Search database"
-                  icon={<EditIcon />}
-                  as={Link}
-                  href={`/admin/courses/${course.id}`}
-                />
+                <Tooltip label="Éditer les infos">
+                  <IconButton
+                    size="sm"
+                    aria-label="Edit info"
+                    icon={<EditIcon />}
+                    as={Link}
+                    href={`/admin/courses/${course.slug}`}
+                  />
+                </Tooltip>
                 <ConfirmButton
                   label="Supprimer le cours"
                   confirmDetail="Êtes-vous sûrs de vouloir supprimer ce cours?"
