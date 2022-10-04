@@ -15,7 +15,7 @@ export default async function handle(
 
   switch (method) {
     case "PUT":
-      const result = await prisma.training.update({
+      const result = await prisma.user.update({
         where: {
           //@ts-ignore
           id: id,
@@ -26,13 +26,13 @@ export default async function handle(
       break;
     case "DELETE":
       try {
-        await prisma.training.delete({
+        await prisma.user.delete({
           //@ts-ignore
           where: { id },
         });
         res.status(200).json({ id });
       } catch (error) {
-        throw new Error("Error deleting course");
+        throw new Error("Error deleting user");
       }
 
       break;

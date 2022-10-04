@@ -113,7 +113,7 @@ const EditCourseChapter = ({
 export default EditCourseChapter;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  await checkIsConnected(context);
+  await checkIsConnected({ context });
 
   const id = context.params!.id as string;
   const selectChapter = Number(context.params!.chapterKey);
@@ -134,12 +134,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const chapters = fs
-    .readdirSync(path.join(process.cwd(), "courses", `${course.courseFile}`))
+    .readdirSync(path.join(process.cwd(), "courses", `${course.slug}`))
     .filter((name) => name.endsWith(".mdx"))
     .map((name) => name.replace(".mdx", ""));
 
   const filename = path.join(
-    `${course.courseFile}`,
+    `${course.slug}`,
     `${chapters[selectChapter]}.mdx`
   );
 

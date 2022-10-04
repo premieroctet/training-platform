@@ -3,12 +3,11 @@ import Message from "@/components/users/Message";
 import UserForm from "@/components/users/UserForm";
 import { inferSSRProps } from "@/lib/inferNextProps";
 import prisma from "@/lib/prisma";
-import { Center, Flex, Heading } from "@chakra-ui/react";
-import { readdirSync } from "fs";
-import { GetServerSidePropsContext, NextApiRequest } from "next";
+import { Center, Flex, Heading, useToast } from "@chakra-ui/react";
+import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/client";
-import { parseBody } from "next/dist/server/api-utils";
-import path from "path";
+import { useRouter } from "next/router";
+import { checkIsConnected } from "src/utils/auth";
 
 export type Message = {
   type: "success" | "warning" | "error";
@@ -18,16 +17,11 @@ export type Message = {
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const session = await getSession(context);
-  if ((session && !session.user?.isAdmin) || !session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
+  const redirect = await checkIsConnected({ context });
+  if (redirect) {
+    return redirect;
   }
-
+  const session = await getSession(context);
   const id = context.params!.id as string;
   const user = await prisma.user.findUnique({
     where: {
@@ -44,53 +38,27 @@ export const getServerSideProps = async (
     };
   }
 
-  // Update user
-  const courses = readdirSync(path.join(process.cwd(), "courses")).filter(
-    (course) => course !== "assets"
-  );
-  const body = await parseBody(context.req as NextApiRequest, "1mb");
-  let message: Message | null = null;
-
-  if (context.req.method === "POST") {
-    let success;
-    try {
-      await prisma.user.update({
-        where: {
-          id,
-        },
-        data: {
-          name: body.name,
-          email: body.email,
-          courses: body.courses,
-        },
-      });
-
-      context.res.writeHead(301, {
-        Location: "/admin/users",
-      });
-      context.res.end();
-    } catch (error) {
-      success = false;
-    }
-
-    message = {
-      message: success
-        ? `${body.email} a été mis à jour avec succès`
-        : `Erreur lors de la mise à jour de l'utilisateur`,
-      type: success ? "success" : "error",
-    };
-  }
+  const courses =
+    session?.user?.role === "admin"
+      ? await prisma.training.findMany()
+      : await prisma.training.findMany({
+          where: {
+            userId: session?.user?.id!,
+          },
+        });
 
   return {
-    props: { session, user, message, courses },
+    props: { user, courses },
   };
 };
 
 const EditUserPage = ({
   user,
-  message,
   courses,
 }: inferSSRProps<typeof getServerSideProps>) => {
+  const router = useRouter();
+  const { tab } = router.query;
+  const toast = useToast();
   return (
     <Layout title="Stagiaires">
       <Center
@@ -99,13 +67,25 @@ const EditUserPage = ({
         borderWidth="1px"
         borderRadius={"md"}
         background="white"
+        minW="60vw"
       >
         <Flex direction={"column"} justifyContent={"center"} p="4">
           <Heading size="md" textAlign="center" fontSize="lg" paddingTop={10}>
-            Utilisateur {user.email}
+            Modifier l'utilisateur
           </Heading>
-          <Message message={message} />
-          <UserForm user={user} courses={courses} />
+          <UserForm
+            user={user}
+            courses={courses}
+            onSuccess={() => {
+              toast({
+                title: "Utilisateur modifié",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+              });
+              router.push(`/admin/users?tab=${tab}`);
+            }}
+          />
         </Flex>
       </Center>
     </Layout>

@@ -7,6 +7,7 @@ import { Box, Button, Center, Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import SwitchField from "../fields/SwitchField";
 import { Training } from "@prisma/client";
+import { useSession } from "next-auth/client";
 
 interface ICourseFormProps {
   course?: Training;
@@ -15,12 +16,12 @@ interface ICourseFormProps {
 const CourseForm = ({ course }: ICourseFormProps) => {
   const router = useRouter();
   const { id } = router.query;
+  const [session, _] = useSession();
 
   const schema = yup
     .object({
       title: yup.string().required(),
       description: yup.string().required(),
-      slug: yup.string().required(),
     })
     .required();
 
@@ -45,7 +46,7 @@ const CourseForm = ({ course }: ICourseFormProps) => {
         await fetch(`/api/courses`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ ...data, userId: session?.user?.id }),
         });
       }
       await router.push("/admin/courses");
@@ -65,8 +66,6 @@ const CourseForm = ({ course }: ICourseFormProps) => {
               name="isDownloadable"
               label="Autoriser le téléchargement PDF"
             />
-            {/* TODO remove slug field once editor is ready */}
-            {!course && <TextField name="slug" label="Slug" />}
             <Center>
               {course && (
                 <Button

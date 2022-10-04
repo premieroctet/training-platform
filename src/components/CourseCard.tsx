@@ -49,6 +49,9 @@ const CourseCard = ({
           <Text fontWeight="bold" fontSize={"md"}>
             {course.title ?? course?.title}
           </Text>
+          <Text fontWeight="400" noOfLines={4} fontSize="sm">
+            {course?.author?.name}
+          </Text>
           {course?.description && (
             <Text fontWeight="400" noOfLines={4} fontSize="sm">
               {course?.description}

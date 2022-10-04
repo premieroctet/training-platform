@@ -40,12 +40,14 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   isAdmin       Boolean   @default(false)
+  role          String
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   courses       String[]
   accounts      Account[]
   sessions      Session[]
+  trainings     Training[]
 }
 
 model VerificationRequest {
@@ -60,11 +62,13 @@ model VerificationRequest {
 }
 
 model Training {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  description String
-  courseFile  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  description  String
+  isDownloadable     Boolean @default(true)
+  createdAt    DateTime @default(now()) 
+  updatedAt    DateTime @updatedAt
+  userId       String
+  author         User     @relation(fields: [userId], references: [id])
 }

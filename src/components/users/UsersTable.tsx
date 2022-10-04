@@ -1,52 +1,58 @@
 import { User } from ".prisma/client";
 import { VStack } from "@chakra-ui/layout";
-import {
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  AlertDialog,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-  Button,
-} from "@chakra-ui/react";
+import { Table, Tbody, Th, Thead, Tr, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import UserTableRow from "./UserTableRow";
 
 type Props = {
   users: User[];
+  tab?: number;
 };
 
-const UsersTable = ({ users }: Props) => {
+const UsersTable = ({ users, tab }: Props) => {
+  const [deleting, setDeleting] = useState(false);
   const [deletedUsers, setDeletedUsers] = useState<string[]>([]);
-  const [isDeletingUSer, setDeletingUser] = useState<User | undefined>();
-  const onClose = () => setDeletingUser(undefined);
-  const cancelRef = React.useRef<HTMLButtonElement>(null);
+  const toast = useToast();
 
-  const deleteUser = async () => {
-    if (isDeletingUSer) {
-      await fetch(window.location.href, {
+  const deleteUser = async (userId: string) => {
+    setDeleting(true);
+    try {
+      const response = await fetch("/api/users/" + userId, {
         method: "DELETE",
-        body: isDeletingUSer.id,
+        headers: { "Content-Type": "application/json" },
       });
-      setDeletedUsers([...deletedUsers, isDeletingUSer.id]);
-    }
 
-    onClose();
+      if (!response.ok) {
+        toast({
+          title:
+            "Une erreur est survenue lors de la suppression de l'utilisateur",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        setDeletedUsers([...deletedUsers, userId]);
+        toast({
+          title: "Utilisateur supprimé",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setDeleting(false);
   };
 
+  if (!users?.length) return <p>Aucun utilisateur</p>;
   return (
     <VStack w="2xl">
       <Table>
         <Thead>
           <Tr>
-            <Th>name</Th>
-            <Th>email</Th>
-            <Th>courses</Th>
+            <Th>Nom</Th>
+            <Th>Email</Th>
             <Th></Th>
           </Tr>
         </Thead>
@@ -57,37 +63,15 @@ const UsersTable = ({ users }: Props) => {
                 <UserTableRow
                   key={user.id}
                   user={user}
-                  deleteUser={setDeletingUser}
+                  deleteUser={deleteUser}
+                  tab={tab}
+                  disabled={deleting}
                 />
               )
             );
           })}
         </Tbody>
       </Table>
-      <AlertDialog
-        isOpen={!!isDeletingUSer}
-        onClose={onClose}
-        leastDestructiveRef={cancelRef}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Supprimer l'utilisateur ?
-            </AlertDialogHeader>
-
-            <AlertDialogBody>Êtes vous sur ?</AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button onClick={onClose} ref={cancelRef}>
-                Annuler
-              </Button>
-              <Button colorScheme="red" onClick={deleteUser} ml={3}>
-                Supprimer
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
     </VStack>
   );
 };

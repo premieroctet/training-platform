@@ -10,9 +10,10 @@ interface ITextInputProps {
   name: string;
   label: string;
   placeholder?: string;
+  disabled?: boolean;
 }
 
-const TextField = ({ name, label, placeholder }: ITextInputProps) => {
+const TextField = ({ name, label, placeholder, disabled }: ITextInputProps) => {
   const {
     register,
     formState: { errors },
@@ -23,8 +24,16 @@ const TextField = ({ name, label, placeholder }: ITextInputProps) => {
   return (
     <FormControl isInvalid={hasError}>
       <FormLabel fontSize="sm">{label}</FormLabel>
-      <Input {...register(name)} placeholder={placeholder} />
-      {hasError && <FormErrorMessage>{!errors[name]}</FormErrorMessage>}
+      <Input
+        {...register(name)}
+        placeholder={placeholder}
+        disabled={disabled}
+      />
+      {hasError && (
+        <FormErrorMessage>
+          <p>{errors[name]?.message}</p>
+        </FormErrorMessage>
+      )}
     </FormControl>
   );
 };
