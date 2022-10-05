@@ -1,4 +1,4 @@
-import { CloseIcon, EditIcon } from "@chakra-ui/icons";
+import { CloseIcon, EditIcon, ViewIcon } from "@chakra-ui/icons";
 import {
   HStack,
   IconButton,
@@ -57,6 +57,15 @@ const CoursesTable = ({ courses }: ICoursesTableProps) => {
             <Td>{course?.author?.email}</Td>
             <Td justifyContent="flex-end">
               <HStack>
+                <Tooltip label="Voir le cours">
+                  <IconButton
+                    size="sm"
+                    aria-label="View"
+                    icon={<ViewIcon />}
+                    as={Link}
+                    href={`/${course.slug}/0`}
+                  />
+                </Tooltip>
                 <Tooltip label="Éditer les infos">
                   <IconButton
                     size="sm"

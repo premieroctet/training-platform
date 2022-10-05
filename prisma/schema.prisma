@@ -71,4 +71,5 @@ model Training {
   updatedAt    DateTime @updatedAt
   userId       String
   author         User     @relation(fields: [userId], references: [id])
+  chaptersInfo Json?
 }
