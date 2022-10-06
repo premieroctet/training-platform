@@ -56,7 +56,7 @@ const UserForm = ({ user, courses, onSuccess }: Props) => {
     defaultValues: getInitialValues(),
   });
 
-  const { handleSubmit } = methods;
+  const { handleSubmit, setError } = methods;
 
   const onSubmit = async (data: any) => {
     const courses = data?.courses?.map((course: Training) => course?.id);
@@ -75,7 +75,8 @@ const UserForm = ({ user, courses, onSuccess }: Props) => {
             isClosable: true,
           });
         });
-        methods.setError("email", {
+        //@ts-ignore
+        setError("email", {
           type: "custom",
           message: "Changer l'email",
         });

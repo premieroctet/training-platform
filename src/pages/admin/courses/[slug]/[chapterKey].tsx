@@ -8,11 +8,12 @@ import MDXProvider from "../../../../components/mdx/MDXProvider";
 import prisma from "@/lib/prisma";
 import dynamic from "next/dynamic";
 import { MDEditorProps } from "@uiw/react-md-editor";
-import { useState } from "react";
-import { Button, Flex, Spacer, useToast } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Button, Flex, Spacer, Text, useToast, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import "@uiw/react-md-editor/dist/mdeditor.min.css";
 import "@uiw/react-markdown-preview/dist/markdown.min.css";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 const MDEditor = dynamic<MDEditorProps>(
   () => import("@uiw/react-md-editor").then((mod) => mod.default),
@@ -21,17 +22,20 @@ const MDEditor = dynamic<MDEditorProps>(
 
 const EditCourseChapter = ({
   chapterContent,
-  selectChapter,
+  chapterKey,
   chapters,
   filename,
   course,
 }: inferSSRProps<typeof getServerSideProps>) => {
-  const [value, setValue] = useState(chapterContent);
+  const [initialContent, setInitialContent] = useState(
+    chapterContent.split("---")
+  );
+  const [value, setValue] = useState(chapterContent.split("---"));
   const [isLoading, setLoading] = useState(false);
+  const hasChanges = !value.every((val, idx) => initialContent[idx] == val);
 
   const router = useRouter();
   const toast = useToast();
-
   const saveMdxContent = async () => {
     setLoading(true);
 
@@ -39,7 +43,10 @@ const EditCourseChapter = ({
       await fetch(`/api/courses/edit`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: value, filename: filename }),
+        body: JSON.stringify({
+          content: value.join("---"),
+          filename: filename,
+        }),
       });
       setLoading(false);
       toast({
@@ -48,6 +55,7 @@ const EditCourseChapter = ({
         duration: 4000,
         isClosable: true,
       });
+      setInitialContent(value);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -60,52 +68,80 @@ const EditCourseChapter = ({
     }
   };
 
+  useEffect(() => {
+    setValue(chapterContent.split("---"));
+    setInitialContent(chapterContent.split("---"));
+  }, [chapterContent]);
+
   return (
     <Layout>
       <Flex my="sm" px="md" align="center" justify="center" w="100%">
         <Button
           colorScheme="primary"
-          isDisabled={selectChapter === 0}
+          isDisabled={+chapterKey === 0}
           onClick={() =>
-            router.push(
-              "/admin/courses/" + course!.id + "/" + `${selectChapter - 1}`
-            )
+            router.push({
+              pathname: "/admin/courses/[slug]/[chapterKey]",
+              query: {
+                slug: course!.slug,
+                chapterKey: +chapterKey - 1,
+              },
+            })
           }
         >
-          {"<"} Précédent
+          <ChevronLeftIcon />
         </Button>
         <Spacer />
-        <Button
-          mx="md"
-          colorScheme="secondary"
-          isDisabled={chapterContent === value}
-          isLoading={isLoading}
-          onClick={() => saveMdxContent()}
-        >
-          Sauvegarder
-        </Button>
+        <VStack>
+          <Button
+            mx="md"
+            colorScheme="secondary"
+            fontSize={"sm"}
+            isDisabled={!hasChanges}
+            isLoading={isLoading}
+            onClick={() => saveMdxContent()}
+          >
+            Sauvegarder
+          </Button>
+          {hasChanges && (
+            <p>Vous avez des changements non sauvegardés sur ce chapitre</p>
+          )}
+        </VStack>
         <Spacer />
         <Button
           colorScheme="primary"
-          isDisabled={selectChapter === chapters.length - 1}
+          isDisabled={+chapterKey === chapters.length - 1}
           onClick={() =>
-            router.push(
-              "/admin/courses/" + course!.id + "/" + `${selectChapter + 1}`
-            )
+            router.push({
+              pathname: "/admin/courses/[slug]/[chapterKey]",
+              query: {
+                slug: course!.slug,
+                chapterKey: +chapterKey + 1,
+              },
+            })
           }
         >
-          Suivant {">"}
+          <ChevronRightIcon />
         </Button>
       </Flex>
-      <div data-color-mode="light">
-        <MDXProvider>
-          <MDEditor
-            value={value}
-            onChange={(e) => setValue(e as string)}
-            height="85vh"
-          />
-        </MDXProvider>
-      </div>
+      {value.map((val, idx) => (
+        <div data-color-mode="light" key={idx}>
+          <Text fontSize="md" fontWeight="bold" p={2}>
+            Slide n°{idx + 1}
+          </Text>
+          <MDXProvider>
+            <MDEditor
+              value={val}
+              onChange={(e) => {
+                const newValue = [...value];
+                newValue[idx] = e!;
+                setValue(newValue);
+              }}
+              height="85vh"
+            />
+          </MDXProvider>
+        </div>
+      ))}
     </Layout>
   );
 };
@@ -115,12 +151,12 @@ export default EditCourseChapter;
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   await checkIsConnected({ context });
 
-  const id = context.params!.id as string;
-  const selectChapter = Number(context.params!.chapterKey);
+  const slug = context.params!.slug as string;
+  const chapterKey = context.params!.chapterKey as string;
 
   const course = await prisma.training.findUnique({
     where: {
-      id,
+      slug,
     },
   });
 
@@ -138,10 +174,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     .filter((name) => name.endsWith(".mdx"))
     .map((name) => name.replace(".mdx", ""));
 
-  const filename = path.join(
-    `${course.slug}`,
-    `${chapters[selectChapter]}.mdx`
-  );
+  const filename = path.join(`${course.slug}`, `${chapters[+chapterKey]}.mdx`);
 
   const chapterContent = fs.readFileSync(
     path.join(process.cwd(), "courses", `${filename}`),
@@ -149,6 +182,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   );
 
   return {
-    props: { filename, selectChapter, chapters, chapterContent, course },
+    props: { filename, chapterKey, chapters, chapterContent, course },
   };
 }

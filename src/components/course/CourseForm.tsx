@@ -3,21 +3,42 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import TextField from "../fields/TextField";
 import TextAreaField from "../fields/TextAreaInput";
-import { Box, Button, Center, Stack } from "@chakra-ui/react";
+import { Box, Button, Center, Stack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import SwitchField from "../fields/SwitchField";
 import { Training } from "@prisma/client";
 import { useSession } from "next-auth/client";
+// import { CopyIcon } from "@chakra-ui/icons";
+import ChapterInfosField from "./ChapterInfosField";
 
 interface ICourseFormProps {
   course?: Training;
+  chaptersCount?: Number;
 }
-
-const CourseForm = ({ course }: ICourseFormProps) => {
+export type ChapterInfo = {
+  title: string;
+  description: string;
+};
+const CourseForm = ({ course, chaptersCount }: ICourseFormProps) => {
   const router = useRouter();
-  const { id } = router.query;
   const [session, _] = useSession();
 
+  const getInitialValues = () => {
+    if (course) {
+      const chaptersInfo = course?.chaptersInfo as ChapterInfo[];
+      return {
+        ...course,
+        chaptersInfo: Array.from(Array(chaptersCount).keys())?.map(
+          (chapterIndex) =>
+            (chaptersInfo && chaptersInfo[chapterIndex]) ?? {
+              title: "Chapitre " + chapterIndex,
+              description: "",
+            }
+        ),
+      };
+    }
+    return {};
+  };
   const schema = yup
     .object({
       title: yup.string().required(),
@@ -27,16 +48,16 @@ const CourseForm = ({ course }: ICourseFormProps) => {
 
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues: course ?? {},
+    defaultValues: getInitialValues(),
   });
 
   const { handleSubmit } = methods;
 
   const onSubmit = async (data: any) => {
     try {
-      if (id) {
+      if (data?.id) {
         // Update
-        await fetch(`/api/courses/` + id, {
+        await fetch(`/api/courses/` + data?.id, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -57,6 +78,29 @@ const CourseForm = ({ course }: ICourseFormProps) => {
 
   return (
     <Box>
+      {/* <Center>
+        {course && (
+          <Button
+            colorScheme="secondary"
+            variant="solid"
+            border="1px"
+            fontSize="sm"
+            mx="sm"
+            leftIcon={<CopyIcon />}
+            onClick={() =>
+              router.push({
+                pathname: "/admin/courses/[slug]/[chapterKey]",
+                query: {
+                  slug: course?.slug,
+                  chapterKey: 0,
+                },
+              })
+            }
+          >
+            Editer le contenu
+          </Button>
+        )}
+      </Center> */}
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={6}>
@@ -66,22 +110,11 @@ const CourseForm = ({ course }: ICourseFormProps) => {
               name="isDownloadable"
               label="Autoriser le téléchargement PDF"
             />
+            <Text fontSize="sm" fontWeight="bold">
+              Plan de cours
+            </Text>
+            <ChapterInfosField />
             <Center>
-              {course && (
-                <Button
-                  colorScheme="orange"
-                  variant="solid"
-                  border="1px"
-                  fontSize="sm"
-                  mx="sm"
-                  onClick={() =>
-                    router.push("/admin/courses/" + course!.id + "/0")
-                  }
-                >
-                  Editer le contenu
-                </Button>
-              )}
-
               <Button
                 type="submit"
                 colorScheme="primary"

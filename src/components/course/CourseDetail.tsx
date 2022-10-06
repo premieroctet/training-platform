@@ -1,13 +1,23 @@
-import { Button, Box, Icon, Text, HStack, Image } from "@chakra-ui/react";
+import {
+  Button,
+  Box,
+  Icon,
+  Text,
+  HStack,
+  Image,
+  UnorderedList,
+  ListItem,
+} from "@chakra-ui/react";
 import router from "next/router";
 import { useState } from "react";
 import { MdFileDownload, MdPlayCircleOutline } from "react-icons/md";
 import { CourseType } from "src/pages";
 import { getCourseCover } from "src/utils/courses";
-import CourseMapPreview from "../CourseMapPreview";
+import { ChapterInfo } from "./CourseForm";
 
 const CourseDetail = ({ course }: { course: CourseType }) => {
   const [loadingPdf, setLoadingPdf] = useState(false);
+  const chaptersInfo = course?.chaptersInfo as ChapterInfo[];
   return (
     <Box
       background="white"
@@ -52,7 +62,21 @@ const CourseDetail = ({ course }: { course: CourseType }) => {
         </Button>
       </HStack>
       <Text paddingY={10}>{course?.description}</Text>
-      {course?.courseMap && <CourseMapPreview course={course} />}
+      <Text paddingTop={4} fontWeight="bold" fontSize="md" paddingBottom={4}>
+        Plan du cours
+      </Text>
+      <UnorderedList>
+        {chaptersInfo?.map(({ title, description }, idx) => (
+          <ListItem key={idx}>
+            <Text fontSize="sm" fontWeight="bold">
+              {title}
+            </Text>
+            <Text fontSize="sm" paddingLeft={2} paddingBottom={2}>
+              {description}
+            </Text>
+          </ListItem>
+        ))}
+      </UnorderedList>
     </Box>
   );
 };

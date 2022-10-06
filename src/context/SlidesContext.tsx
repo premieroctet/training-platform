@@ -84,7 +84,7 @@ export function SlidesProvider({
         );
       }
     }
-  }, [totalSlides]);
+  }, [totalSlides, currentSlide]);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {

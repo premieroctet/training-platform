@@ -5,8 +5,13 @@ import { GetServerSidePropsContext } from "next";
 import { checkIsConnected } from "src/utils/auth";
 import { inferSSRProps } from "@/lib/inferNextProps";
 import prisma from "@/lib/prisma";
+import fs from "fs";
+import path from "path";
 
-const EditCourse = ({ course }: inferSSRProps<typeof getServerSideProps>) => {
+const EditCourse = ({
+  course,
+  chaptersCount,
+}: inferSSRProps<typeof getServerSideProps>) => {
   return (
     <Layout title="Cours">
       <Center mx={"auto"} my={"8"} borderWidth="1px" borderRadius={"md"}>
@@ -25,7 +30,7 @@ const EditCourse = ({ course }: inferSSRProps<typeof getServerSideProps>) => {
           >
             Éditer le Cours
           </Heading>
-          <CourseForm course={course} />
+          <CourseForm course={course} chaptersCount={chaptersCount} />
         </Flex>
       </Center>
     </Layout>
@@ -35,15 +40,16 @@ const EditCourse = ({ course }: inferSSRProps<typeof getServerSideProps>) => {
 export default EditCourse;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  let chaptersCount = 0;
   const redirect = await checkIsConnected({ context, staffOnly: true });
   if (redirect) {
     return redirect;
   }
 
-  const id = context.params!.id as string;
+  const slug = context.params!.slug as string;
   const course = await prisma.training.findUnique({
     where: {
-      id,
+      slug,
     },
   });
 
@@ -54,9 +60,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         permanent: false,
       },
     };
+  } else {
+    chaptersCount = fs
+      .readdirSync(path.join(process.cwd(), "courses", `${course.slug}`))
+      .filter((name) => name.endsWith(".mdx"))?.length;
   }
 
   return {
-    props: { course },
+    props: { course, chaptersCount },
   };
 }
