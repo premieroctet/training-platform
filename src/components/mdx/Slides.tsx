@@ -13,10 +13,16 @@ import SpeakerFooter from "./SpeakerFooter";
 interface SlidesProps {
   children: React.ReactChildren;
   title: string;
+  subtitle?: string;
   course?: string;
 }
 
-const Slides: React.FC<SlidesProps> = ({ children, title, course }) => {
+const Slides: React.FC<SlidesProps> = ({
+  children,
+  title,
+  course,
+  subtitle,
+}) => {
   const router = useRouter();
   const { setTotalSlides, currentMode, currentSlide } = useSlidesContext();
   const { slideWidth, slideHeight } = useSlideRatioStyle();
@@ -30,9 +36,9 @@ const Slides: React.FC<SlidesProps> = ({ children, title, course }) => {
   const { user } = useSocketContext();
   const isAdmin = user?.isAdmin;
 
-  const footer = `${
-    course ? course : "Formation"
-  } - Premier Octet | ${new Date().toLocaleDateString("fr", {
+  const footer = `${course ? course : "Formation"} ${
+    "- " + subtitle ?? ""
+  } | ${new Date().toLocaleDateString("fr", {
     year: "numeric",
     month: "long",
   })}`;

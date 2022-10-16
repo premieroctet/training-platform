@@ -5,6 +5,8 @@ import DeckTimerContextProvider from "../context/DeckTimerContext";
 import customTheme from "../theme/theme";
 import "./../theme/app.css";
 import TinaProvider from "../../.tina/components/TinaDynamicProvider";
+import { withTina } from "tinacms";
+import { MarkdownFieldPlugin } from "react-tinacms-editor";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -21,3 +23,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp;
+
+// export default withTina(MyApp, {
+//   enabled: true,
+//   sidebar: true,
+//   plugins: [MarkdownFieldPlugin],
+// });

@@ -66,7 +66,7 @@ const ChaptersMenu: React.FC<ChaptersMenuProps> = ({
             onClick={() => handleChapterClick(chapter)}
           >
             <Text fontSize="xs">
-              {chaptersInfo[i]?.title ?? `Chapitre ${i + 1}`}
+              {(chaptersInfo && chaptersInfo[i]?.title) ?? `Chapitre ${i + 1}`}
             </Text>
             <Text fontWeight="bold" fontSize="lg">
               {chapter.replace(/^[\d-]*\s*/, "")}

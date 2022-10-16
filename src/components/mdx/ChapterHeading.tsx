@@ -6,7 +6,7 @@ type ChapterHeadingProps = {
   title: string;
   subtitle: string;
   bgGradientColors?: string[] | null;
-  children: any;
+  children?: any;
 };
 
 const ChapterHeading: React.FC<ChapterHeadingProps & FlexProps> = ({

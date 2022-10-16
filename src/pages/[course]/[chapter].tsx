@@ -46,6 +46,7 @@ export default function ChapterPage({
     () => dynamic(() => import(`../../../courses/${filename}`)),
     [filename]
   );
+
   const handleFullScreen = useFullScreenHandle();
   const [showSideBar, setSideBar] = useBoolean(false);
   const isAdmin = session?.user?.isAdmin ?? false;

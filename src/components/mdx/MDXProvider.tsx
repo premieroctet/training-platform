@@ -24,7 +24,7 @@ type ChildrenProp = {
   courseMap?: Boolean;
 };
 
-export const mdComponents = {
+export const classicElements = {
   // huge headings
   h1: (props: any) => <Heading fontSize="2.4em" {...props} />,
   h2: (props: any) => <Heading fontSize="2em" {...props} />,
@@ -71,6 +71,23 @@ export const mdComponents = {
       {...props}
     />
   ),
+  SlideHeader: (props: any) => <SlideHeader {...props} />,
+  Image: (props: any) => (
+    <Image
+      objectFit="contain"
+      maxHeight="90%"
+      maxWidth="100%"
+      flex="0 auto"
+      // m="md"
+      alt="image mdx"
+      marginX="auto"
+      {...props}
+    />
+  ),
+};
+
+export const mdComponents = {
+  ...classicElements,
   // ChakraUI
   Box,
   Flex,
@@ -92,7 +109,7 @@ export const mdComponents = {
   // Custom components
   ChapterHeading,
   SlideHeader,
-  // slides wrapper
+  // Chapter wrapper
   Slides,
   Notes: (props: any) => (
     <Text width="100%" height="100%" p="1em" fontSize="1.4em" {...props} />
@@ -113,12 +130,14 @@ export const courseMapComponents = {
   ),
 };
 
-const MDXProvider = ({ children, courseMap }: ChildrenProp) => (
-  <MDXDefaultProvider
-    components={{ ...mdComponents, ...(courseMap && courseMapComponents) }}
-  >
-    {children}
-  </MDXDefaultProvider>
-);
+const MDXProvider = ({ children, courseMap }: ChildrenProp) => {
+  return (
+    <MDXDefaultProvider
+      components={{ ...mdComponents, ...(courseMap && courseMapComponents) }}
+    >
+      {children}
+    </MDXDefaultProvider>
+  );
+};
 
 export default MDXProvider;

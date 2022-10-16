@@ -30,9 +30,9 @@ const Slide: React.FC<SlideProps> = ({
   printPagination,
   containerProps,
 }) => {
-  const hasHeader = children && children[0] && children[0].props.slideTitle;
+  const hasHeader = children && children[0] && children[0]?.props?.slideTitle;
   const isChapterHeading =
-    children && children[0] && children[0].props.mdxType === "ChapterHeading";
+    children && children[0] && children[0]?.props?.mdxType === "ChapterHeading";
 
   const header = !isChapterHeading && hasHeader ? children.shift() : null;
   const fontSize = () => {
@@ -43,7 +43,6 @@ const Slide: React.FC<SlideProps> = ({
   const { isLandscape, ratio } = useSlideRatioStyle();
   const { currentMode } = useSlidesContext();
   const isSlideshow = currentMode !== "speaker";
-
   return (
     <Flex
       className="slide"
@@ -68,7 +67,7 @@ const Slide: React.FC<SlideProps> = ({
           width="100%"
         >
           <SlideHeader
-            slideTitle={hasHeader && header ? header.props.slideTitle : title}
+            slideTitle={hasHeader && header ? header?.props?.slideTitle : title}
           />
           <Flex
             flexDirection="column"
