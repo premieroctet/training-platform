@@ -1,14 +1,19 @@
-import ChapterHeading from "@/components/mdx/ChapterHeading";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { classicElements } from "@/components/mdx/MDXProvider";
+import customComponents from "./templates";
+import { Box } from "@chakra-ui/react";
+import ChapterHeading from "./ChapterHeading";
 
 // Switch between slide templates
-const SlideTemplate = ({ slide }) => {
+const SlideTemplateSelector = ({ slide }: { slide: any }) => {
   const getTemplate = () => {
     switch (slide.__typename) {
       case "CourseChaptersChapterSlidesEmpty":
         return (
-          <TinaMarkdown content={slide.body} components={classicElements} />
+          <TinaMarkdown
+            content={slide.body}
+            components={{ ...classicElements, ...customComponents }}
+          />
         );
       case "CourseChaptersChapterSlidesChapterHeading":
         return (
@@ -22,7 +27,7 @@ const SlideTemplate = ({ slide }) => {
         return null;
     }
   };
-  return <>{getTemplate()}</>;
+  return <Box>{getTemplate()}</Box>;
 };
 
-export default SlideTemplate;
+export default SlideTemplateSelector;

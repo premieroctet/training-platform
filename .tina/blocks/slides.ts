@@ -1,8 +1,5 @@
 import type { TinaTemplate } from "tinacms";
-import {
-  CheckListSchema,
-  RichTextSchema,
-} from "../../src/components/templates/schema";
+import { CheckListSchema } from "../../src/components/templates/schema";
 
 export const emptySlideTemplate: TinaTemplate = {
   name: "empty",
@@ -28,11 +25,10 @@ export const emptySlideTemplate: TinaTemplate = {
       name: "subtitle",
     },
     {
-      type: "object",
-      list: true,
+      type: "rich-text",
       label: "Contenu de la slide",
       name: "body",
-      templates: [CheckListSchema, RichTextSchema],
+      templates: [CheckListSchema],
     },
     {
       type: "string",

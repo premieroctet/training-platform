@@ -36,9 +36,9 @@ const Slides: React.FC<SlidesProps> = ({
   const { user } = useSocketContext();
   const isAdmin = user?.isAdmin;
 
-  const footer = `${course ? course : "Formation"} ${
-    "- " + subtitle ?? ""
-  } | ${new Date().toLocaleDateString("fr", {
+  const footer = `${course ? course : "Formation"} ${`${
+    subtitle ? "- " + subtitle : ""
+  }`} | ${new Date().toLocaleDateString("fr", {
     year: "numeric",
     month: "long",
   })}`;

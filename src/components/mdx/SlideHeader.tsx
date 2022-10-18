@@ -13,6 +13,7 @@ const SlideHeader: React.FC<SlideHeaderProps> = ({ slideTitle }) => {
       p="1em"
       color="gray.400"
       bgColor="inherit"
+      paddingLeft={16}
     >
       <Heading fontSize="0.8em" fontWeight="600">
         {slideTitle}
