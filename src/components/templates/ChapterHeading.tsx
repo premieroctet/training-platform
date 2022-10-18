@@ -1,5 +1,4 @@
-import { Flex, Heading, FlexProps, Image } from "@chakra-ui/react";
-import DefaultBackground from "./ChapterHeadingBackground";
+import { Flex, Heading, FlexProps, Image, Box } from "@chakra-ui/react";
 
 type ChapterHeadingProps = {
   imgSrc?: string;
@@ -19,6 +18,8 @@ const ChapterHeading: React.FC<ChapterHeadingProps & FlexProps> = ({
     <Flex
       position="absolute"
       left={0}
+      right={0}
+      top={0}
       width="100%"
       height="100%"
       justifyContent="center"
@@ -26,10 +27,7 @@ const ChapterHeading: React.FC<ChapterHeadingProps & FlexProps> = ({
       {...rest}
     >
       <Flex position="absolute" minWidth="100%" height="100%">
-        {imgSrc && (
-          <Image objectFit="cover" src={imgSrc} width="100%" alt="heading" />
-        )}
-        {!imgSrc && <DefaultBackground />}
+        {imgSrc && <Image objectFit="cover" src={imgSrc} width="100%" alt="" />}
       </Flex>
       <Flex
         flexDir="column"
@@ -38,32 +36,37 @@ const ChapterHeading: React.FC<ChapterHeadingProps & FlexProps> = ({
         height="100%"
         width="100%"
       >
-        <Heading
-          p="0.25em"
-          textAlign="center"
-          width="80%"
-          fontSize="2.4em"
-          color="white"
+        <Box
           bgColor="#0000007A"
           backdropFilter="blur(2px)"
-          textShadow="0 0 2px black"
+          flexDir="column"
+          justifyContent="center"
+          alignItems="center"
+          display="flex"
         >
-          {title}
-        </Heading>
-        {subtitle && (
           <Heading
             p="0.25em"
             textAlign="center"
             width="80%"
-            fontSize="1.3em"
+            fontSize="2.4em"
             color="white"
-            bgColor="#0000007A"
-            backdropFilter="blur(2px)"
-            textShadow="1px 1px black"
+            textShadow="0 0 2px black"
           >
-            {subtitle}
+            {title}
           </Heading>
-        )}
+          {subtitle && (
+            <Heading
+              p="0.25em"
+              textAlign="center"
+              width="80%"
+              fontSize="1.3em"
+              color="white"
+              textShadow="1px 1px black"
+            >
+              {subtitle}
+            </Heading>
+          )}
+        </Box>
       </Flex>
     </Flex>
   );
