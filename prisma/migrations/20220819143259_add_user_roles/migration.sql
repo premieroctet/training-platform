@@ -9,7 +9,7 @@
 ALTER TABLE "Training" ADD COLUMN     "userId" TEXT NOT NULL;
 
 -- AlterTable
-ALTER TABLE "User" ADD COLUMN     "role" TEXT NOT NULL;
+ALTER TABLE "User" ADD COLUMN     "role" TEXT NOT NULL DEFAULT E'trainee';
 
 -- AddForeignKey
 ALTER TABLE "Training" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
