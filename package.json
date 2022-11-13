@@ -12,7 +12,7 @@
     "create-admin-user": "ts-node -T scripts/createAdminUser.ts",
     "prepare": "husky install",
     "lint": "next lint",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "cp -R ../courses ./ && prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.13",
