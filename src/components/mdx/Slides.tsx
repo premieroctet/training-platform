@@ -28,7 +28,7 @@ const Slides: React.FC<SlidesProps> = ({ children, title, course }) => {
   });
 
   const { user } = useSocketContext();
-  const isAdmin = user?.isAdmin;
+  const isAdmin = user?.role === "admin";
 
   const footer = `${
     course ? course : "Formation"

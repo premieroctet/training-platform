@@ -91,7 +91,6 @@ export default NextAuth({
             email: true,
             courses: true,
             role: true,
-            isAdmin: true,
             image: true,
           },
         }));

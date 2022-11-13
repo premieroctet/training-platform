@@ -3,24 +3,17 @@ import Layout from "@/components/Layout";
 import { MessageData } from "@/components/users/Message";
 import { inferSSRProps } from "@/lib/inferNextProps";
 import prisma from "@/lib/prisma";
-// import { MdAddCircleOutline } from "react-icons/md";
-import {
-  Box,
-  // Button,
-  Center,
-  Heading,
-  VStack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Center, Heading, VStack, Text, Button } from "@chakra-ui/react";
 import { GetServerSidePropsContext } from "next";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { checkIsConnected } from "src/utils/auth";
 import { getSession } from "next-auth/client";
+import { MdAddCircleOutline } from "react-icons/md";
 
 const LIMIT = 10;
 
 const CoursesPage = ({ courses }: inferSSRProps<typeof getServerSideProps>) => {
-  // const router = useRouter();
+  const router = useRouter();
   return (
     <Layout title="Cours">
       <Center mx={"auto"} my={"8"} borderWidth="1px" borderRadius={"md"}>
@@ -34,7 +27,7 @@ const CoursesPage = ({ courses }: inferSSRProps<typeof getServerSideProps>) => {
           <Heading size="md" textAlign="center" paddingX="10">
             Liste des Cours
           </Heading>
-          {/* <Box>
+          <Box>
             <Button
               colorScheme="primary"
               onClick={() => router.push("/admin/courses/create")}
@@ -42,7 +35,7 @@ const CoursesPage = ({ courses }: inferSSRProps<typeof getServerSideProps>) => {
             >
               Ajouter un cours
             </Button>
-          </Box> */}
+          </Box>
           <Box>
             {courses?.length ? (
               <CoursesTable courses={courses} />

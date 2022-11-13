@@ -11,7 +11,6 @@ declare module "next-auth" {
       email: string | null;
       courses?: string[] | null;
       role: string;
-      isAdmin: Boolean;
       image?: string | null;
     };
     expires?: string;
