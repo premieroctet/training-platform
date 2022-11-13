@@ -1,6 +1,6 @@
 import React from "react";
 import Highlight, { defaultProps, Language, Prism } from "prism-react-renderer";
-import codeTheme from "prism-react-renderer/themes/nightOwlLight";
+import codeTheme from "prism-react-renderer/themes/nightOwl";
 import { Box, Code, Flex } from "@chakra-ui/layout";
 import Mermaid from "./Mermaid";
 
@@ -57,7 +57,7 @@ const CodeBlock = ({ children, className }: ChildrenProp) => {
                             as="span"
                             key={key}
                             _selection={{
-                              backgroundColor: "yellow.200",
+                              backgroundColor: "teal.700",
                             }}
                             {...getTokenProps({ token, key })}
                           />

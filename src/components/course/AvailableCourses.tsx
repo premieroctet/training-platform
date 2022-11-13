@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import { Badge, Box, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { CourseType } from "src/pages";
 import CourseCard from "../CourseCard";
@@ -11,12 +11,11 @@ const AvailableCourses = ({ courses }: { courses: CourseType[] }) => {
   return (
     <>
       <Text width="100%" fontWeight="bold" fontSize="md">
-        {courses.length}{" "}
-        {courses.length === 1 ? "cours disponible" : "cours disponibles"}
+        Mes cours <Badge colorScheme="teal">{courses.length}</Badge>
       </Text>
 
       <SimpleGrid columns={[1, 2]} spacing={10} width="100%">
-        <Box overflowY="scroll" height="75vh" paddingRight={2} paddingY={4}>
+        <Box overflowY="auto" paddingRight={2} paddingY={4}>
           <Stack spacing={10}>
             {courses.map((course, key) => {
               return (

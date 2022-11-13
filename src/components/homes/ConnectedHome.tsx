@@ -11,7 +11,7 @@ const ConnectedHome = ({ courses }: { courses: CourseType[] }) => {
     <Box paddingY={30} width="90vw" maxWidth="container.xl" marginX="auto">
       <VStack spacing={3}>
         <Text width="100%" fontSize={"xl"} textAlign="left">
-          Bienvenue {session?.user?.name}
+          Bienvenue {session?.user?.name} {"👋"}
         </Text>
 
         {courses?.length > 0 ? (

@@ -23,7 +23,7 @@ const ChapterDefaultBg: React.FC = ({}) => {
             minHeight="100%"
             minWidth="100%"
             bgRepeat="repeat"
-            filter={`opacity(8%)`}
+            filter={`opacity(40%)`}
           >
             <Flex
               position="absolute"
