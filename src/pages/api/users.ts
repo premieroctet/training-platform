@@ -24,7 +24,7 @@ export default async function handle(
         res.status(500).send({ error: "Cet email est déjà utilisé." });
       } else {
         result = await prisma.user.create({
-          data: body,
+          data: { ...body, role: body.role || "trainee" },
         });
         res.json(result);
       }

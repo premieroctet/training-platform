@@ -48,7 +48,7 @@ export default function ChapterPage({
   );
   const handleFullScreen = useFullScreenHandle();
   const [showSideBar, setSideBar] = useBoolean(false);
-  const isAdmin = session?.user?.isAdmin ?? false;
+  const isAdmin = session?.user?.role === "admin" ?? false;
   const isFollowing = router.query.mode === "follow";
   const isPrint = router.query.hasOwnProperty("print");
 
@@ -133,7 +133,7 @@ export const getServerSideProps: GetServerSideProps = async (
   if (
     (course && !session && !isExporting) ||
     (session &&
-      !session.user?.isAdmin &&
+      !(session.user?.role === "admin") &&
       !session.user?.courses?.includes(courseInfo!.title) &&
       !isExporting)
   ) {

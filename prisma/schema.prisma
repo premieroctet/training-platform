@@ -39,8 +39,7 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
-  isAdmin       Boolean   @default(false)
-  role          String
+  role          String    @default("trainee")
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

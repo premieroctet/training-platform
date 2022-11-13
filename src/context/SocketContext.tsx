@@ -26,7 +26,7 @@ type SocketProviderProps = {
 
 export function SocketProvider({ session, children }: SocketProviderProps) {
   const user = session?.user;
-  const isAdmin = user?.isAdmin;
+  const isAdmin = user?.role === "admin";
   const router = useRouter();
   const currentMode = router.query.mode;
   const followModeOn = currentMode === "follow" ?? false;

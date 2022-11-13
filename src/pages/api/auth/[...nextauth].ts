@@ -23,7 +23,7 @@ export default NextAuth({
       },
       from: process.env.EMAIL_FROM,
     }),
-    Providers.GitHub({
+    /*Providers.GitHub({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       scope: "user:email,email:primary",
@@ -46,7 +46,7 @@ export default NextAuth({
           image: profile.avatar_url,
         }; // Returns the profile in a shape that is different from the built-in one.
       },
-    }),
+    }),*/
   ],
   adapter: PrismaAdapter(prisma),
   pages: {
@@ -91,7 +91,6 @@ export default NextAuth({
             email: true,
             courses: true,
             role: true,
-            isAdmin: true,
             image: true,
           },
         }));
