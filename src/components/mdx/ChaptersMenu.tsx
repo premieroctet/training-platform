@@ -33,48 +33,50 @@ const ChaptersMenu: React.FC<ChaptersMenuProps> = ({
   };
 
   return (
-    <Flex
-      flexDirection="column"
-      height="100%"
-      width="100%"
-      overflow="auto"
-      gridGap="xs"
-    >
-      <Heading padding="0" fontSize="md" textAlign="center">
+    <>
+      <Heading mb={4} padding="0" fontSize="md">
         {course?.title}
       </Heading>
-      {chapters.map((chapter: string, i) => {
-        const isActive = chapter === currentChapter;
-        return (
-          <Box
-            key={chapter}
-            bgColor="whiteAlpha.800"
-            lineHeight="md"
-            p="12px"
-            borderRadius="md"
-            boxShadow="xs"
-            borderLeftWidth="6px"
-            borderColor={isActive ? "primary.200" : "primary.50"}
-            cursor="pointer"
-            _hover={{
-              boxShadow: "md",
-              backgroundColor: "white",
-              borderColor: "primary.300",
-              transition:
-                "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
-            }}
-            onClick={() => handleChapterClick(chapter)}
-          >
-            <Text fontSize="xs">
-              {chaptersInfo[i]?.title ?? `Chapitre ${i + 1}`}
-            </Text>
-            <Text fontWeight="bold" fontSize="lg">
-              {chapter.replace(/^[\d-]*\s*/, "")}
-            </Text>
-          </Box>
-        );
-      })}
-    </Flex>
+      <Flex
+        flexDirection="column"
+        height="100%"
+        width="100%"
+        overflow="auto"
+        gridGap="xs"
+      >
+        {chapters.map((chapter: string, i) => {
+          const isActive = chapter === currentChapter;
+          return (
+            <Box
+              key={chapter}
+              bgColor="whiteAlpha.800"
+              lineHeight="md"
+              p="12px"
+              borderRadius="md"
+              boxShadow="xs"
+              borderLeftWidth="6px"
+              borderColor={isActive ? "primary.200" : "primary.50"}
+              cursor="pointer"
+              _hover={{
+                boxShadow: "md",
+                backgroundColor: "white",
+                borderColor: "primary.300",
+                transition:
+                  "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+              }}
+              onClick={() => handleChapterClick(chapter)}
+            >
+              <Text fontSize="xs">
+                {chaptersInfo[i]?.title ?? `Chapitre ${i + 1}`}
+              </Text>
+              <Text fontWeight="bold" fontSize="lg">
+                {chapter.replace(/^[\d-]*\s*/, "")}
+              </Text>
+            </Box>
+          );
+        })}
+      </Flex>
+    </>
   );
 };
 

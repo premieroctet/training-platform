@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { FullScreenHandle } from "react-full-screen";
 import { BsFullscreen } from "react-icons/bs";
 import { useSlidesContext } from "@/context/SlidesContext";
+import { MdHome } from "react-icons/md";
+import { useRouter } from "next/router";
 
 export interface ControlsProps {
   handleFullScreen: FullScreenHandle;
@@ -19,6 +21,7 @@ const Controls: React.FC<ControlsProps> = ({
 }) => {
   const { toggleFollowMode, currentMode } = useSlidesContext();
   const [showControls, setShowControls] = useBoolean();
+  const router = useRouter();
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -88,6 +91,16 @@ const Controls: React.FC<ControlsProps> = ({
           cursor="pointer"
         >
           <Icon as={BsFullscreen} strokeWidth="2px" dropShadow="md" />
+        </Button>
+        <Button
+          colorScheme="gray"
+          variant="outline"
+          p="sm"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          <Icon as={MdHome} strokeWidth="2px" dropShadow="md" />
         </Button>
       </Flex>
     </Flex>

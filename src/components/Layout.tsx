@@ -17,7 +17,7 @@ const Layout = ({ children, title = "Training Platform" }: LayoutProps) => {
   const [session, _] = useSession();
 
   return (
-    <Box backgroundColor="#f7f7f7" minH="100vh">
+    <Box minH="100vh">
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />

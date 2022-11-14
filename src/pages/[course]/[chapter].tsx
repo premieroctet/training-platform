@@ -1,7 +1,7 @@
 import { Flex, Stack } from "@chakra-ui/layout";
 import {
   ChakraProvider as CustomChakraProvider,
-  useBoolean,
+  useDisclosure,
 } from "@chakra-ui/react";
 import "@fontsource/josefin-sans";
 import "@fontsource/josefin-sans/700.css";
@@ -47,7 +47,8 @@ export default function ChapterPage({
     [filename]
   );
   const handleFullScreen = useFullScreenHandle();
-  const [showSideBar, setSideBar] = useBoolean(false);
+  const { isOpen, onClose, onToggle } = useDisclosure();
+
   const isAdmin = session?.user?.role === "admin" ?? false;
   const isFollowing = router.query.mode === "follow";
   const isPrint = router.query.hasOwnProperty("print");
@@ -74,8 +75,8 @@ export default function ChapterPage({
                   course={course}
                   currentChapter={currentChapter}
                   chapters={chapters}
-                  showSideBar={showSideBar}
-                  setSideBar={setSideBar}
+                  isOpen={isOpen}
+                  onClose={onClose}
                 />
               )}
 
@@ -95,7 +96,7 @@ export default function ChapterPage({
                   {!isPrint && (
                     <Controls
                       handleFullScreen={handleFullScreen}
-                      toggleSideBar={setSideBar.toggle}
+                      toggleSideBar={onToggle}
                       isAdmin={isAdmin}
                     />
                   )}
