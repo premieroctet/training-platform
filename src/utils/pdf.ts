@@ -27,7 +27,6 @@ const getCourseChapters = (slug: string): chapterType[] => {
   if (!fs.existsSync(coursePdfsFolder)) {
     fs.mkdir(coursePdfsFolder, (err: any) => {
       if (err) return console.error(err);
-      console.log("Directory created successfully! : ", coursePdfsFolder);
     });
   }
 
@@ -63,7 +62,6 @@ export const generatePdf = async (slug: string) => {
     );
 
     files.push(filename);
-    console.log(`Generating ${filename}`);
 
     await page.setDefaultNavigationTimeout(0);
     await page.goto(chapter.path, {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ConnectedHome from "@/components/homes/ConnectedHome";
 import PublicHome from "@/components/homes/PublicHome";
 import prisma from "@/lib/prisma";

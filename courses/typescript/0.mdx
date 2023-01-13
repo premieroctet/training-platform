@@ -1,0 +1,115 @@
+import { Image } from "@chakra-ui/image";
+import ChapterHeading from "@/components/mdx/ChapterHeading";
+import { MdCheckCircle, MdCancel } from "react-icons/md";
+
+<Slides>
+
+## **TypeScript** 🛡
+
+<HStack>
+<VStack>
+
+<h5 color="gray.500">
+  Formation -{" "}
+  {new Date().toLocaleDateString("fr", {
+    year: "numeric",
+    month: "long",
+  })}
+</h5>
+
+</VStack>
+</HStack>
+
+---
+
+<SlideHeader slideTitle="Introduction" />
+
+#### Au programme 🎓
+
+<List fontSize="1em" textAlign="left" m="0.6em 0" padding="12px 0">
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Pourquoi TypeScript
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Installation
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Types
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Décorateurs
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Manipulation des types
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Générique
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Type utilitaires
+  </ListItem>
+  <ListItem>
+    <ListIcon as={MdCheckCircle} color="green.300" />
+    Déclarations
+  </ListItem>
+</List>
+
+---
+
+<SlideHeader slideTitle="Introduction" />
+
+#### Qu'est-ce que c'est ? 🧐
+
+- Language **open source** développé par Microsoft
+- Permet de **typer** du JavaScript et le rendre plus **fiable**
+- TypeScript est un **superset** de JavaScript
+
+---
+
+<SlideHeader slideTitle="Introduction" />
+
+#### À quoi ça sert ? 🤔
+
+- Faciliter la compréhension du code
+- Accélerer le développement
+- Eviter les régressions
+- Rendre le code plus robuste
+- Documentation et tests automatiques
+
+---
+
+<SlideHeader slideTitle="Introduction" />
+
+#### TypeScript en deux concepts :
+
+- <mark>Transpilation</mark>
+- Typage statique
+
+---
+
+<SlideHeader slideTitle="Transpilation" />
+
+<Image
+  src={require("./assets/transpilation.png").default.src}
+  width="70%"
+  m="0 auto"
+/>
+
+---
+
+<SlideHeader slideTitle="Transpilation" />
+
+##### **La transpilation :** qu'est-ce que c'est ? 🤔
+
+- C'est **la transformation** du code d'un language vers un autre avec un même niveau d'abstraction
+- Dans le monde JavaScript, elle permet de transformer du code moderne (TS, ECMAScript…) en
+  code compris par **la majorité des navigateurs**
+
+</Slides>

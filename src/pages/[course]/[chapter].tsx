@@ -1,3 +1,11 @@
+import Layout from "@/components/Layout";
+import Controls from "@/components/mdx/Controls";
+import FollowingFeedbackDot from "@/components/mdx/FollowingFeedbackDot";
+import MDXProvider from "@/components/mdx/MDXProvider";
+import SideBar from "@/components/mdx/SideBar";
+import { SlidesProvider } from "@/context/SlidesContext";
+import { SocketProvider } from "@/context/SocketContext";
+import prisma from "@/lib/prisma";
 import { Flex, Stack } from "@chakra-ui/layout";
 import {
   ChakraProvider as CustomChakraProvider,
@@ -6,28 +14,18 @@ import {
 import "@fontsource/josefin-sans";
 import "@fontsource/josefin-sans/700.css";
 import fs from "fs";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { Session } from "next-auth";
-import { getSession } from "next-auth/client";
+import { GetStaticProps } from "next";
+import { useSession } from "next-auth/client";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import path from "path";
 import { ParsedUrlQuery } from "querystring";
 import { useMemo } from "react";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import Layout from "@/components/Layout";
-import Controls from "@/components/mdx/Controls";
-import FollowingFeedbackDot from "@/components/mdx/FollowingFeedbackDot";
-import MDXProvider from "@/components/mdx/MDXProvider";
-import SideBar from "@/components/mdx/SideBar";
-import { SlidesProvider } from "@/context/SlidesContext";
-import { SocketProvider } from "@/context/SocketContext";
-import premierOctet from "../../theme/premierOctet";
 import { CourseType } from "..";
-import prisma from "@/lib/prisma";
+import premierOctet from "../../theme/premierOctet";
 
 type ChapterPageProps = {
-  session?: Session | null | undefined;
   filename: string;
   course: CourseType;
   currentChapter: string;
@@ -35,12 +33,12 @@ type ChapterPageProps = {
 };
 
 export default function ChapterPage({
-  session,
   filename,
   course,
   currentChapter,
   chapters,
 }: ChapterPageProps) {
+  const [session] = useSession();
   const router = useRouter();
   const MDXContent = useMemo(
     () => dynamic(() => import(`../../../courses/${filename}`)),
@@ -115,14 +113,28 @@ interface IParams extends ParsedUrlQuery {
   chapter: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const session = await getSession(context);
-  const isExporting =
-    process.env.NODE_ENV === "development" &&
-    context.req.headers["context"] === "pdf-export";
+export async function getStaticPaths() {
+  const courseSlugs = ["typescript"];
+  const paths: { params: { course: string; chapter: string } }[] = [];
 
+  courseSlugs.forEach((slug) => {
+    const chapters = fs
+      .readdirSync(path.join(process.cwd(), "courses", slug))
+      .filter((name) => name.endsWith(".mdx"))
+      .map((name) => name.replace(".mdx", ""));
+
+    chapters.forEach((chapterName) => {
+      paths.push({ params: { course: slug, chapter: chapterName } });
+    });
+  });
+
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
   const { course, chapter } = context.params as IParams;
 
   const courseInfo = await prisma.training.findUnique({
@@ -131,20 +143,6 @@ export const getServerSideProps: GetServerSideProps = async (
     },
   });
 
-  if (
-    (course && !session && !isExporting) ||
-    (session &&
-      !(session.user?.role === "admin") &&
-      !session.user?.courses?.includes(courseInfo!.title) &&
-      !isExporting)
-  ) {
-    return {
-      redirect: {
-        destination: "/auth/unauthorized",
-        permanent: false,
-      },
-    };
-  }
   const filename = path.join(`${course}`, `${chapter}.mdx`);
   const chapters = fs
     .readdirSync(path.join(process.cwd(), "courses", `${courseInfo?.slug}`))
@@ -153,7 +151,6 @@ export const getServerSideProps: GetServerSideProps = async (
 
   return {
     props: {
-      session,
       filename,
       course: courseInfo,
       currentChapter: chapter,
