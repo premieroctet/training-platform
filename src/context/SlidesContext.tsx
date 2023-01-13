@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { useSwipeable } from "react-swipeable";
-import { CourseType } from "src/pages";
+import { CourseMetadata } from "src/pages/[courseSlug]/[chapter]";
 import { useSocketContext } from "./SocketContext";
 
 type SlidesContextValues = {
@@ -29,7 +29,7 @@ export const SlidesContext = createContext<SlidesContextValues>({
 
 type SlidesProviderProps = {
   children: any;
-  course: CourseType;
+  course: CourseMetadata;
   chapters: string[];
   chapter: string;
   isAdmin: Boolean;
@@ -37,7 +37,7 @@ type SlidesProviderProps = {
 
 type BroadcastPresenterMessage = {
   slide: number;
-  course: CourseType;
+  course: CourseMetadata;
   chapter: string;
 };
 

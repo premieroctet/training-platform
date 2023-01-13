@@ -5,7 +5,7 @@ import MDXProvider from "@/components/mdx/MDXProvider";
 import SideBar from "@/components/mdx/SideBar";
 import { SlidesProvider } from "@/context/SlidesContext";
 import { SocketProvider } from "@/context/SocketContext";
-import prisma from "@/lib/prisma";
+import matter from "gray-matter";
 import { Flex, Stack } from "@chakra-ui/layout";
 import {
   ChakraProvider as CustomChakraProvider,
@@ -22,14 +22,20 @@ import path from "path";
 import { ParsedUrlQuery } from "querystring";
 import { useMemo } from "react";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { CourseType } from "..";
 import premierOctet from "../../theme/premierOctet";
+
+export type CourseMetadata = {
+  title: string;
+  description: string;
+  slug: string;
+};
 
 type ChapterPageProps = {
   filename: string;
-  course: CourseType;
+  courseSlug: string;
   currentChapter: string;
   chapters: string[];
+  course: CourseMetadata;
 };
 
 export default function ChapterPage({
@@ -40,10 +46,12 @@ export default function ChapterPage({
 }: ChapterPageProps) {
   const [session] = useSession();
   const router = useRouter();
+
   const MDXContent = useMemo(
     () => dynamic(() => import(`../../../courses/${filename}`)),
     [filename]
   );
+
   const handleFullScreen = useFullScreenHandle();
   const { isOpen, onClose, onToggle } = useDisclosure();
 
@@ -114,8 +122,14 @@ interface IParams extends ParsedUrlQuery {
 }
 
 export async function getStaticPaths() {
-  const courseSlugs = ["typescript"];
-  const paths: { params: { course: string; chapter: string } }[] = [];
+  const courseSlugs = fs
+    .readdirSync(path.join(process.cwd(), "courses"), {
+      withFileTypes: true,
+    })
+    .filter((item) => item.isDirectory())
+    .map((item) => item.name);
+
+  const paths: { params: { courseSlug: string; chapter: string } }[] = [];
 
   courseSlugs.forEach((slug) => {
     const chapters = fs
@@ -124,7 +138,7 @@ export async function getStaticPaths() {
       .map((name) => name.replace(".mdx", ""));
 
     chapters.forEach((chapterName) => {
-      paths.push({ params: { course: slug, chapter: chapterName } });
+      paths.push({ params: { courseSlug: slug, chapter: chapterName } });
     });
   });
 
@@ -135,26 +149,28 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { course, chapter } = context.params as IParams;
+  const { courseSlug, chapter } = context.params as IParams;
 
-  const courseInfo = await prisma.training.findUnique({
-    where: {
-      slug: course as string,
-    },
-  });
-
-  const filename = path.join(`${course}`, `${chapter}.mdx`);
+  const filename = path.join(`${courseSlug}`, `${chapter}.mdx`);
   const chapters = fs
-    .readdirSync(path.join(process.cwd(), "courses", `${courseInfo?.slug}`))
+    .readdirSync(path.join(process.cwd(), "courses", `${courseSlug}`))
     .filter((name) => name.endsWith(".mdx"))
     .map((name) => name.replace(".mdx", ""));
+
+  const metadataContent = fs.readFileSync(
+    path.join(process.cwd(), `courses/${courseSlug}/metadata.md`),
+    "utf8"
+  );
+
+  const metadata = matter(metadataContent);
 
   return {
     props: {
       filename,
-      course: courseInfo,
       currentChapter: chapter,
+      courseSlug,
       chapters,
+      course: { ...metadata.data, slug: courseSlug },
     },
   };
 };

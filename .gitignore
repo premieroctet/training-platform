@@ -49,8 +49,8 @@ training-platform.code-workspace
 
 /pdfs
 !/pdfs/.gitkeep
-#/courses/*
-#!/courses/.gitkeep
+/courses/*
+!/courses/.gitkeep
 
 #github actions deploy
 .github/workflows/deploy.yml

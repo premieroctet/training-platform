@@ -4,11 +4,11 @@ import {
   DrawerContent,
   DrawerOverlay,
 } from "@chakra-ui/react";
-import { CourseType } from "src/pages";
+import { CourseMetadata } from "src/pages/[courseSlug]/[chapter]";
 import ChaptersMenu from "./ChaptersMenu";
 
 export interface SideBarProps {
-  course: CourseType;
+  course: CourseMetadata;
   currentChapter: string;
   chapters: string[];
   isOpen: boolean;

@@ -1,11 +1,10 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import { useSocketContext } from "@/context/SocketContext";
-import { CourseType } from "src/pages";
-import { ChapterInfo } from "../course/CourseForm";
+import { CourseMetadata } from "src/pages/[courseSlug]/[chapter]";
 
 export interface ChaptersMenuProps {
-  course: CourseType;
+  course: CourseMetadata;
   currentChapter: string;
   chapters: string[];
 }
@@ -17,7 +16,6 @@ const ChaptersMenu: React.FC<ChaptersMenuProps> = ({
 }) => {
   const router = useRouter();
   const { pushSlide } = useSocketContext();
-  const chaptersInfo = course?.chaptersInfo as ChapterInfo[];
   const handleChapterClick = (chapter: string) => {
     pushSlide({
       course: course?.slug,
@@ -66,9 +64,7 @@ const ChaptersMenu: React.FC<ChaptersMenuProps> = ({
               }}
               onClick={() => handleChapterClick(chapter)}
             >
-              <Text fontSize="xs">
-                {chaptersInfo[i]?.title ?? `Chapitre ${i + 1}`}
-              </Text>
+              <Text fontSize="xs">{`Chapitre ${i + 1}`}</Text>
               <Text fontWeight="bold" fontSize="lg">
                 {chapter.replace(/^[\d-]*\s*/, "")}
               </Text>
