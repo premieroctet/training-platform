@@ -129,7 +129,7 @@ export async function getStaticPaths() {
     .filter((item) => item.isDirectory())
     .map((item) => item.name);
 
-  const paths: { params: { courseSlug: string; chapter: string } }[] = [];
+  const paths: { params: { course: string; chapter: string } }[] = [];
 
   courseSlugs.forEach((slug) => {
     const chapters = fs
@@ -138,7 +138,7 @@ export async function getStaticPaths() {
       .map((name) => name.replace(".mdx", ""));
 
     chapters.forEach((chapterName) => {
-      paths.push({ params: { courseSlug: slug, chapter: chapterName } });
+      paths.push({ params: { course: slug, chapter: chapterName } });
     });
   });
 
@@ -149,16 +149,16 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { courseSlug, chapter } = context.params as IParams;
+  const { course, chapter } = context.params as IParams;
 
-  const filename = path.join(`${courseSlug}`, `${chapter}.mdx`);
+  const filename = path.join(`${course}`, `${chapter}.mdx`);
   const chapters = fs
-    .readdirSync(path.join(process.cwd(), "courses", `${courseSlug}`))
+    .readdirSync(path.join(process.cwd(), "courses", `${course}`))
     .filter((name) => name.endsWith(".mdx"))
     .map((name) => name.replace(".mdx", ""));
 
   const metadataContent = fs.readFileSync(
-    path.join(process.cwd(), `courses/${courseSlug}/metadata.md`),
+    path.join(process.cwd(), `courses/${course}/metadata.md`),
     "utf8"
   );
 
@@ -168,9 +168,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       filename,
       currentChapter: chapter,
-      courseSlug,
+      courseSlug: course,
       chapters,
-      course: { ...metadata.data, slug: courseSlug },
+      course: { ...metadata.data, slug: course },
     },
   };
 };

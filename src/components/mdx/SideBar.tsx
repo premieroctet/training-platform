@@ -4,7 +4,7 @@ import {
   DrawerContent,
   DrawerOverlay,
 } from "@chakra-ui/react";
-import { CourseMetadata } from "src/pages/[courseSlug]/[chapter]";
+import { CourseMetadata } from "src/pages/[course]/[chapter]";
 import ChaptersMenu from "./ChaptersMenu";
 
 export interface SideBarProps {

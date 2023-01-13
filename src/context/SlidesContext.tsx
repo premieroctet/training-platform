@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { useSwipeable } from "react-swipeable";
-import { CourseMetadata } from "src/pages/[courseSlug]/[chapter]";
+import { CourseMetadata } from "src/pages/[course]/[chapter]";
 import { useSocketContext } from "./SocketContext";
 
 type SlidesContextValues = {
@@ -146,9 +146,9 @@ export function SlidesProvider({
     setTotalSlides(undefined);
 
     router.push({
-      pathname: "/[courseSlug]/[chapter]",
+      pathname: "/[course]/[chapter]",
       query: {
-        courseSlug: course?.slug,
+        course: course?.slug,
         chapter: chapters[currentChapter + n],
         slide: n < 0 ? 999 : 0,
         mode: router.query.mode ?? "slideshow",
@@ -211,9 +211,9 @@ export function SlidesProvider({
     ) => {
       if (currentMode === "slideshow") {
         router.push({
-          pathname: "/[courseSlug]/[chapter]",
+          pathname: "/[course]/[chapter]",
           query: {
-            courseSlug: eventMessage.data.course?.slug,
+            course: eventMessage.data.course?.slug,
             chapter: eventMessage.data.chapter,
             slide: eventMessage.data.slide,
           },

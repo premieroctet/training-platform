@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import { useSocketContext } from "@/context/SocketContext";
-import { CourseMetadata } from "src/pages/[courseSlug]/[chapter]";
+import { CourseMetadata } from "src/pages/[course]/[chapter]";
 
 export interface ChaptersMenuProps {
   course: CourseMetadata;
