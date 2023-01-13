@@ -73,9 +73,9 @@ export function SocketProvider({ session, children }: SocketProviderProps) {
 
   const slideChange = ({ course, chapter, slide }: SlideType) => {
     router.push({
-      pathname: "/[course]/[chapter]",
+      pathname: "/[courseSlug]/[chapter]",
       query: {
-        course,
+        courseSlug: course,
         chapter,
         slide,
         mode: "follow",

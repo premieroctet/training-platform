@@ -144,10 +144,11 @@ export function SlidesProvider({
 
   const chapterNav = (n: number) => {
     setTotalSlides(undefined);
+
     router.push({
-      pathname: "/[course]/[chapter]",
+      pathname: "/[courseSlug]/[chapter]",
       query: {
-        course: course?.slug,
+        courseSlug: course?.slug,
         chapter: chapters[currentChapter + n],
         slide: n < 0 ? 999 : 0,
         mode: router.query.mode ?? "slideshow",
@@ -210,9 +211,9 @@ export function SlidesProvider({
     ) => {
       if (currentMode === "slideshow") {
         router.push({
-          pathname: "/[course]/[chapter]",
+          pathname: "/[courseSlug]/[chapter]",
           query: {
-            course: eventMessage.data.course?.slug,
+            courseSlug: eventMessage.data.course?.slug,
             chapter: eventMessage.data.chapter,
             slide: eventMessage.data.slide,
           },

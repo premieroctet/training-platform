@@ -12,7 +12,7 @@ type LayoutProps = {
 
 const Layout = ({ children, title = "Training Platform" }: LayoutProps) => {
   const router = useRouter();
-  const isSlide = router.route === "/[course]/[chapter]";
+  const isSlide = router.route === "/[courseSlug]/[chapter]";
   const print = router.query.print !== undefined;
   const [session, _] = useSession();
 
