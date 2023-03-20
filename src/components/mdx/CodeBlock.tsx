@@ -1,8 +1,9 @@
 import React from "react";
 import Highlight, { defaultProps, Language, Prism } from "prism-react-renderer";
 import codeTheme from "prism-react-renderer/themes/nightOwl";
-import { Box, Code, Flex } from "@chakra-ui/layout";
+import { Box, Code, Flex, Link } from "@chakra-ui/layout";
 import Mermaid from "./Mermaid";
+import { compressToEncodedURIComponent } from "lz-string";
 
 type ChildrenProp = {
   children: string;
@@ -16,7 +17,29 @@ const CodeBlock = ({ children, className }: ChildrenProp) => {
   const isMermaid = className === "language-mermaid";
 
   return (
-    <Flex marginY={4} width="100%" justifyContent="center">
+    <Flex marginY={4} width="100%" justifyContent="center" position="relative">
+      {(language === "typescript" || language === "tsx") && (
+        <Link
+          alignItems="flex-end"
+          justifyContent="flex-end"
+          display="flex"
+          zIndex={10}
+          top={0}
+          right={0}
+          p={1}
+          fontWeight="bold"
+          backgroundColor="#3178c6"
+          color="white"
+          position="absolute"
+          fontSize="sm"
+          isExternal
+          href={`https://www.typescriptlang.org/play?#code/${compressToEncodedURIComponent(
+            children
+          )}`}
+        >
+          TS
+        </Link>
+      )}
       {(isMermaid && <Mermaid graph={children} />) || (
         <Highlight
           {...defaultProps}
