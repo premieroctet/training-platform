@@ -7,7 +7,7 @@ import { Box, Center, Heading, VStack, Text, Button } from "@chakra-ui/react";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { checkIsConnected } from "src/utils/auth";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { MdAddCircleOutline } from "react-icons/md";
 
 const LIMIT = 10;

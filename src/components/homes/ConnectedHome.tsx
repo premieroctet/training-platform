@@ -1,11 +1,11 @@
 import { Box, Text, VStack } from "@chakra-ui/react";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { CourseType } from "src/pages";
 import AvailableCourses from "../course/AvailableCourses";
 import NoCourse from "../course/NoCourse";
 
 const ConnectedHome = ({ courses }: { courses: CourseType[] }) => {
-  const [session, _] = useSession();
+  const { data: session } = useSession();
 
   return (
     <Box paddingY={30} width="90vw" maxWidth="container.xl" marginX="auto">

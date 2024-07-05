@@ -1,5 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { Provider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import DeckTimerContextProvider from "../context/DeckTimerContext";
 import customTheme from "../theme/theme";
@@ -9,9 +9,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={customTheme} resetCSS={true}>
       <DeckTimerContextProvider>
-        <Provider session={pageProps.session}>
+        <SessionProvider session={pageProps.session}>
           <Component {...pageProps} />
-        </Provider>
+        </SessionProvider>
       </DeckTimerContextProvider>
     </ChakraProvider>
   );

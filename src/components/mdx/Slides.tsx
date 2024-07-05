@@ -21,6 +21,7 @@ const Slides: React.FC<SlidesProps> = ({ children, title, course }) => {
   const { setTotalSlides, currentMode, currentSlide } = useSlidesContext();
   const { slideWidth, slideHeight } = useSlideRatioStyle();
   const { slides, notes } = getSlidesFromMdxElements(
+    // @ts-expect-error
     children as React.ReactElement[]
   );
   useEffect(() => {

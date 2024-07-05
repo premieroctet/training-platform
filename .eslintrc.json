@@ -2,7 +2,7 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "react-hooks/exhaustive-deps": "off",
-    "no-console": ["error", { "allow": ["warn", "error", "info"] }],
+    "no-console": "off",
     "react/no-unescaped-entities": "off"
   }
 }

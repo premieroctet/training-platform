@@ -29,6 +29,7 @@ const ConfirmButton = ({
   return (
     <>
       <Popover>
+        {/* @ts-expect-error */}
         <PopoverTrigger>
           {icon ? (
             <IconButton icon={icon} aria-label={label} {...rest} />

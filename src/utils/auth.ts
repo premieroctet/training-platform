@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { isStaff } from "./users";
 
 export const checkIsConnected = async ({

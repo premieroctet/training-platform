@@ -5,7 +5,7 @@ import { inferSSRProps } from "@/lib/inferNextProps";
 import prisma from "@/lib/prisma";
 import { Center, Flex, Heading, useToast } from "@chakra-ui/react";
 import { GetServerSidePropsContext } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { checkIsConnected } from "src/utils/auth";
 

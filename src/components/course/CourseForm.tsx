@@ -7,7 +7,7 @@ import { Box, Button, Center, Stack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import SwitchField from "../fields/SwitchField";
 import { Training } from "@prisma/client";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 // import { CopyIcon } from "@chakra-ui/icons";
 import ChapterInfosField from "./ChapterInfosField";
 
@@ -21,7 +21,7 @@ export type ChapterInfo = {
 };
 const CourseForm = ({ course, chaptersCount }: ICourseFormProps) => {
   const router = useRouter();
-  const [session, _] = useSession();
+  const { data: session } = useSession();
 
   const getInitialValues = () => {
     if (course) {

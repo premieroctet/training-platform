@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
 import NavBar from "./navigation/NavBar";
+import { useSession } from "next-auth/react";
 
 type LayoutProps = {
   children?: ReactNode;
@@ -14,7 +14,7 @@ const Layout = ({ children, title = "Training Platform" }: LayoutProps) => {
   const router = useRouter();
   const isSlide = router.route === "/[course]/[chapter]";
   const print = router.query.print !== undefined;
-  const [session, _] = useSession();
+  const { data: session } = useSession();
 
   return (
     <Box minH="100vh">
