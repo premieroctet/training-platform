@@ -31,6 +31,7 @@ const TextField = ({ name, label, placeholder, disabled }: ITextInputProps) => {
       />
       {hasError && (
         <FormErrorMessage>
+          {/* @ts-expect-error */}
           <p>{errors[name]?.message}</p>
         </FormErrorMessage>
       )}

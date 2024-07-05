@@ -1,7 +1,8 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
 import prisma from "../../../lib/prisma";
+import EmailProvider from "next-auth/providers/email";
+import GithubProvider from "next-auth/providers/github";
 
 interface GithubUserEmails {
   email: string;
@@ -12,7 +13,7 @@ interface GithubUserEmails {
 
 export default NextAuth({
   providers: [
-    Providers.Email({
+    EmailProvider({
       server: {
         host: process.env.SMTP_HOST!,
         auth: {
@@ -23,11 +24,11 @@ export default NextAuth({
       },
       from: process.env.EMAIL_FROM,
     }),
-    Providers.GitHub({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      // @ts-expect-error
       scope: "user:email,email:primary",
-      // @ts-ignore
       profile: async (profile, tokens) => {
         let userEmail;
         if (!profile.email) {
@@ -37,7 +38,6 @@ export default NextAuth({
           const data: GithubUserEmails[] = await response.json();
           userEmail = data.find((user) => user.primary)?.email as string;
         }
-        // @ts-ignore
         const userId = profile.id.toString();
         return {
           id: userId,
@@ -53,12 +53,11 @@ export default NextAuth({
     signIn: "/auth/signin",
   },
   events: {
-    // @ts-ignore
     async linkAccount(data) {
-      const { user, providerAccount } = data;
+      const { user, account } = data;
       if (!user.email) {
         const response = await fetch(`https://api.github.com/user/emails`, {
-          headers: { authorization: `Bearer ${providerAccount.accessToken}` },
+          headers: { authorization: `Bearer ${account.accessToken}` },
         });
         const json: GithubUserEmails[] = await response.json();
         const userEmail = json.find((user) => user.primary)?.email as string;
@@ -74,10 +73,7 @@ export default NextAuth({
     },
   },
   callbacks: {
-    // @ts-ignore
-    redirect: async (url, baseUrl) => {
-      return Promise.resolve(baseUrl);
-    },
+    // @ts-expect-error
     async session(session) {
       const user =
         session.user?.email &&
@@ -96,8 +92,10 @@ export default NextAuth({
         }));
 
       if (user) {
+        // @ts-expect-error
         session.user = user;
       }
+
       return session;
     },
   },

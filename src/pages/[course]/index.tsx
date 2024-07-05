@@ -15,11 +15,23 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   const { course } = context.query;
 
+  if (!course) {
+    return {
+      notFound: true,
+    };
+  }
+
   const courseInfo = await prisma.training.findUnique({
     where: {
       slug: course as string,
     },
   });
+
+  if (!courseInfo) {
+    return {
+      notFound: true,
+    };
+  }
 
   const chapters = fs
     .readdirSync(path.join(process.cwd(), "courses", `${courseInfo?.slug}`))

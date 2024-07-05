@@ -15,7 +15,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { GetServerSidePropsContext } from "next";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { checkIsConnected } from "src/utils/auth";
 
@@ -24,7 +24,7 @@ const ManageUsers = ({
   trainees,
   teachers,
 }: inferSSRProps<typeof getServerSideProps>) => {
-  const [session] = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
   const { tab } = router.query;
 

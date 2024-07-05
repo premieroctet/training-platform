@@ -8,7 +8,7 @@ import {
   HStack,
   Icon,
 } from "@chakra-ui/react";
-import { signOut, useSession } from "next-auth/client";
+import { signOut, useSession } from "next-auth/react";
 import { FiLogOut } from "react-icons/fi";
 import { BsBook } from "react-icons/bs";
 import { RiUserAddLine } from "react-icons/ri";
@@ -18,7 +18,7 @@ import UserBadge from "../users/UserBadge";
 import { isStaff } from "src/utils/users";
 
 const UserDropdoown = () => {
-  const [session, _] = useSession();
+  const { data: session } = useSession();
   const userName = session?.user?.name || session?.user?.email;
 
   return (

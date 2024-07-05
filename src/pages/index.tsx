@@ -5,7 +5,7 @@ import { Training, User } from "@prisma/client";
 import { readdirSync, existsSync } from "fs";
 import { GetServerSideProps } from "next";
 import { Session } from "next-auth";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import path from "path";
 import Layout from "../components/Layout";
 

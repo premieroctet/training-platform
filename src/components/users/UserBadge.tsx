@@ -1,9 +1,9 @@
 import { Box, Text } from "@chakra-ui/react";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { getRoleLabel } from "src/utils/users";
 
 const UserBadge = () => {
-  const [session] = useSession();
+  const { data: session } = useSession();
 
   if (!session?.user) {
     return null;

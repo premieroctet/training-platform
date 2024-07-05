@@ -114,6 +114,7 @@ export const courseMapComponents = {
 };
 
 const MDXProvider = ({ children, courseMap }: ChildrenProp) => (
+  // @ts-ignore
   <MDXDefaultProvider
     components={{ ...mdComponents, ...(courseMap && courseMapComponents) }}
   >

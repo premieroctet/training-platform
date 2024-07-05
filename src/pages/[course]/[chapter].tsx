@@ -8,7 +8,7 @@ import "@fontsource/josefin-sans/700.css";
 import fs from "fs";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Session } from "next-auth";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import path from "path";
@@ -61,6 +61,7 @@ export default function ChapterPage({
         chapter={currentChapter}
         isAdmin={isAdmin}
       >
+        {/* @ts-expect-error */}
         <FullScreen className="fullscreen-component" handle={handleFullScreen}>
           <Layout title={course?.title}>
             <Flex

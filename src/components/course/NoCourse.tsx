@@ -1,9 +1,9 @@
 import { Text, Box, SimpleGrid, Stack } from "@chakra-ui/react";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { isStaff } from "src/utils/users";
 
 const NoCourse = () => {
-  const [session, _] = useSession();
+  const { data: session } = useSession();
 
   return (
     <>

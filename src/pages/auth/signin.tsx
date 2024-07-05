@@ -12,11 +12,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
-import { getCsrfToken, signIn } from "next-auth/client";
+import { getCsrfToken, signIn } from "next-auth/react";
 import { AiFillGithub } from "react-icons/ai";
 
 type Props = {
-  csrfToken: string | null;
+  csrfToken?: string | null;
 };
 
 export default function SignIn({ csrfToken }: Props) {

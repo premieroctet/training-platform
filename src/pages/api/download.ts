@@ -1,7 +1,7 @@
 import { readFileSync, existsSync, statSync } from "fs";
 import path from "path";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { generatePdf } from "src/utils/pdf";
 import prisma from "@/lib/prisma";
 
