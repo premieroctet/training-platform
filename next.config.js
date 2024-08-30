@@ -11,6 +11,9 @@ const configWithMDX = withMDX({
 const nextConfig = {
   ...removeImports(configWithMDX),
   output: "standalone",
+  experimental: {
+    outputFileTracingIncludes: { courses: ["./courses/**/*"] },
+  },
 };
 
 module.exports = nextConfig;
