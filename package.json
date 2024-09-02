@@ -6,7 +6,7 @@
     "ts": "tsc --noEmit --incremental",
     "ts:watch": "yarn ts --watch",
     "build": "next build",
-    "start": "NODE_ENV=production node dist/server.js",
+    "start": "next start",
     "type-check": "tsc",
     "export": "ts-node -T scripts/export.ts",
     "create-admin-user": "ts-node -T scripts/createAdminUser.ts",
