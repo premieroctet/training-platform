@@ -11,10 +11,10 @@ const configWithMDX = withMDX({
 const nextConfig = {
   ...removeImports(configWithMDX),
   // Standalone mode doesn't work well with dynamic content like our MDX courses files
-  // output: "standalone",
-  // experimental: {
-  //   outputFileTracingIncludes: { "/": ["./courses/**/*"] },
-  // },
+  output: "standalone",
+  experimental: {
+    outputFileTracingIncludes: { "/": ["./courses/**/*"] },
+  },
 };
 
 module.exports = nextConfig;
