@@ -41,23 +41,21 @@ const CourseDetail = ({ course }: { course: CourseType }) => {
         alt="cover"
       />
       <HStack paddingY={8} justifyContent="center">
-        {course?.isDownloadable && (
-          <Button
-            variant="link"
-            onClick={async () => {
-              setLoadingPdf(true);
-              await router.push(`/api/download?id=${course.id!}`);
-              setLoadingPdf(false);
-            }}
-            aria-label="download"
-            isLoading={loadingPdf}
-          >
-            <Icon color="primary.500" as={MdFileDownload} />
-            <Text fontSize="xs" color="black" paddingLeft="1">
-              Télécharger le cours
-            </Text>
-          </Button>
-        )}
+        <Button
+          variant="link"
+          onClick={async () => {
+            setLoadingPdf(true);
+            await router.push(`/api/download?id=${course.id!}`);
+            setLoadingPdf(false);
+          }}
+          aria-label="download"
+          isLoading={loadingPdf}
+        >
+          <Icon color="primary.500" as={MdFileDownload} />
+          <Text fontSize="xs" color="black" paddingLeft="1">
+            Télécharger le cours
+          </Text>
+        </Button>
         <Button
           variant="outline"
           onClick={() => router.push(`/${course.slug}`)}

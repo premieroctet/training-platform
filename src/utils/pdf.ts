@@ -31,16 +31,19 @@ const getCourseChapters = (slug: string): chapterType[] => {
     });
   }
 
-  return fs.readdirSync(`./courses/${slug}`).map((chapter: string) => {
-    {
-      const filename = chapter.replace(".mdx", "");
-      return {
-        path: `${process.env.NEXT_PUBLIC_FRONT_URL}/${slug}/${filename}?print`,
-        course: slug,
-        chapter: filename,
-      };
-    }
-  });
+  return fs
+    .readdirSync(`./courses/${slug}`)
+    .filter((chapter: string) => chapter.endsWith(".mdx"))
+    .map((chapter: string) => {
+      {
+        const filename = chapter.replace(".mdx", "");
+        return {
+          path: `${process.env.NEXT_PUBLIC_FRONT_URL}/${slug}/${filename}?print`,
+          course: slug,
+          chapter: filename,
+        };
+      }
+    });
 };
 
 export const generatePdf = async (slug: string) => {
