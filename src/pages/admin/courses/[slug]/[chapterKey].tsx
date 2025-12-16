@@ -13,7 +13,7 @@ import { Button, Flex, Spacer, Text, useToast, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import "@uiw/react-md-editor/dist/mdeditor.min.css";
 import "@uiw/react-markdown-preview/dist/markdown.min.css";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 const MDEditor = dynamic<MDEditorProps>(
   () => import("@uiw/react-md-editor").then((mod) => mod.default),

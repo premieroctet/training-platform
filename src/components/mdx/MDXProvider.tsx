@@ -1,5 +1,3 @@
-import Icon from "@chakra-ui/icon";
-import { Image } from "@chakra-ui/image";
 import {
   Box,
   Flex,
@@ -10,8 +8,14 @@ import {
   HStack,
   VStack,
   Text,
-} from "@chakra-ui/layout";
-import { Code, Table, Tbody, Td, Th, Tr } from "@chakra-ui/react";
+  Image,
+  Code,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Tr,
+} from "@chakra-ui/react";
 import { MDXProvider as MDXDefaultProvider } from "@mdx-js/react";
 import React from "react";
 import ChapterHeading from "./ChapterHeading";
@@ -76,7 +80,6 @@ export const mdComponents = {
   Flex,
   HStack: (props: any) => <HStack justifyContent="space-between" {...props} />,
   VStack,
-  Icon,
   // Images
   Image: (props: any) => (
     <Image

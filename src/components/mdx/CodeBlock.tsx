@@ -1,7 +1,7 @@
 import React from "react";
 import Highlight, { defaultProps, Language, Prism } from "prism-react-renderer";
 import codeTheme from "prism-react-renderer/themes/nightOwl";
-import { Box, Code, Flex, Link } from "@chakra-ui/layout";
+import { Box, Code, Flex, Link } from "@chakra-ui/react";
 import Mermaid from "./Mermaid";
 import { compressToEncodedURIComponent } from "lz-string";
 

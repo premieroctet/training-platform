@@ -1,6 +1,4 @@
-import { Box, Stack, HStack } from "@chakra-ui/react";
-import { Text } from "@chakra-ui/layout";
-import { Image } from "@chakra-ui/react";
+import { Box, Stack, HStack, Text, Image } from "@chakra-ui/react";
 import { getCourseCover } from "src/utils/courses";
 import { CourseType } from "src/pages";
 
@@ -40,7 +38,7 @@ const CourseCard = ({
           <Image
             height="200"
             src={getCourseCover(course)}
-            fit="cover"
+            objectFit="cover"
             alt="cover"
           />
         </Box>

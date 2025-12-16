@@ -1,6 +1,5 @@
 import { User } from ".prisma/client";
-import { Button } from "@chakra-ui/button";
-import { HStack, VStack, SimpleGrid, useToast } from "@chakra-ui/react";
+import { Button, HStack, VStack, SimpleGrid, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import SelectField from "../fields/SelectField";
 import * as yup from "yup";

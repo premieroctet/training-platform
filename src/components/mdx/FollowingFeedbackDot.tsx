@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Box, Flex, Text } from "@chakra-ui/react";
 export interface FollowingFeedbackDotProps {
   isFollowing: Boolean;
 }
@@ -14,7 +14,7 @@ const FollowingFeedbackDot: React.FC<FollowingFeedbackDotProps> = ({
         right="0"
         zIndex="20"
         alignItems="center"
-        gridGap="xs"
+        gap="xs"
         p="xs"
         opacity="0.4"
       >

@@ -1,6 +1,5 @@
 import { User } from ".prisma/client";
-import { VStack } from "@chakra-ui/layout";
-import { Table, Tbody, Th, Thead, Tr, useToast } from "@chakra-ui/react";
+import { VStack, Table, Tbody, Th, Thead, Tr, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import UserTableRow from "./UserTableRow";
 

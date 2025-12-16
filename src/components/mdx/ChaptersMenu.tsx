@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSocketContext } from "@/context/SocketContext";
 import { CourseType } from "src/pages";
@@ -42,7 +42,7 @@ const ChaptersMenu: React.FC<ChaptersMenuProps> = ({
         height="100%"
         width="100%"
         overflow="auto"
-        gridGap="xs"
+        gap="xs"
       >
         {chapters.map((chapter: string, i) => {
           const isActive = chapter === currentChapter;

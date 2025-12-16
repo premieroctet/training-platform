@@ -1,6 +1,6 @@
 import { useSlidesContext } from "@/context/SlidesContext";
 import useSlideRatioStyle from "@/hooks/useSlideRatioStyle";
-import { Box, Flex, FlexProps } from "@chakra-ui/layout";
+import { Box, Flex, FlexProps } from "@chakra-ui/react";
 import React from "react";
 import SlideHeader from "./SlideHeader";
 
