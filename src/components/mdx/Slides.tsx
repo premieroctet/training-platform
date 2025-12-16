@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, VStack } from "@chakra-ui/layout";
+import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useEffect } from "react";
@@ -73,7 +73,7 @@ const Slides: React.FC<SlidesProps> = ({ children, title, course }) => {
           height="100%"
           flexDirection="column"
           alignItems="center"
-          gridGap="md"
+          gap="md"
           m="1px"
         >
           {isPreview && isAdmin ? (

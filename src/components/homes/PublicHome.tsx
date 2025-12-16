@@ -31,7 +31,7 @@ const PublicHome = () => {
             height="500px"
             width="100%"
             src="/Home.png"
-            fit="contain"
+            objectFit="contain"
             alt="home"
           />
         </Box>

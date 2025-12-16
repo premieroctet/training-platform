@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/layout";
+import { Flex, Heading } from "@chakra-ui/react";
 
 export interface SlideHeaderProps {
   slideTitle: string;

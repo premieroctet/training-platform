@@ -1,5 +1,6 @@
-import { Flex, Stack } from "@chakra-ui/layout";
 import {
+  Flex,
+  Stack,
   ChakraProvider as CustomChakraProvider,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -83,7 +84,7 @@ export default function ChapterPage({
               )}
 
               <CustomChakraProvider
-                theme={premierOctet}
+                value={premierOctet}
                 cssVarsRoot="#slides-container"
               >
                 <Stack

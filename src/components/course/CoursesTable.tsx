@@ -1,4 +1,3 @@
-import { CloseIcon, EditIcon, ViewIcon } from "@chakra-ui/icons";
 import {
   HStack,
   IconButton,
@@ -14,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ConfirmButton from "../ConfirmButton";
+import { MdClose, MdEdit, MdVisibility } from "react-icons/md";
 
 interface ICoursesTableProps {
   courses: any[];
@@ -62,25 +62,27 @@ const CoursesTable = ({ courses }: ICoursesTableProps) => {
                   <IconButton
                     size="sm"
                     aria-label="View"
-                    icon={<ViewIcon />}
                     as={Link}
                     href={`/${course.slug}/0`}
-                  />
+                  >
+                    <MdVisibility />
+                  </IconButton>
                 </Tooltip>
                 <Tooltip label="Éditer les infos">
                   <IconButton
                     size="sm"
                     aria-label="Edit info"
-                    icon={<EditIcon />}
                     as={Link}
                     href={`/admin/courses/${course.slug}`}
-                  />
+                  >
+                    <MdEdit />
+                  </IconButton>
                 </Tooltip>
                 <ConfirmButton
                   label="Supprimer le cours"
                   confirmDetail="Êtes-vous sûrs de vouloir supprimer ce cours?"
                   colorScheme="red"
-                  icon={<CloseIcon />}
+                  icon={<MdClose />}
                   onConfirm={() => {
                     deleteCourse(course?.id);
                   }}

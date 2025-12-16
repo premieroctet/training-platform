@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/layout";
+import { Flex } from "@chakra-ui/react";
 
 const directions = ["to-tl", "to-br", "to-bl", "to-tr"];
 const bgGradientColors = ["blue", "pink", "orange", "purple"];

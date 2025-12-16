@@ -1,5 +1,4 @@
-import { Button } from "@chakra-ui/button";
-import { Box, Flex } from "@chakra-ui/layout";
+import { Button, Box, Flex } from "@chakra-ui/react";
 import { MdPause, MdPlayArrow, MdStop } from "react-icons/md";
 import { useDeckTimer } from "@/context/DeckTimerContext";
 
@@ -30,7 +29,7 @@ const Timer: React.FC<TimerProps> = () => {
       fontFamily="monospace"
       justifyContent="flex-start"
       alignItems="center"
-      gridGap="xs"
+      gap="xs"
       m="xs"
     >
       {status === "RUNNING" ? (

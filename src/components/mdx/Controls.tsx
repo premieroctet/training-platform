@@ -1,11 +1,10 @@
-import { Button, IconButton, Flex, useBoolean } from "@chakra-ui/react";
-import Icon from "@chakra-ui/icon";
-import { HamburgerIcon, RepeatIcon } from "@chakra-ui/icons";
+import { Button, IconButton, Flex } from "@chakra-ui/react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { FullScreenHandle } from "react-full-screen";
 import { BsFullscreen } from "react-icons/bs";
 import { useSlidesContext } from "@/context/SlidesContext";
-import { MdHome } from "react-icons/md";
+import { MdHome, MdMenu, MdRepeat } from "react-icons/md";
 import { useRouter } from "next/router";
 
 export interface ControlsProps {
@@ -20,17 +19,17 @@ const Controls: React.FC<ControlsProps> = ({
   isAdmin,
 }) => {
   const { toggleFollowMode, currentMode } = useSlidesContext();
-  const [showControls, setShowControls] = useBoolean();
+  const [showControls, setShowControls] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
     const listener = () => {
-      setShowControls.on();
+      setShowControls(true);
 
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        setShowControls.off();
+        setShowControls(false);
       }, 2000);
     };
     window.addEventListener("mousemove", listener);
@@ -63,19 +62,19 @@ const Controls: React.FC<ControlsProps> = ({
         aria-label="Chapters"
         onClick={toggleSideBar}
         variant="outline"
-        icon={<HamburgerIcon />}
-      />
-      <Flex gridGap="xs">
+      >
+        <MdMenu />
+      </IconButton>
+      <Flex gap="xs">
         {!isAdmin && (
           <Button
             colorScheme="red"
             variant="outline"
             p="sm"
-            leftIcon={<RepeatIcon />}
             onClick={toggleFollowMode}
-            isActive={currentMode === "follow"}
             cursor="pointer"
           >
+            <MdRepeat style={{ marginRight: "0.5rem" }} />
             sync
           </Button>
         )}
@@ -90,7 +89,7 @@ const Controls: React.FC<ControlsProps> = ({
           }
           cursor="pointer"
         >
-          <Icon as={BsFullscreen} strokeWidth="2px" dropShadow="md" />
+          <BsFullscreen />
         </Button>
         <Button
           colorScheme="gray"
@@ -100,7 +99,7 @@ const Controls: React.FC<ControlsProps> = ({
             router.push("/");
           }}
         >
-          <Icon as={MdHome} strokeWidth="2px" dropShadow="md" />
+          <MdHome />
         </Button>
       </Flex>
     </Flex>

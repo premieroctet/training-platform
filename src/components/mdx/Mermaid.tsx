@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/react";
 import { useMermaid } from "@/hooks/useMermaid";
 
 export interface MermaidProps {

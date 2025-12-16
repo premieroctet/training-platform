@@ -3,8 +3,8 @@ import {
   AlertIcon,
   AlertTitle,
   CloseButton,
-  useBoolean,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 type Props = {
   message: MessageData | null;
@@ -16,7 +16,7 @@ export type MessageData = {
 };
 
 const Message = ({ message }: Props) => {
-  const [showAlert, setShowAlert] = useBoolean(!!message);
+  const [showAlert, setShowAlert] = useState(!!message);
 
   return showAlert && message ? (
     <Alert
@@ -29,7 +29,7 @@ const Message = ({ message }: Props) => {
       <AlertTitle mr={2}>{message.message}</AlertTitle>
       <CloseButton
         onClick={() => {
-          setShowAlert.toggle();
+          setShowAlert(!showAlert);
         }}
         position="absolute"
         right="8px"
