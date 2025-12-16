@@ -1,4 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
+import prisma from "../src/lib/prisma";
 
 const email = process.argv[2];
 
@@ -8,7 +8,6 @@ if (!email) {
 }
 
 const main = async () => {
-  const prisma = new PrismaClient();
   await prisma.user.create({
     data: {
       email,

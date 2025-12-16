@@ -33,5 +33,5 @@
     "compilerOptions": {
       "module": "commonjs"
     }
-  }
+  },
 }

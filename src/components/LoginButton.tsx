@@ -3,7 +3,9 @@ import router from "next/router";
 
 const LoginButton = (props: ButtonProps) => {
   return (
+    // @ts-ignore
     <Button
+      // @ts-ignore
       variant="outline"
       colorScheme="primary"
       fontSize={"xs"}

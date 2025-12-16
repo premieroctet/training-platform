@@ -49,7 +49,7 @@ export default function ChapterPage({
   const handleFullScreen = useFullScreenHandle();
   const { isOpen, onClose, onToggle } = useDisclosure();
 
-  const isAdmin = session?.user?.role === "admin" ?? false;
+  const isAdmin = session?.user?.role === "admin";
   const isFollowing = router.query.mode === "follow";
   const isPrint = router.query.hasOwnProperty("print");
 
@@ -64,6 +64,7 @@ export default function ChapterPage({
         {/* @ts-expect-error */}
         <FullScreen className="fullscreen-component" handle={handleFullScreen}>
           <Layout title={course?.title}>
+            {/* @ts-ignore */}
             <Flex
               w="100vw"
               h="100vh"

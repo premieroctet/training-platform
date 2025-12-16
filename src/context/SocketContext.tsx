@@ -29,7 +29,7 @@ export function SocketProvider({ session, children }: SocketProviderProps) {
   const isAdmin = user?.role === "admin";
   const router = useRouter();
   const currentMode = router.query.mode;
-  const followModeOn = currentMode === "follow" ?? false;
+  const followModeOn = currentMode === "follow";
 
   const socketRef = useRef<Socket | undefined>();
 
@@ -51,11 +51,17 @@ export function SocketProvider({ session, children }: SocketProviderProps) {
 
   useEffect(() => {
     const getCurrentSlide = () => {
-      pushSlide({
-        course: router.query.course.toString(),
-        chapter: router.query.chapter.toString(),
-        slide: router.query.slide?.toString() || 0,
-      });
+      const course = router.query.course?.toString() ?? "";
+      const chapter = router.query.chapter?.toString() ?? "";
+      const slide = router.query.slide?.toString() ?? "0";
+
+      if (course && chapter) {
+        pushSlide({
+          course,
+          chapter,
+          slide,
+        });
+      }
     };
     if (isAdmin) {
       socketRef.current?.on("getCurrentSlide", getCurrentSlide);

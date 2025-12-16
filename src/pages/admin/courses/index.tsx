@@ -62,7 +62,8 @@ export const getServerSideProps = async (
 
   let message: MessageData | null = null;
 
-  const page = parseInt(context.query.page?.toString()) || 1;
+  const pageStr = context.query.page;
+  const page = pageStr ? parseInt(pageStr as string) : 1;
   const coursesCount = await prisma.training.count();
   const maxPages = Math.ceil(coursesCount / LIMIT);
   const courses = await prisma.training.findMany({

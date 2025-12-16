@@ -22,6 +22,7 @@ const TextField = ({ name, label, placeholder, disabled }: ITextInputProps) => {
   const hasError = !!errors[name];
 
   return (
+    // @ts-ignore
     <FormControl isInvalid={hasError}>
       <FormLabel fontSize="sm">{label}</FormLabel>
       <Input

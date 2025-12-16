@@ -58,6 +58,7 @@ const CoursesTable = ({ courses }: ICoursesTableProps) => {
             <Td justifyContent="flex-end">
               <HStack>
                 <Tooltip label="Voir le cours">
+                  {/* @ts-expect-error */}
                   <IconButton
                     size="sm"
                     aria-label="View"

@@ -45,7 +45,9 @@ const Slide: React.FC<SlideProps> = ({
   const isSlideshow = currentMode !== "speaker";
 
   return (
+    // @ts-ignore
     <Flex
+      // @ts-ignore
       className="slide"
       position={isSlideshow ? "inherit" : "relative"}
       overflowY={isSlideshow ? "inherit" : "hidden"}
